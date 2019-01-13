@@ -1,0 +1,87 @@
+@startuml DialWithWebSocket
+
+actor User order 1
+participant Client order 2
+participant WebSocket order 3
+participant Gremconnect order 4
+database GremlinServer order 5
+
+== Create-Client ==
+
+User -> User : Create New Client
+
+note right : DialWithWebSocket("ws://127.0.0.1:8182")
+
+||45||
+
+User -> Client : Connection info and error channel
+
+group DialWithWebSocket
+
+hnote over Client : Create WebSocket
+
+Client -> Gremconnect : New Dialer
+activate Gremconnect #AAAAFF
+
+note over Gremconnect
+&Websocket {
+    Timeout: 5 * time.Second,
+    PingInterval: 60 * time.Second,
+    WritingWait: 15 * time.Second,
+    ReadingWait: 15 * time.Second,
+    Connected: false,
+    Quit: make(chan struct{}),
+}
+end note
+
+Gremconnect --> Client : Return Dialer
+
+deactivate Gremconnect
+
+group Dial
+
+Client -> WebSocket : Connection Request
+activate Client #FFAAAA
+
+WebSocket -> GremlinServer : Connection Request
+activate WebSocket #AAFFAA
+activate GremlinServer #FFFFAA
+GremlinServer --> WebSocket : Connection Confirmation
+deactivate GremlinServer
+deactivate WebSocket
+
+WebSocket -> Client : Connection Made
+deactivate Client #FFAAAA
+
+Client -> Client : Launch Connection Processes
+activate Client #FFAAAA
+Client -> Client : Spin up Read Worker
+activate Client
+loop forever
+Client -> Client : Read Connection
+deactivate Client
+end
+
+Client -> Client : Spin up Write Worker
+loop forever
+activate Client
+Client -> Client : Write channel to Connection
+deactivate Client
+end
+Client -> WebSocket : Spin up Ping function in WebSocket
+deactivate Client
+
+activate WebSocket #AAFFAA
+loop every 60 seconds
+WebSocket -> WebSocket : Ping Server
+end
+deactivate WebSocket
+
+Client -> Client : Create Schema
+end
+
+Client -> User : Return Client
+
+end
+
+@enduml

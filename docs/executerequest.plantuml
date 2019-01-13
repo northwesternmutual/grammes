@@ -1,0 +1,187 @@
+@startuml ExecuteRequest
+
+' This document shows how the client interacts with the websocket
+' and how that interacts with the server and other packages of grammes.
+' This is helpful since it gets a little confusing with the channels
+' Being used to handle responses, requests, and pinging.
+
+actor User order 1
+participant Client order 2
+participant WebSocket order 3
+participant Gremconnect order 4
+participant UUID order 5
+database GremlinServer order 6
+
+== Execute-Request ==
+
+User -> User : Execute String Query
+note right : client.ExecuteStringQuery("g.addV('newvertex')")
+
+||45||
+
+User -> Client : Query
+
+note right : "g.addV('newvertex')"
+
+activate Client
+
+group ExecuteStringQuery
+Client -> Client : Bind query
+end
+
+group ExecuteBoundStringQuery
+Client -> Client : Check Connection isn't Disposed
+end
+
+|||
+
+group executeRequest
+
+Client -> Gremconnect : Prepare Request
+activate Gremconnect #AAAAFF
+Gremconnect -> UUID : Generate new UUID
+
+activate UUID #FFFFAA
+UUID --> Gremconnect : Return new UUID
+deactivate UUID
+
+Gremconnect -> Gremconnect : Create new map[string]interface{}
+Gremconnect -> Gremconnect : Assign keys and values to map
+Gremconnect --> Client : Return map[string]interface{}
+deactivate Gremconnect
+
+Client -> Gremconnect : Package Request
+activate Gremconnect #AAAAFF
+Gremconnect -> Gremconnect : Marshal the map into a byte slice
+Gremconnect -> Gremconnect : Append header to beginning of json
+Gremconnect --> Client : Return raw JSON
+deactivate Gremconnect
+
+Client -> Client : Dispatch request
+Client -> Client : Send message through channel
+
+note right
+{
+    "requestId": "d2476e5b-b2bc-6a70-2647-3991f68ab415",
+    "op": "eval",
+    "processor": "",
+    "args": {
+        "bindings": {},
+        "gremlin": "g.addV('newvertex')",
+        "language": "gremlin-groovy",
+        "rebindings": {}
+    }
+}
+end note
+
+activate Client #FFAAAA
+Client -> Client : Send request through channel
+deactivate Client
+
+|||
+
+hnote over Client : Write worker channel picks up the sent message
+group Write Worker
+loop forever
+
+|||
+
+Client -> Client : Write worker reads message from channel
+activate Client #FFAAAA
+Client -> WebSocket : Write message
+
+activate WebSocket #AAFFAA
+WebSocket -> GremlinServer : Message
+GremlinServer --> WebSocket : Status code
+WebSocket --> Client : Return any error
+deactivate WebSocket
+
+Client -> Client : Check error
+deactivate Client
+
+end
+end
+
+|||
+
+hnote over Client : Read worker channel reads message from connection
+group Read Worker
+
+|||
+
+Client -> Client : Read worker concurrently gets a message
+
+loop forever
+
+activate Client #FFAAAA
+
+Client -> WebSocket : Read Connection
+activate WebSocket #AAFFAA
+WebSocket -> GremlinServer : Read Message
+GremlinServer --> WebSocket : Return Message
+WebSocket --> Client : Return message and any errors
+deactivate WebSocket
+
+Client -> Client : Check error
+Client -> Client : Check if msg is nil
+
+Client -> Client : Handle response
+deactivate Client
+
+note right
+{
+    "requestId": "d2476e5b-b2bc-6a70-2647-3991f68ab415",
+    "status": {
+        "message": "",
+        "code": 200,
+        "attributes": {}
+    },
+    "result": {
+        "data": [{
+            "@type": "g:Vertex",
+            "@value": {
+                "id": {
+                    "@type": "g:Int64",
+                    "@value": 28720
+                },
+                "label": "newvertex"
+            }
+        }],
+        "meta": {}
+    }
+}
+end note
+
+end
+
+end
+
+Client -> Gremconnect : Marshal response
+activate Client #FFAAAA
+activate Gremconnect #AAAAFF
+Gremconnect -> Gremconnect : Creates map[string]interface{}
+Gremconnect -> Gremconnect : Unmarshals response into map
+Gremconnect -> Gremconnect : Check status code from server
+Gremconnect --> Client : Return map
+deactivate Gremconnect
+
+Client -> Client : Save response
+deactivate Client
+
+Client -> Client : Load responses in mutex map for multiple reponses
+activate Client #FFAAAA
+Client -> Client : Append new map of data
+deactivate Client
+
+Client -> Client : retrieve final response/s
+activate Client #FFAAAA
+Client -> Client : Load responses from mutex map
+Client -> Client : Delete notifier mutex and responses
+Client -> Client : Return map response
+deactivate Client
+
+end
+
+Client -> User : Return response
+
+@enduml

@@ -1,0 +1,18 @@
+{
+    "dbName": "DINPDB00",
+    "tableName": "TINPNAM",
+    "cols": {
+        "NAME_ID_NUM":"1234",
+        "NAME_TYPE_CDE":"2",
+        "NAME_SEQUENCE_NUM":"1",
+        "LAST_MODIFIED_DTM": "2016-03-22-14.47.13.176523",
+        "NAME_TXT":"Damien S Stamates",
+        "NAME_SHORT_TXT":"Damien Stamates",
+        "SALUTATION_TXT":"Mr",
+        "PERSON_FIRST_NAM":"Damien",
+        "PERSON_MIDDLE_NAM":"S",
+        "PERSON_LAST_NAM":"Stamates",
+        "LINEAGE_TITLE_TXT":"Sr",
+        "PROF_DESGN_NAM_TXT":"Bum"
+    }
+}

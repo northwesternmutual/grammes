@@ -1,0 +1,49 @@
+// Copyright (c) 2018 Northwestern Mutual.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+package traversal
+
+// http://tinkerpop.apache.org/docs/current/reference/#match-step
+
+// Match (map) provides a more declarative form of graph querying
+// based on the notion of pattern matching. With Match(), the user
+// provides a collection of "traversal fragments," called patterns,
+// that have variables defined that must hold true throughout the
+// duration of the Match().
+// Signatures:
+// Match(...*String (Traversal))
+func (g String) Match(traversals ...String) String {
+	switch len(traversals) {
+	case 0:
+		g = g.append(".match()")
+	default:
+		g = g.append(".match(" + traversals[0].Raw().String())
+
+		if len(traversals) > 1 {
+			for _, v := range traversals[1:] {
+				g = g.append("," + v.Raw().String())
+			}
+		}
+
+		g = g.append(")")
+	}
+
+	return g
+}

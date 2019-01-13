@@ -1,0 +1,11 @@
+{
+    "requestId": "d2476e5b-b2bc-6a70-2647-3991f68ab415",
+    "op": "eval",
+    "processor": "",
+    "args": {
+        "bindings": {},
+        "gremlin": "g.addV('newvertex')",
+        "language": "gremlin-groovy",
+        "rebindings": {}
+    }
+}

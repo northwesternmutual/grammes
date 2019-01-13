@@ -1,0 +1,136 @@
+// Copyright (c) 2018 Northwestern Mutual.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+package grammes
+
+import (
+	"encoding/json"
+
+	"github.com/northwesternmutual/grammes/gremconnect"
+	"github.com/northwesternmutual/grammes/gremerror"
+)
+
+var (
+	jsonMarshalData     = json.Marshal
+	gremMarshalResponse = gremconnect.MarshalResponse
+)
+
+// readWorker works on a loop and sorts messages as soon as it receives them
+func (c *Client) readWorker(errs chan error, quit chan struct{}) {
+	var (
+		msg []byte
+		err error
+	)
+
+	for {
+		// attempt to read from the connection
+		// and store the message back into a variable.
+		if msg, err = c.conn.Read(); err != nil {
+			errs <- err
+			c.broken = true
+			c.logger.Error("reading connection",
+				gremerror.NewGrammesError("readWorker", err),
+			)
+
+			break
+		}
+
+		c.logger.Debug("readWorker: Successfully read from connection", map[string]interface{}{})
+
+		if msg != nil {
+			if err = c.handleResponse(msg); err != nil {
+				errs <- err
+				c.logger.Error("handling response error",
+					gremerror.NewGrammesError("readWorker", err),
+				)
+			}
+		}
+
+		select {
+		case <-quit:
+			c.logger.Debug("readWorker: Quit", map[string]interface{}{})
+			return
+		default:
+			continue
+		}
+	}
+}
+
+func (c *Client) retrieveResponse(id string) ([]byte, error) {
+	var (
+		resp, _ = c.resultMessenger.Load(id)
+		err     error
+		data    []byte
+	)
+
+	if n := <-resp.(chan int); n == 1 {
+		if dataI, ok := c.results.Load(id); ok {
+			if data, err = jsonMarshalData(dataI.([]interface{})[0]); err != nil {
+				return nil, err
+			}
+
+			close(resp.(chan int))
+			c.resultMessenger.Delete(id)
+			c.deleteResponse(id)
+		}
+	}
+
+	return data, nil
+}
+
+// deleteRespones deletes the response from the container. Used for cleanup purposes by requester.
+func (c *Client) deleteResponse(id string) {
+	c.results.Delete(id)
+}
+
+// saveResponse makes the response available for retrieval by the requester. Mutexes are used for thread safety.
+func (c *Client) saveResponse(resp gremconnect.Response) {
+	c.respMutex.Lock()
+
+	defer c.respMutex.Unlock()
+
+	var container []interface{}
+	// Retrieve the existing data (if there are multiple responses).
+	if existingData, ok := c.results.Load(resp.RequestID); ok {
+		container = existingData.([]interface{})
+	}
+
+	container = append(container, resp.Data)   // Append the new data to the container
+	c.results.Store(resp.RequestID, container) // Add data to buffer for future retrieval
+	notifier, _ := c.resultMessenger.LoadOrStore(resp.RequestID, make(chan int, 1))
+
+	if resp.Code != 206 {
+		notifier.(chan int) <- 1
+	}
+}
+
+func (c *Client) handleResponse(msg []byte) error {
+	resp, err := gremMarshalResponse(msg)
+	if err != nil {
+		return err
+	}
+
+	if resp.Code == 407 { // Server request authentication
+		return c.authenticate(resp.RequestID)
+	}
+
+	c.saveResponse(resp)
+	return nil
+}
