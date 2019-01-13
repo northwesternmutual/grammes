@@ -1,0 +1,265 @@
+image: docker:stable
+
+stages:
+  - staticAnalysis
+  - build
+  - test
+  - qualityGate
+  - package
+  - securityCheck
+  - publish
+  - deploy_dev
+  - deploy_aat
+  - deploy_uat
+  - deploy_dta
+  - deploy_dtb
+  - deploy_proda
+  - deploy_prodb
+
+build:
+  stage: build
+  script:
+     - echo "Building"
+##    - make clean
+##    - make
+##  artifacts:
+##    name: "$CI_JOB_STAGE-$CI_COMMIT_REF_SLUG"
+##    paths:
+##      - bin/*
+
+# shellcheck:
+#   stage: staticAnalysis
+#   image: koalaman/shellcheck-alpine:stable
+#   script: "shellcheck ${SHELL_SCRIPTS:-*.sh}"
+
+sonarqube:
+  stage: staticAnalysis
+  image: $CI_REGISTRY/lvcd/sonar-scanner:latest
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - coverage
+  script:
+    - sonar-scanner -Dsonar.analysis.mode=publish -Dsonar.branch.name=$CI_REF_NAME -Dsonar.projectKey=$CI_PROJECT_NAMESPACE:$CI_PROJECT_NAME -Dsonar.projectName=$CI_PROJECT_NAME -Dsonar.projectVersion=1.0 -Dsonar.source=.
+  allow_failure: true
+
+dockerlint:
+  stage: staticAnalysis
+  image: $CI_REGISTRY/lvcd/gitlabci-dockerfilelint:latest
+  script:
+    - check-dockerfile
+  cache: {}
+  artifacts:
+    paths:
+    - $CI_PROJECT_DIR/dockerfilelint_results.json
+    expire_in: 1 month
+    when: on_failure
+  allow_failure: true
+
+checkmarx:
+  stage: staticAnalysis
+  image: $CI_REGISTRY/lvcd/gitlabci-checkmarx-cli:latest
+  variables:
+    CXINCRSCAN: "false"
+  script:
+    - check-code
+  cache: {}
+  dependencies: []
+  artifacts:
+    paths:
+    - $CI_PROJECT_DIR/results.csv
+    - $CI_PROJECT_DIR/results.xml
+    - $CI_PROJECT_DIR/results.pdf
+    expire_in: 1 month
+    when: always
+  allow_failure: true
+  when: manual
+
+klarScan:
+  stage: securityCheck
+  image: $CI_REGISTRY/lvcd/gitlabci-image-scanner:latest
+  script:
+    - scan-image
+  only:
+    refs:
+      - master
+  cache: {}
+  allow_failure: true
+
+checkmarxImageScan:
+  stage: securityCheck
+  image: $CI_REGISTRY/lvcd/gitlabci-checkmarx-cli:latest
+  script:
+    - check-code
+  only:
+    refs:
+      - master
+  cache: {}
+  dependencies: []
+  artifacts:
+    paths:
+    - $CI_PROJECT_DIR/results.csv
+    - $CI_PROJECT_DIR/results.xml
+    - $CI_PROJECT_DIR/results.pdf
+    expire_in: 1 month
+    when: always
+  allow_failure: true
+
+nexusIQDocker:
+  stage: securityCheck
+  image: $CI_REGISTRY/lvcd/gitlabci-nexusiq-cli:latest
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - check-deps-docker
+  only:
+    refs:
+    - master
+  cache: {}
+  artifacts:
+    paths:
+    - $CI_PROJECT_DIR/nexusiq_results.json
+    - $CI_PROJECT_DIR/nexusiq_results.pdf
+    expire_in: 1 month
+  allow_failure: true
+
+snyk:
+  stage: securityCheck
+  variables:
+    SNYK_API_URL: "https://snyk-test.nmlv.nml.com/api"
+    SNYK_ORG: "nmlv"
+    SNYK_SEVERITY: "high"
+    SNYK_VERSION: "v1.105.0"
+  image: golang:1.11
+  script:
+    - PATH="$GOPATH/bin:$PATH"
+    - cp -R $CI_PROJECT_DIR/ $GOPATH/src/
+    - cd $GOPATH/src/$CI_PROJECT_NAME/ && ls -la
+    - curl -o /tmp/snyk-linux -X GET -L https://github.com/snyk/snyk/releases/download/$SNYK_VERSION/snyk-linux
+    - chmod +x /tmp/snyk-linux
+    - /tmp/snyk-linux config set endpoint=$SNYK_API_URL
+    - /tmp/snyk-linux auth $SNYK_TOKEN
+    - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+    - cd $GOPATH/src/$CI_PROJECT_NAME && dep ensure -vendor-only -v && dep ensure -v
+    - cd $GOPATH/src/$CI_PROJECT_NAME && CGO_ENABLED=0 GOOS="linux" make local
+    - cd $GOPATH/src/$CI_PROJECT_NAME && /tmp/snyk-linux test -d --severity-threshold=$SNYK_SEVERITY --org=$SNYK_ORG
+    - cd $GOPATH/src/$CI_PROJECT_NAME && /tmp/snyk-linux monitor --org=$SNYK_ORG
+  only:
+   - multistage-docker
+
+# Test self
+# does not work on from scratch images
+#version:
+#  stage: securityCheck
+#  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+#  variables:
+#    GIT_STRATEGY: none
+#  script:
+#    - /usr/bin/grammes -v
+#  cache: {}
+#  #only:
+#  #  - tags
+
+lint:
+  stage: test
+  script:
+    - echo "Linting"
+##    - make lint
+
+unit_test:
+  stage: test
+  script:
+    - echo "Running Unit Tests"
+##    - mkdir -p test
+##    - make test-xml
+##  artifacts:
+##    name: "$CI_JOB_STAGE-$CI_COMMIT_REF_SLUG"
+##    paths:
+##      - test/*
+##   reports:
+##      - test/tests.xml
+
+test_coverage:
+  stage: test
+  script:
+    - echo "Calculating Test Coverage"
+##    - mkdir -p test/coverage.out
+##    - make test-coverage
+##  artifacts:
+##    name: "$CI_JOB_STAGE-$CI_COMMIT_REF_SLUG"
+##    paths:
+##      - test/coverage.out/*
+##      - test/coverage.out/coverage/*
+
+security_analysis:
+  stage: test
+  script:
+    - echo "Running Security Analysis"
+    - echo "run checkmarx here"
+    - echo "run sonarqube here"
+
+quality_gate:
+  stage: qualityGate
+  script:
+    - echo "Checking Policy Assessment"
+    - echo "check quality gate here"
+
+package:
+  stage: package
+  image: docker:stable
+  script:
+    - echo "Building Docker Image"
+    - docker build .
+##    - export VERSION=`bin/grammes -v`
+##    - echo "building docker image for grammes-$CI_BUILD_REF"
+##    - docker build -t grammes:$CI_BUILD_REF .
+
+publish:
+  stage: publish
+  script:
+    - echo "Publishing Docker Image"
+    - echo "publish to nexus here"
+
+deploy_dev:
+  stage: deploy_dev
+  script:
+    - echo "deploying to dev"
+  when: manual
+
+deploy_aat:
+  stage: deploy_aat
+  script:
+    - echo "deploying to aat"
+  when: manual
+
+deploy_uat:
+  stage: deploy_uat
+  script:
+    - echo "deploying to uat"
+  when: manual
+
+deploy_dta:
+  stage: deploy_dta
+  script:
+    - echo "deploying to dta"
+  when: manual
+
+deploy_dtb:
+  stage: deploy_dtb
+  script:
+    - echo "deploying to dtb"
+  when: manual
+
+deploy_proda:
+  stage: deploy_proda
+  script:
+    - echo "deploying to prodA"
+  when: manual
+
+deploy_prodb:
+  stage: deploy_prodb
+  script:
+    - echo "deploying to prodB"
+  when: manual
+
+
