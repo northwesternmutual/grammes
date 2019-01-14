@@ -83,16 +83,6 @@ func (g String) Has(first interface{}, params ...interface{}) String {
 // HasID(string (Object), ...string (Object))
 // HasID(string (P))
 func (g String) HasID(objOrP interface{}, objs ...string) String {
-	// g = g.append(fmtStr(".hasId(%v", objOrP))
-
-	// if len(objs) > 0 {
-	// 	for _, v := range objs {
-	// 		g = g.append(",\"" + v + "\"")
-	// 	}
-	// }
-
-	// g = g.append(")")
-
 	var p []interface{}
 
 	p = append(p, objOrP)
@@ -159,7 +149,7 @@ func (g String) HasLabel(pOrStr interface{}, handledStrings ...string) String {
 // Signatures:
 // HasNot(string)
 func (g String) HasNot(str string) String {
-	g = g.append(".hasNot(\"" + str + "\")")
+	g.AddStep("hasNot", str)
 
 	return g
 }

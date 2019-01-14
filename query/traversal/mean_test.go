@@ -46,11 +46,9 @@ func TestMean(t *testing.T) {
 		})
 
 		Convey("When 'Mean' is called with a multiple Scope", func() {
-			scopeL := scope.Local
-			scopeG := scope.Global
-			result := g.Mean(scopeL, scopeG)
-			Convey("Then result should equal 'g.mean(global)'", func() {
-				So(result.String(), ShouldEqual, "g.mean(local)")
+			result := g.Mean(scope.Global, scope.Local)
+			Convey("Then result should equal 'g.mean()'", func() {
+				So(result.String(), ShouldEqual, "g.mean()")
 			})
 		})
 	})

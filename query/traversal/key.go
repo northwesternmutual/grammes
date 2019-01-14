@@ -26,7 +26,7 @@ package traversal
 // Signatures:
 // Key()
 func (g String) Key() String {
-	g = g.append(".key()")
+	g.AddStep("key")
 
 	return g
 }

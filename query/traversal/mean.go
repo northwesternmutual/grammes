@@ -31,12 +31,14 @@ import (
 // Signatures:
 // Mean()
 // Mean(Scope)
-func (g String) Mean(scope ...scope.Scope) String {
-	if len(scope) < 1 {
-		g = g.append(".mean()")
-	} else {
-		g = g.append(fmtStr(".mean(%v)", scope[0]))
+func (g String) Mean(scopes ...scope.Scope) String {
+	var i scope.Scope
+
+	if len(scopes) == 1 {
+		i = scopes[0]
 	}
+
+	g.AddStep("mean", i)
 
 	return g
 }

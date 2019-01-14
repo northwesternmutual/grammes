@@ -27,7 +27,7 @@ package traversal
 // Signatures:
 // Loops()
 func (g String) Loops() String {
-	g = g.append(".loops()")
+	g.AddStep("loops")
 
 	return g
 }

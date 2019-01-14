@@ -46,11 +46,9 @@ func TestMin(t *testing.T) {
 		})
 
 		Convey("When 'Min' is called with a multiple Scope", func() {
-			scopeL := scope.Local
-			scopeG := scope.Global
-			result := g.Min(scopeL, scopeG)
-			Convey("Then result should equal 'g.min(global)'", func() {
-				So(result.String(), ShouldEqual, "g.min(local)")
+			result := g.Min(scope.Global, scope.Local)
+			Convey("Then result should equal 'g.min()'", func() {
+				So(result.String(), ShouldEqual, "g.min()")
 			})
 		})
 	})
