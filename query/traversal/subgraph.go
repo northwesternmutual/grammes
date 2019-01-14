@@ -27,7 +27,7 @@ package traversal
 // Signatures:
 // SubGraph(string)
 func (g String) SubGraph(str string) String {
-	g = g.append(".subgraph(" + str + ")")
+	g.AddStep("subgraph", str)
 
 	return g
 }

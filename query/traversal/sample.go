@@ -30,23 +30,12 @@ import "fmt"
 // Sample(int)
 // Sample(Scope, int)
 func (g String) Sample(params ...interface{}) String {
-	if len(params) < 1 {
+	if len(params) == 0 {
 		fmt.Println("Not enough arguments to call Sample()")
 		return g
-	} else if len(params) > 2 {
-		fmt.Println("Too many arguments to call Sample()")
 	}
 
-	// append the scope or int
-	g = g.append(fmtStr(".sample(%v", params[0]))
-
-	// if there is another parameter then append it.
-	if len(params) > 1 {
-		g = g.append(fmtStr(",%v", params[1]))
-	}
-
-	// append the ending parenthesis.
-	g = g.append(")")
+	g.AddStep("sample", params...)
 
 	return g
 }

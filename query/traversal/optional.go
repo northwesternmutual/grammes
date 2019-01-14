@@ -25,9 +25,9 @@ package traversal
 // Optional (branch/filterMap) returns the result of the specified traversal
 // if it yields a result else it returns the calling element i.e. the Indentity().
 // Signatures:
-// Optional(*String (Traversal))
+// Optional(String (Traversal))
 func (g String) Optional(traversal String) String {
-	g = g.append(".optional(" + traversal.Raw().String() + ")")
+	g.AddStep("optional", traversal)
 
 	return g
 }

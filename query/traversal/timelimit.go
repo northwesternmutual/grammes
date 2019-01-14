@@ -26,7 +26,7 @@ package traversal
 // Signatures:
 // TimeLimit(float32)
 func (g String) TimeLimit(limit float32) String {
-	g = g.append(fmtStr(".timeLimit(%v)", limit))
+	g.AddStep("timeLimit", limit)
 
 	return g
 }

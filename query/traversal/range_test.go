@@ -23,6 +23,7 @@ package traversal
 import (
 	"testing"
 
+	"github.com/northwesternmutual/grammes/query/scope"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -31,9 +32,9 @@ func TestRange(t *testing.T) {
 		g := NewTraversal()
 
 		Convey("When 'Range' is called with scope", func() {
-			result := g.Range("test1", "test2", "test3")
-			Convey("Then result should equal 'g.range(test1,test2,test3)", func() {
-				So(result.String(), ShouldEqual, "g.range(test1,test2,test3)")
+			result := g.Range(scope.Global, 1, 2)
+			Convey("Then result should equal 'g.range(global)", func() {
+				So(result.String(), ShouldEqual, "g.range(global,1,2)")
 			})
 		})
 

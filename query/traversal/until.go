@@ -20,7 +20,9 @@
 
 package traversal
 
-import "fmt"
+import (
+	"github.com/northwesternmutual/grammes/query/predicate"
+)
 
 // http://tinkerpop.apache.org/docs/current/reference/#until-step
 
@@ -29,18 +31,29 @@ import "fmt"
 // Until(string (Predicate))
 // Until(*String (Traversal))
 func (g String) Until(predOrTrav interface{}) String {
-	g = g.append(".until(")
+	// g = g.append(".until(")
 
-	switch predOrTrav.(type) {
-	case string:
-		g = g.append(predOrTrav.(string))
+	// switch predOrTrav.(type) {
+	// case string:
+	// 	g = g.append(predOrTrav.(string))
+	// case String:
+	// 	g = g.append(predOrTrav.(String).String())
+	// default:
+	// 	fmt.Println("Mismatching types for Until()")
+	// }
+
+	// g = g.append(")")
+
+	var i interface{}
+
+	switch t := predOrTrav.(type) {
+	case *predicate.Predicate:
+		i = t
 	case String:
-		g = g.append(predOrTrav.(String).String())
-	default:
-		fmt.Println("Mismatching types for Until()")
+		i = t
 	}
 
-	g = g.append(")")
+	g.AddStep("until", i)
 
 	return g
 }

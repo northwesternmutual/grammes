@@ -27,11 +27,19 @@ package traversal
 // PageRank()
 // PageRank(float32)
 func (g String) PageRank(args ...float32) String {
-	if len(args) < 1 {
-		g.AddStep("pageRank")
-	} else {
-		g.AddStep("pageRank", args[0])
+	var i interface{}
+
+	if len(args) == 1 {
+		i = args[0]
 	}
+
+	g.AddStep("pageRank", i)
+
+	// if len(args) < 1 {
+	// 	g.AddStep("pageRank")
+	// } else {
+	// 	g.AddStep("pageRank", args[0])
+	// }
 
 	return g
 }

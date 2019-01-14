@@ -38,12 +38,17 @@ func TestSum(t *testing.T) {
 			})
 		})
 
-		Convey("When 'Order' is called with a multiple Scope", func() {
-			scopeL := scope.Local
-			scopeG := scope.Global
-			result := g.Sum(scopeL, scopeG)
+		Convey("When 'Order' is called with one Scope", func() {
+			result := g.Sum(scope.Local)
 			Convey("Then result should equal 'g.sum(local)'", func() {
 				So(result.String(), ShouldEqual, "g.sum(local)")
+			})
+		})
+
+		Convey("When 'Order' is called with multiple Scopes", func() {
+			result := g.Sum(scope.Local, scope.Global)
+			Convey("Then result should equal 'g.sum()'", func() {
+				So(result.String(), ShouldEqual, "g.sum()")
 			})
 		})
 	})

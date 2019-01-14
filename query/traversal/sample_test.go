@@ -23,6 +23,7 @@ package traversal
 import (
 	"testing"
 
+	"github.com/northwesternmutual/grammes/query/scope"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -45,16 +46,16 @@ func TestSample(t *testing.T) {
 		})
 
 		Convey("When 'Sample' is called with two parameters", func() {
-			result := g.Sample(123, "test")
-			Convey("Then result should equal 'g.sample(123,test)'", func() {
-				So(result.String(), ShouldEqual, "g.sample(123,test)")
+			result := g.Sample(scope.Global, 1)
+			Convey("Then result should equal 'g.sample(global,1)'", func() {
+				So(result.String(), ShouldEqual, "g.sample(global,1)")
 			})
 		})
 
 		Convey("When 'Sample' is called with too many parameters", func() {
-			result := g.Sample(123, "test", "test2")
-			Convey("Then result should equal 'g.sample(123,test)'", func() {
-				So(result.String(), ShouldEqual, "g.sample(123,test)")
+			result := g.Sample(scope.Local, 1, 2)
+			Convey("Then result should equal 'g.sample(local,1,2)'", func() {
+				So(result.String(), ShouldEqual, "g.sample(local,1,2)")
 			})
 		})
 	})

@@ -76,7 +76,7 @@ func (g String) ToE(dir direction.Direction, str string) String {
 // Signatures:
 // ToV(Direction)
 func (g String) ToV(dir direction.Direction) String {
-	g = g.append(fmtStr(".toV(%v)", dir))
+	g.AddStep("toV", dir)
 
 	return g
 }
