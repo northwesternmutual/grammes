@@ -26,7 +26,7 @@ package traversal
 // Signatures:
 // ID()
 func (g String) ID() String {
-	g = g.append(".id()")
+	g.AddStep("id")
 
 	return g
 }

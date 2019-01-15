@@ -23,6 +23,8 @@ package traversal
 import (
 	"testing"
 
+	"github.com/northwesternmutual/grammes/query/scope"
+
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -36,19 +38,18 @@ func TestMax(t *testing.T) {
 			})
 		})
 
-		Convey("When 'Max' is called with object strings", func() {
-			result := g.Max("obj1", "obj2", "obj3")
-			Convey("Then result should equal 'g.max(obj1)'", func() {
-				So(result.String(), ShouldEqual, "g.max(obj1)")
+		Convey("When 'Max' is called with one Scope", func() {
+			result := g.Max(scope.Global)
+			Convey("Then result should equal 'g.max(global)'", func() {
+				So(result.String(), ShouldEqual, "g.max(global)")
 			})
 		})
 
-		//
-		// Convey("When 'Properties' is called with interface", func() {
-		// 	result := g.Max("obj")
-		// 	Convey("Then result should equal 'g.max(obj)'", func() {
-		// 		So(result.String(), ShouldEqual, "g.max(obj)")
-		// 	})
-		// })
+		Convey("When 'Max' is called with multiple scopes", func() {
+			result := g.Max(scope.Global, scope.Local)
+			Convey("Then result should equal 'g.max()'", func() {
+				So(result.String(), ShouldEqual, "g.max()")
+			})
+		})
 	})
 }

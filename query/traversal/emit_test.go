@@ -32,7 +32,7 @@ func TestEmit(t *testing.T) {
 		Convey("When 'Emit' is called with a string", func() {
 			result := g.Emit("emiTest")
 			Convey("Then result should equal 'g.emit('emiTest')'", func() {
-				So(result.String(), ShouldEqual, "g.emit('emiTest')")
+				So(result.String(), ShouldEqual, "g.emit(\"emiTest\")")
 			})
 		})
 

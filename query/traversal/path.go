@@ -26,7 +26,6 @@ package traversal
 // Signatures:
 // Path()
 func (g String) Path() String {
-	// g = g.append(".path()")
 	g.AddStep("path")
 
 	return g

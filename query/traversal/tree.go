@@ -27,11 +27,13 @@ package traversal
 // Tree()
 // Tree(string)
 func (g String) Tree(str ...string) String {
-	if len(str) < 1 {
-		g.AddStep("tree")
-	} else {
-		g = g.append(".tree(\"" + str[0] + "\")")
+	var params []interface{}
+
+	if len(str) != 0 {
+		params = append(params, str[0])
 	}
+
+	g.AddStep("tree", params...)
 
 	return g
 }

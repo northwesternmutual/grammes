@@ -41,7 +41,7 @@ func TestAddE(t *testing.T) {
 		Convey("When 'AddE' is called with a string", func() {
 			result := g.AddE("test")
 			Convey("Then result should equal 'g.addE('test')'", func() {
-				So(result.String(), ShouldEqual, "g.addE('test')")
+				So(result.String(), ShouldEqual, "g.addE(\"test\")")
 			})
 		})
 

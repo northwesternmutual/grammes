@@ -31,11 +31,13 @@ import (
 // Order()
 // Order(Scope)
 func (g String) Order(scope ...scope.Scope) String {
-	if len(scope) == 0 {
-		g.AddStep("order")
-	} else {
-		g.AddStep("order", scope[0])
+	var i interface{}
+
+	if len(scope) == 1 {
+		i = scope[0]
 	}
+
+	g.AddStep("order", i)
 
 	return g
 }

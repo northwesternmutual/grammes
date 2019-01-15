@@ -60,7 +60,7 @@ func (g String) InE(labels ...string) String {
 
 // InV moves to the incoming vertex.
 func (g String) InV() String {
-	g = g.append(".inV()")
+	g.AddStep("inV")
 
 	return g
 }

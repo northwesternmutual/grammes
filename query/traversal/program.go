@@ -27,9 +27,9 @@ package traversal
 // graph accordingly. Thus, the user can create their own VertexProgram and have it
 // execute within a traversal.
 // Signatures:
-// Program(string (VertexProgram))
-func (g String) Program(vertexProgram string) String {
-	g = g.append(".program(" + vertexProgram + ")")
+// Program(VertexProgram)
+func (g String) Program(vertexProgram interface{}) String {
+	g.AddStep("program", vertexProgram)
 
 	return g
 }

@@ -28,11 +28,19 @@ package traversal
 // Profile()
 // Profile(string)
 func (g String) Profile(str ...string) String {
-	if len(str) < 1 {
-		g.AddStep("profile")
-	} else {
-		g = g.append(".profile(\"" + str[0] + "\")")
+	var i interface{}
+
+	if len(str) == 1 {
+		i = str[0]
 	}
+
+	g.AddStep("profile", i)
+
+	// if len(str) < 1 {
+	// 	g.AddStep("profile")
+	// } else {
+	// 	g = g.append(".profile(\"" + str[0] + "\")")
+	// }
 
 	return g
 }

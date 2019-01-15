@@ -26,7 +26,7 @@ package traversal
 // Signatures:
 // Store(string)
 func (g String) Store(str string) String {
-	g = g.append(".store(" + str + ")")
+	g.AddStep("store", str)
 
 	return g
 }

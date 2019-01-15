@@ -36,10 +36,17 @@ func TestProfile(t *testing.T) {
 			})
 		})
 
-		Convey("When 'Profile' is called with object strings", func() {
+		Convey("When 'Profile' is called with one strings", func() {
+			result := g.Profile("obj1")
+			Convey("Then result should equal 'g.profile(\"obj1\")'", func() {
+				So(result.String(), ShouldEqual, "g.profile(\"obj1\")")
+			})
+		})
+
+		Convey("When 'Profile' is called with multiple strings", func() {
 			result := g.Profile("obj1", "obj2", "obj3")
-			Convey("Then result should equal 'g.profile(obj1)'", func() {
-				So(result.String(), ShouldEqual, "g.profile('obj1')")
+			Convey("Then result should equal 'g.profile()'", func() {
+				So(result.String(), ShouldEqual, "g.profile()")
 			})
 		})
 	})

@@ -34,14 +34,14 @@ func TestHas(t *testing.T) {
 		Convey("When 'Has' is called with object strings", func() {
 			result := g.Has("obj1", "obj2", "obj3")
 			Convey("Then result should equal 'g.has('obj1','obj2','obj3')'", func() {
-				So(result.String(), ShouldEqual, "g.has('obj1','obj2','obj3')")
+				So(result.String(), ShouldEqual, "g.has(\"obj1\",\"obj2\",\"obj3\")")
 			})
 		})
 
 		Convey("When 'Has' is called with a traversal", func() {
 			result := g.Has("testHas", NewTraversal().Label().Raw())
 			Convey("Then result should equal 'g.has('testHas',label())'", func() {
-				So(result.String(), ShouldEqual, "g.has('testHas',label())")
+				So(result.String(), ShouldEqual, "g.has(\"testHas\",label())")
 			})
 		})
 
@@ -63,7 +63,7 @@ func TestHas(t *testing.T) {
 		Convey("When 'Has' is called with too many params", func() {
 			result := g.Has("first", "second", "third", "fourth")
 			Convey("Then result should equal 'g.has('first','second','third','fourth')'", func() {
-				So(result.String(), ShouldEqual, "g.has('first','second','third','fourth')")
+				So(result.String(), ShouldEqual, "g.has(\"first\",\"second\",\"third\",\"fourth\")")
 			})
 		})
 
@@ -72,7 +72,7 @@ func TestHas(t *testing.T) {
 			*p = "predicate"
 			result := g.Has("first", p, 1234)
 			Convey("Then result should equal 'g.has('first',predicate,1234')'", func() {
-				So(result.String(), ShouldEqual, "g.has('first',predicate,1234)")
+				So(result.String(), ShouldEqual, "g.has(\"first\",predicate,1234)")
 			})
 		})
 	})

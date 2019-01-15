@@ -31,12 +31,20 @@ import (
 // Signatures:
 // Sum()
 // Sum(Scope)
-func (g String) Sum(scope ...scope.Scope) String {
-	if len(scope) < 1 {
-		g.AddStep("sum")
-	} else {
-		g = g.append(fmtStr(".sum(%v)", scope[0]))
+func (g String) Sum(scopes ...scope.Scope) String {
+	var i scope.Scope
+
+	if len(scopes) == 1 {
+		i = scopes[0]
 	}
+
+	g.AddStep("sum", i)
+
+	// if len(scope) < 1 {
+	// 	g.AddStep("sum")
+	// } else {
+	// 	g = g.append(fmtStr(".sum(%v)", scope[0]))
+	// }
 
 	return g
 }
