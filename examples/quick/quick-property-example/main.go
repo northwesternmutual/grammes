@@ -36,8 +36,10 @@ func main() {
 	// ------------------------------------- Adding Property to Vertex
 	logger.Info("Adding Property to Vertex...")
 
+	g := quick.Traversal()
+
 	// Drop all of the vertices already in the graph for no interference.
-	quick.ExecuteQuery(localhost, quick.G.V().Drop())
+	quick.ExecuteQuery(localhost, g.V().Drop())
 
 	logger.Info("All vertices dropped from the graph...")
 

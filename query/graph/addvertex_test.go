@@ -23,7 +23,7 @@ package graph
 import (
 	"testing"
 
-	T "github.com/northwesternmutual/grammes/token"
+	T "github.com/northwesternmutual/grammes/query/token"
 
 	. "github.com/smartystreets/goconvey/convey"
 )

@@ -79,11 +79,9 @@ func (c *Client) writeWorker(errs chan error, quit chan struct{}) {
 				c.broken = true
 				break
 			}
-			c.logger.Debug("writeWorker: Wrote to connection", map[string]interface{}{})
 		// Wait for a response from the quit
 		// channel and break out of the loop.
 		case <-quit:
-			c.logger.Debug("writeWorker: Quit", map[string]interface{}{})
 			return
 		}
 	}
