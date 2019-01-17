@@ -38,12 +38,17 @@ func TestOrder(t *testing.T) {
 			})
 		})
 
+		Convey("When 'Order' is called with a one Scope", func() {
+			result := g.Order(scope.Global)
+			Convey("Then result should equal 'g.order(global)'", func() {
+				So(result.String(), ShouldEqual, "g.order(global)")
+			})
+		})
+
 		Convey("When 'Order' is called with a multiple Scope", func() {
-			scopeL := scope.Local
-			scopeG := scope.Global
-			result := g.Order(scopeL, scopeG)
-			Convey("Then result should equal 'g.order(local)'", func() {
-				So(result.String(), ShouldEqual, "g.order(local)")
+			result := g.Order(scope.Local, scope.Global)
+			Convey("Then result should equal 'g.order()'", func() {
+				So(result.String(), ShouldEqual, "g.order()")
 			})
 		})
 	})

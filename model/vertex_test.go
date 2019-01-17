@@ -30,9 +30,9 @@ func TestVertexPropertyValue(t *testing.T) {
 	Convey("Given a variable that represents the Vertex struct", t, func() {
 		testID := PropertyID{Value: PropertyIDValue{RelationID: "relID"}}
 		testValue := ValueWrapper{PropertyDetailedValue: PropertyDetailedValue{Value: "tstInterface", Type: "pdvType"}}
-		pi := PropertyInfo{Type: "piType", Value: PropertyValue{ID: testID, Value: testValue, Label: "tstLabel"}}
+		pi := Property{Type: "piType", Value: PropertyValue{ID: testID, Value: testValue, Label: "tstLabel"}}
 
-		pdmap := map[string][]PropertyInfo{"testKey": []PropertyInfo{pi}}
+		pdmap := map[string][]Property{"testKey": []Property{pi}}
 
 		v := Vertex{Type: "tesType", Value: VertexValue{Properties: pdmap}}
 
@@ -49,8 +49,8 @@ func TestVertexID(t *testing.T) {
 	Convey("Given a variable that represents the Vertex struct", t, func() {
 		testID := PropertyID{Value: PropertyIDValue{RelationID: "relID"}}
 		testValue := ValueWrapper{PropertyDetailedValue: PropertyDetailedValue{Value: "tstInterface", Type: "pdvType"}}
-		pi := PropertyInfo{Type: "piType", Value: PropertyValue{ID: testID, Value: testValue, Label: "tstLabel"}}
-		pdmap := map[string][]PropertyInfo{"testKey": []PropertyInfo{pi}}
+		pi := Property{Type: "piType", Value: PropertyValue{ID: testID, Value: testValue, Label: "tstLabel"}}
+		pdmap := map[string][]Property{"testKey": []Property{pi}}
 
 		v := Vertex{Type: "tesType", Value: VertexValue{Properties: pdmap, ID: ID{Value: 6789}}}
 
@@ -67,8 +67,8 @@ func TestVertexLabel(t *testing.T) {
 	Convey("Given a variable that represents the Vertex struct", t, func() {
 		testID := PropertyID{Value: PropertyIDValue{RelationID: "relID"}}
 		testValue := ValueWrapper{PropertyDetailedValue: PropertyDetailedValue{Value: "tstInterface", Type: "pdvType"}}
-		pi := PropertyInfo{Type: "piType", Value: PropertyValue{ID: testID, Value: testValue, Label: "tstLabel"}}
-		pdmap := map[string][]PropertyInfo{"testKey": []PropertyInfo{pi}}
+		pi := Property{Type: "piType", Value: PropertyValue{ID: testID, Value: testValue, Label: "tstLabel"}}
+		pdmap := map[string][]Property{"testKey": []Property{pi}}
 
 		v := Vertex{Type: "tesType", Value: VertexValue{Label: "testLabel", ID: ID{Value: 6789}, Properties: pdmap}}
 

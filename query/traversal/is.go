@@ -26,8 +26,8 @@ package traversal
 // Signatures:
 // Is(string (Object))
 // Is(string (P))
-func (g String) Is(objOrP string) String {
-	g = g.append(".is(" + objOrP + ")")
+func (g String) Is(objOrP interface{}) String {
+	g.AddStep("is", objOrP)
 
 	return g
 }

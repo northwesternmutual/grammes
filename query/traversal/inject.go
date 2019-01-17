@@ -27,7 +27,7 @@ package traversal
 // Signatures:
 // Inject(string (Object))
 func (g String) Inject(obj string) String {
-	g = g.append(".inject(" + obj + ")")
+	g.AddStep("inject", obj)
 
 	return g
 }

@@ -35,7 +35,7 @@ var (
 	response          = newVertexResponse
 	newVertexResponse = `
 	{
-		"requestId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+		"requestId": "61616161-6161-6161-2d61-6161612d6161",
 		"status": {
 			"message": "",
 			"code": 200,
@@ -58,7 +58,7 @@ var (
 	`
 	vertexIDsResponse = `
 	{
-		"requestId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+		"requestId": "61616161-6161-6161-2d61-6161612d6161",
 		"status": {
 			"message": "",
 			"code": 200,
@@ -75,7 +75,7 @@ var (
 	`
 	vertexCountResponse = `
 	{
-		"requestId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+		"requestId": "61616161-6161-6161-2d61-6161612d6161",
 		"status": {
 			"message": "",
 			"code": 200,

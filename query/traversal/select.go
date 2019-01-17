@@ -20,11 +20,7 @@
 
 package traversal
 
-import (
-	"fmt"
-
-	"github.com/northwesternmutual/grammes/query/pop"
-)
+import "fmt"
 
 // http://tinkerpop.apache.org/docs/current/reference/#select-step
 
@@ -40,33 +36,25 @@ import (
 // Select(*String (Traversal))
 // Select(Pop, *String (Traversal))
 func (g String) Select(first interface{}, extras ...interface{}) String {
-	g = g.append(".select(")
+	var params []interface{}
 
-	switch first.(type) {
-	case string:
-		g = g.append(first.(string))
-	case String:
-		g = g.append(first.(String).String())
-	case pop.Pop:
-		g = g.append(fmtStr("%v", first.(pop.Pop)))
-	default:
-		fmt.Println("Mismatch types used for Select()")
+	params = append(params, first)
+
+	for _, e := range extras {
+		params = append(params, e)
 	}
 
-	if len(extras) > 0 {
-		for _, v := range extras {
-			switch v.(type) {
-			case String:
-				g = g.append(fmtStr(",%v", v.(String).String()))
-			case string:
-				g = g.append(fmtStr(",%v", v.(string)))
-			default:
-				fmt.Println("Mismatch types used for Select()")
-			}
+	for _, p := range params {
+		switch t := p.(type) {
+		case string:
+		case Parameter:
+		default:
+			fmt.Printf("invalid parameter: [%v]\n", t)
+			params = nil
 		}
 	}
 
-	g = g.append(")")
+	g.AddStep("select", params...)
 
 	return g
 }

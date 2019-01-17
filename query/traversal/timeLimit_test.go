@@ -30,11 +30,9 @@ func TestTimeLimit(t *testing.T) {
 	Convey("Given a ) String { that represents the graph's traversal", t, func() {
 		g := NewTraversal()
 		Convey("When 'Store' is called", func() {
-			var flt float32
-			flt = 1.234
-			result := g.TimeLimit(flt)
-			Convey("Then result should equal 'g.timeLimit(1.234)'", func() {
-				So(result.String(), ShouldEqual, "g.timeLimit(1.234)")
+			result := g.TimeLimit(1.234)
+			Convey("Then result should equal 'g.timeLimit(1.234000)'", func() {
+				So(result.String(), ShouldEqual, "g.timeLimit(1.234000)")
 			})
 		})
 	})

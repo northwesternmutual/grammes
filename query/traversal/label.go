@@ -26,6 +26,7 @@ package traversal
 // Signatures:
 // Label()
 func (g String) Label() String {
-	g = g.append(".label()")
+	g.AddStep("label")
+
 	return g
 }

@@ -31,12 +31,14 @@ import (
 // Signatures:
 // Min()
 // Min(Scope)
-func (g String) Min(scope ...scope.Scope) String {
-	if len(scope) < 1 {
-		g = g.append(".min()")
-	} else {
-		g = g.append(fmtStr(".min(%v)", scope[0]))
+func (g String) Min(scopes ...scope.Scope) String {
+	var i scope.Scope
+
+	if len(scopes) == 1 {
+		i = scopes[0]
 	}
+
+	g.AddStep("min", i)
 
 	return g
 }

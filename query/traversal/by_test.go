@@ -32,14 +32,14 @@ func TestBy(t *testing.T) {
 		Convey("When 'By' is called with multiple strings", func() {
 			result := g.By("test1", "test2", "test3")
 			Convey("Then result should equal 'g.by('test1','test2','test3')'", func() {
-				So(result.String(), ShouldEqual, "g.by('test1','test2','test3')")
+				So(result.String(), ShouldEqual, "g.by(\"test1\",\"test2\",\"test3\")")
 			})
 		})
 
 		Convey("When 'By' is called with one string", func() {
 			result := g.By("test")
 			Convey("Then result should equal 'g.by('test')'", func() {
-				So(result.String(), ShouldEqual, "g.by('test')")
+				So(result.String(), ShouldEqual, "g.by(\"test\")")
 			})
 		})
 

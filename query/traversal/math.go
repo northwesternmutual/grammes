@@ -30,7 +30,7 @@ package traversal
 // Signatures:
 // Math(string)
 func (g String) Math(str string) String {
-	g = g.append(".math(\"" + str + "\")")
+	g.AddStep("math", str)
 
 	return g
 }

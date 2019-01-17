@@ -67,6 +67,8 @@ func (g *String) AddStep(step string, params ...interface{}) {
 
 	for i, p := range params {
 		switch t := p.(type) {
+		case String:
+			buffer.WriteString(t.Raw().String())
 		case Parameter:
 			buffer.WriteString(t.String())
 		case byte:

@@ -27,13 +27,23 @@ package traversal
 // Skip(float32)
 // Skip(Scope, float32)
 func (g String) Skip(first interface{}, extraFloat ...float32) String {
-	g = g.append(fmtStr(".skip(%v", first))
+	// g = g.append(fmtStr(".skip(%v", first))
 
-	if len(extraFloat) > 0 {
-		g = g.append(fmtStr(",%v", extraFloat[0]))
+	// if len(extraFloat) > 0 {
+	// 	g = g.append(fmtStr(",%v", extraFloat[0]))
+	// }
+
+	// g = g.append(")")
+
+	var params []interface{}
+
+	params = append(params, first)
+
+	if len(extraFloat) == 1 {
+		params = append(params, extraFloat[0])
 	}
 
-	g = g.append(")")
+	g.AddStep("skip", params...)
 
 	return g
 }

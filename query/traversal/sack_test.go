@@ -23,6 +23,8 @@ package traversal
 import (
 	"testing"
 
+	"github.com/northwesternmutual/grammes/query/operator"
+
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -37,10 +39,10 @@ func TestSack(t *testing.T) {
 			})
 		})
 
-		Convey("When 'Sack' is called with multiple arguments", func() {
-			result := g.Sack("test1")
+		Convey("When 'Sack' is called with one operator", func() {
+			result := g.Sack(operator.Div)
 			Convey("Then result should equal 'g.sack('test1')'", func() {
-				So(result.String(), ShouldEqual, "g.sack(test1)")
+				So(result.String(), ShouldEqual, "g.sack(div)")
 			})
 		})
 	})

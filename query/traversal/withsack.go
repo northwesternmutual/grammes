@@ -27,7 +27,7 @@ package traversal
 // Sack()
 // Sack(string (Bifunction))
 func (g String) WithSack(sackVal float32) String {
-	g = g.append(fmtStr(".withSack(%v)", sackVal))
+	g.AddStep("withSack", sackVal)
 
 	return g
 }

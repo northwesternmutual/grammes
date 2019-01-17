@@ -29,11 +29,13 @@ import "github.com/northwesternmutual/grammes/query/operator"
 // Sack()
 // Sack(string (Bifunction))
 func (g String) Sack(operator ...operator.Operator) String {
-	if len(operator) < 1 {
-		g.AddStep("sack")
-	} else {
-		g = g.append(".sack(" + operator[0].String() + ")")
+	var i interface{}
+
+	if len(operator) == 1 {
+		i = operator[0]
 	}
+
+	g.AddStep("sack", i)
 
 	return g
 }

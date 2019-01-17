@@ -36,13 +36,7 @@ func (g String) Range(params ...interface{}) String {
 		return g
 	}
 
-	g = g.append(fmtStr(".range(%v", params[0]))
-
-	for _, v := range params[1:] {
-		g = g.append(fmtStr(",%v", v))
-	}
-
-	g = g.append(")")
+	g.AddStep("range", params...)
 
 	return g
 }

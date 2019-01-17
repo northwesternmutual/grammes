@@ -29,13 +29,14 @@ import "github.com/northwesternmutual/grammes/query/scope"
 // Signatures:
 // Max()
 // Max(Scope)
-func (g String) Max(scope ...scope.Scope) String {
-	switch len(scope) {
-	case 0:
-		g = g.append(".max()")
-	default:
-		g = g.append(fmtStr(".max(%v)", scope[0]))
+func (g String) Max(scopes ...scope.Scope) String {
+	var i scope.Scope
+
+	if len(scopes) == 1 {
+		i = scopes[0]
 	}
+
+	g.AddStep("max", i)
 
 	return g
 }

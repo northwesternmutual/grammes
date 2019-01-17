@@ -27,7 +27,7 @@ package traversal
 // Signatures:
 // Not(*String (Traversal))
 func (g String) Not(traversal String) String {
-	g = g.append(".not(" + traversal.Raw().String() + ")")
+	g.AddStep("not", traversal)
 
 	return g
 }

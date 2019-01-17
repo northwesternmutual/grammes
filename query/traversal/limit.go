@@ -22,8 +22,6 @@ package traversal
 
 import (
 	"fmt"
-	"github.com/northwesternmutual/grammes/query/scope"
-	"strconv"
 )
 
 // http://tinkerpop.apache.org/docs/current/reference/#limit-step
@@ -40,19 +38,7 @@ func (g String) Limit(params ...interface{}) String {
 		fmt.Println("too many parameters given to Limit(params ...interface{})")
 	}
 
-	// starts the command signature
-	g = g.append(".limit(")
-
-	for _, p := range params {
-		switch p.(type) {
-		case scope.Scope:
-			// if type is string, then it's a scope
-			g = g.append(fmtStr("%v,", p.(scope.Scope)))
-		case int:
-			// if type is int then it's a max
-			g = g.append(strconv.Itoa(p.(int)) + ")")
-		}
-	}
+	g.AddStep("limit", params...)
 
 	return g
 }

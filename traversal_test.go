@@ -18,41 +18,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package main
+package grammes
 
 import (
-	"github.com/northwesternmutual/grammes/examples/exampleutil"
-	"github.com/northwesternmutual/grammes/quick"
+	"testing"
 
-	"go.uber.org/zap"
+	"github.com/northwesternmutual/grammes/query/graph"
+	"github.com/northwesternmutual/grammes/query/traversal"
+
+	. "github.com/smartystreets/goconvey/convey"
 )
 
-func main() {
-	localhost := "ws://127.0.0.1:8182/gremlin"
+func TestTraversal(t *testing.T) {
+	Convey("Given we call the Traversal function", t, func() {
+		expected := traversal.String("g")
+		t := Traversal()
+		Convey("Then the return value should match the expected result", func() {
+			So(t, ShouldResemble, expected)
+		})
+	})
+}
 
-	g := quick.G
+func TestCustomTraversal(t *testing.T) {
+	Convey("Given a query string", t, func() {
+		q := "testQuery"
+		expected := traversal.String("testQuery")
+		Convey("When CustomTraversal is called", func() {
+			t := CustomTraversal(q)
+			Convey("Then the return value should match the expected result", func() {
+				So(t, ShouldResemble, expected)
+			})
+		})
+	})
+}
 
-	// Setup the logger using zap.
-	logger := exampleutil.SetupLogger()
-	defer logger.Sync()
-
-	// ------------------------------------- Executing Queries using QuickExecuteQuery
-	logger.Info("Executing Basic Queries...")
-
-	// Drop the vertices from the graph beforehand for no interference.
-	quick.ExecuteQuery(localhost, g.V().Drop())
-
-	// Adding a Vertex with traversal through QuickExecuteQuery
-	quick.ExecuteQuery(localhost, g.AddV("traversalVertex"))
-
-	// Storing a result byte array after executing a query.
-	res, err := quick.ExecuteQuery(localhost, g.V().Label())
-	if err != nil {
-		logger.Fatal("Error executing query", zap.Error(err))
-	}
-
-	// Log the resulting vertices.
-	logger.Info("Basic Query Vertices",
-		zap.ByteString("Vertices", res),
-	)
+func TestVerboseTraversal(t *testing.T) {
+	Convey("Given we call the VerboseTraversal function", t, func() {
+		expected := graph.String("graph")
+		t := VerboseTraversal()
+		Convey("Then the return value should match the expected result", func() {
+			So(t, ShouldResemble, expected)
+		})
+	})
 }

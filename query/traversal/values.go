@@ -27,23 +27,31 @@ package traversal
 // Signatures:
 // Values()
 // Values(string...)
-func (g String) Values(params ...string) String {
-	if len(params) < 1 {
-		g.AddStep("values")
-		return g
+func (g String) Values(strs ...string) String {
+	// if len(params) < 1 {
+	// 	g.AddStep("values")
+	// 	return g
+	// }
+
+	// g = g.append(".values(")
+
+	// g = g.append("\"" + params[0] + "\"")
+
+	// if len(params) > 1 {
+	// 	for _, p := range params[1:] {
+	// 		g = g.append(",\"" + p + "\"")
+	// 	}
+	// }
+
+	// g = g.append(")")
+
+	var params []interface{}
+
+	for _, s := range strs {
+		params = append(params, s)
 	}
 
-	g = g.append(".values(")
-
-	g = g.append("\"" + params[0] + "\"")
-
-	if len(params) > 1 {
-		for _, p := range params[1:] {
-			g = g.append(",\"" + p + "\"")
-		}
-	}
-
-	g = g.append(")")
+	g.AddStep("values", params...)
 
 	return g
 }

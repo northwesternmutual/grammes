@@ -29,22 +29,6 @@ import (
 )
 
 func TestLimit(t *testing.T) {
-	// Convey("Given a ) String { that represents the graph's traversal", t, func() {
-	// 	g := NewTraversal()
-	// 	Convey("When 'Limit' is called with a string", func() {
-	// 		result := g.Limit("myVertex")
-	// 		Convey("Then result should equal 'g.addV('myVertex')'", func() {
-	// 			So(result.String(), ShouldEqual, "g.addV('myVertex')")
-	// 		})
-	// 	})
-
-	// 	Convey("When 'AddV' is called with a traversal", func() {
-	// 		result := g.AddV(NewTraversal().Label().Raw())
-	// 		Convey("Then result should equal 'g.addV(label())'", func() {
-	// 			So(result.String(), ShouldEqual, "g.addV(label())")
-	// 		})
-	// 	})
-	// })
 	Convey("Given a ) String { that represents the graph's traversal", t, func() {
 		g := NewTraversal()
 		Convey("When 'Limit' is called with an int", func() {
@@ -57,21 +41,21 @@ func TestLimit(t *testing.T) {
 		Convey("When 'Limit' is called with no params", func() {
 			result := g.Limit()
 			Convey("Then result should equal 'g.limit(\"", func() {
-				So(result.String(), ShouldEqual, "g.limit(")
+				So(result.String(), ShouldEqual, "g.limit()")
 			})
 		})
 
 		Convey("When 'Limit' is called with too many params", func() {
 			result := g.Limit(1, 2, 3)
 			Convey("Then result should equal 'g.limit(1)2)3)'", func() {
-				So(result.String(), ShouldEqual, "g.limit(1)2)3)")
+				So(result.String(), ShouldEqual, "g.limit(1,2,3)")
 			})
 		})
 
 		Convey("When 'Limit' is called with scope", func() {
 			result := g.Limit(scope.Local)
-			Convey("Then result should equal 'g.limit(local,'", func() {
-				So(result.String(), ShouldEqual, "g.limit(local,")
+			Convey("Then result should equal 'g.limit(local)'", func() {
+				So(result.String(), ShouldEqual, "g.limit(local)")
 			})
 		})
 	})

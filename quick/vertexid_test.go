@@ -134,12 +134,19 @@ func TestVertexIDsClientError(t *testing.T) {
 	})
 }
 
+type testLogger struct{}
+
+func (testLogger) PrintQuery(string)                    {}
+func (testLogger) Debug(string, map[string]interface{}) {}
+func (testLogger) Error(string, error)                  {}
+func (testLogger) Fatal(string, error)                  {}
+
 func TestVertexIDsQueryError(t *testing.T) {
 	defer func() {
 		client = nil
 	}()
 	dialer := &mockDialer{}
-	client, _ = grammes.Dial(dialer)
+	client, _ = grammes.Dial(dialer, grammes.WithLogger(&testLogger{}))
 	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
 		return nil, errors.New("ERROR")
 	}

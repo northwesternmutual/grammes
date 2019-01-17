@@ -23,6 +23,8 @@ package traversal
 import (
 	"testing"
 
+	"github.com/northwesternmutual/grammes/query/predicate"
+
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -45,10 +47,10 @@ func TestUntil(t *testing.T) {
 			})
 		})
 
-		Convey("When 'Until' is called with extras argument multiple string", func() {
-			result := g.Until("testUntil")
-			Convey("Then result should equal 'g.until(testUntil)'", func() {
-				So(result.String(), ShouldEqual, "g.until(testUntil)")
+		Convey("When 'Until' is called with predicate", func() {
+			result := g.Until(predicate.NotEqual(2))
+			Convey("Then result should equal 'g.until(neq(2))'", func() {
+				So(result.String(), ShouldEqual, "g.until(neq(2))")
 			})
 		})
 	})

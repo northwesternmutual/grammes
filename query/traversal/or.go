@@ -27,20 +27,13 @@ package traversal
 // Or()
 // Or(...*String (Traversal))
 func (g String) Or(traversals ...String) String {
-	if len(traversals) < 1 {
-		g = g.append(".or()")
-	} else {
-		g = g.append(".or(" + traversals[0].Raw().String())
-		// g = g.append(fmtStr(".or(%v", traversals[0].String()))
+	var params []interface{}
 
-		if len(traversals) > 1 {
-			for _, v := range traversals[1:] {
-				g = g.append("," + v.Raw().String())
-			}
-		}
-
-		g = g.append(")")
+	for _, t := range traversals {
+		params = append(params, t)
 	}
+
+	g.AddStep("or", params...)
 
 	return g
 }

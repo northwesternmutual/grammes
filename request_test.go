@@ -23,45 +23,15 @@ package grammes
 import (
 	"encoding/json"
 	"errors"
+	"sync"
 	"testing"
-	"time"
+	// "time"
 
 	"github.com/google/uuid"
 	. "github.com/smartystreets/goconvey/convey"
 
 	"github.com/northwesternmutual/grammes/gremconnect"
 )
-
-type mockDialerAuthError gremconnect.WebSocket
-
-func (*mockDialerAuthError) Connect() error     { return connect }
-func (*mockDialerAuthError) Close() error       { return nil }
-func (*mockDialerAuthError) Write([]byte) error { return nil }
-func (m *mockDialerAuthError) Read() ([]byte, error) {
-	if readCount < 1 {
-		time.Sleep(100 * time.Millisecond)
-		readCount++
-		m.Quit <- struct{}{}
-		return []byte(response), nil
-	}
-	return nil, nil
-}
-func (*mockDialerAuthError) Ping(chan error)   {}
-func (*mockDialerAuthError) IsConnected() bool { return isConnected }
-func (*mockDialerAuthError) IsDisposed() bool  { return isDisposed }
-func (*mockDialerAuthError) Auth() (*gremconnect.Auth, error) {
-	return &gremconnect.Auth{}, errors.New("ERROR")
-}
-func (*mockDialerAuthError) Address() string { return "" }
-func (m *mockDialerAuthError) GetQuit() chan struct{} {
-	m.Quit = make(chan struct{})
-	return m.Quit
-}
-func (*mockDialerAuthError) SetAuth(string, string) {}
-func (*mockDialerAuthError) SetTimeout(int)         {}
-func (*mockDialerAuthError) SetPingInterval(int)    {}
-func (*mockDialerAuthError) SetWritingWait(int)     {}
-func (*mockDialerAuthError) SetReadingWait(int)     {}
 
 func TestExecuteRequest(t *testing.T) {
 	readCount = 1
@@ -79,13 +49,63 @@ func TestExecuteRequest(t *testing.T) {
 		dialer := &mockDialer{}
 		c, _ := Dial(dialer)
 		Convey("When 'executeRequest' is called with query", func() {
-			bindings := make(map[string]string)
-			rebindings := make(map[string]string)
+			q := "testQuery"
+			var b, r map[string]string
 			readCount = 0
-			result, err := c.executeRequest("testing", bindings, rebindings)
+			res, err := c.executeRequest(q, b, r)
 			Convey("Then err should be nil and the test result should be returned", func() {
 				So(err, ShouldBeNil)
-				So(result, ShouldNotBeNil)
+				So(res, ShouldNotBeNil)
+			})
+		})
+	})
+}
+
+type mockDialerWriteError gremconnect.WebSocket
+
+func (*mockDialerWriteError) Connect() error                   { return connect }
+func (*mockDialerWriteError) Close() error                     { return nil }
+func (*mockDialerWriteError) Write([]byte) error               { return errors.New("ERROR") }
+func (*mockDialerWriteError) Read() ([]byte, error)            { return nil, nil }
+func (*mockDialerWriteError) Ping(chan error)                  {}
+func (*mockDialerWriteError) IsConnected() bool                { return isConnected }
+func (*mockDialerWriteError) IsDisposed() bool                 { return isDisposed }
+func (*mockDialerWriteError) Auth() (*gremconnect.Auth, error) { return &gremconnect.Auth{}, nil }
+func (*mockDialerWriteError) Address() string                  { return "" }
+func (m *mockDialerWriteError) GetQuit() chan struct{} {
+	m.Quit = make(chan struct{})
+	return m.Quit
+}
+func (*mockDialerWriteError) SetAuth(string, string) {}
+func (*mockDialerWriteError) SetTimeout(int)         {}
+func (*mockDialerWriteError) SetPingInterval(int)    {}
+func (*mockDialerWriteError) SetWritingWait(int)     {}
+func (*mockDialerWriteError) SetReadingWait(int)     {}
+
+func TestWriteWorkerErrorWriting(t *testing.T) {
+	Convey("Given a client that represents the Gremlin client", t, func() {
+		connect = nil
+		dialer := &mockDialerWriteError{}
+		c, _ := Dial(dialer)
+		Convey("When there is an error writing the message", func() {
+			errReceived := false
+			var wg sync.WaitGroup
+			wg.Add(1)
+			go func() {
+				for {
+					select {
+					case <-c.err:
+						errReceived = true
+						wg.Done()
+					default:
+						continue
+					}
+				}
+			}()
+			c.dispatchRequest([]byte(response))
+			wg.Wait()
+			Convey("Then the error should be sent through the channel", func() {
+				So(errReceived, ShouldBeTrue)
 			})
 		})
 	})
@@ -178,34 +198,6 @@ func TestExecuteRequestErrorRetrievingResponse(t *testing.T) {
 	})
 }
 
-// func TestWriteWorkerErrorWriting(t *testing.T) {
-// 	readCount = 0
-// 	defer func() {
-// 		gremconnect.GenUUID = uuid.NewUUID
-// 	}()
-// 	gremconnect.GenUUID = func() (uuid.UUID, error) {
-// 	var a [16]byte
-// 	copy(a[:], "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
-// 	return uuid.UUID(a), nil
-// }
-// 	Convey("Given a client", t, func() {
-// 		connect = nil
-// 		dialer := &mockDialerWriteError{}
-// 		var l TestLogger
-// 		c, _ := Dial(dialer, WithLogger(l))
-// 		Convey("When writeWorker is executed but returns an error", func() {
-// 			errCounter := 0
-// 			for range c.err {
-// 				errCounter++
-// 			}
-// 			close(c.err)
-// 			Convey("Then the error should be send down the error channel", func() {
-// 				So(errCounter, ShouldNotEqual, 0)
-// 			})
-// 		})
-// 	})
-// }
-
 func TestAuthenticate(t *testing.T) {
 	readCount = 1
 	defer func() {
@@ -228,6 +220,31 @@ func TestAuthenticate(t *testing.T) {
 		})
 	})
 }
+
+type mockDialerAuthError gremconnect.WebSocket
+
+func (*mockDialerAuthError) Connect() error     { return connect }
+func (*mockDialerAuthError) Close() error       { return nil }
+func (*mockDialerAuthError) Write([]byte) error { return nil }
+func (m *mockDialerAuthError) Read() ([]byte, error) {
+	return []byte(response), nil
+}
+func (*mockDialerAuthError) Ping(chan error)   {}
+func (*mockDialerAuthError) IsConnected() bool { return isConnected }
+func (*mockDialerAuthError) IsDisposed() bool  { return isDisposed }
+func (*mockDialerAuthError) Auth() (*gremconnect.Auth, error) {
+	return &gremconnect.Auth{}, errors.New("ERROR")
+}
+func (*mockDialerAuthError) Address() string { return "" }
+func (m *mockDialerAuthError) GetQuit() chan struct{} {
+	m.Quit = make(chan struct{})
+	return m.Quit
+}
+func (*mockDialerAuthError) SetAuth(string, string) {}
+func (*mockDialerAuthError) SetTimeout(int)         {}
+func (*mockDialerAuthError) SetPingInterval(int)    {}
+func (*mockDialerAuthError) SetWritingWait(int)     {}
+func (*mockDialerAuthError) SetReadingWait(int)     {}
 
 func TestAuthenticateAuthError(t *testing.T) {
 	readCount = 1

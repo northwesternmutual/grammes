@@ -36,22 +36,18 @@ func TestPageRank(t *testing.T) {
 			})
 		})
 
-		Convey("When 'PageRank' is called with no multiple arguments", func() {
-			var flt1, flt2 float32
-			flt1 = 1.234
-			flt2 = 5.678
-			result := g.PageRank(flt1, flt2)
+		Convey("When 'PageRank' is called with one argument", func() {
+			result := g.PageRank(1.234)
 			Convey("Then result should equal 'g.pageRank(1.234000)'", func() {
 				So(result.String(), ShouldEqual, "g.pageRank(1.234000)")
 			})
 		})
-		// Convey("When 'PageRank' is called with a multiple Scope", func() {
-		// 	scopeL := scope.Local
-		// 	scopeG := scope.Global
-		// 	result := g.PageRank(scopeL, scopeG)
-		// 	Convey("Then result should equal 'g.min(global)'", func() {
-		// 		So(result.String(), ShouldEqual, "g.min(local)")
-		// 	})
-		// })
+
+		Convey("When 'PageRank' is called with no multiple arguments", func() {
+			result := g.PageRank(1.234, 5.678)
+			Convey("Then result should equal 'g.pageRank()'", func() {
+				So(result.String(), ShouldEqual, "g.pageRank()")
+			})
+		})
 	})
 }

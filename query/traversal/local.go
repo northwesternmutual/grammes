@@ -26,7 +26,7 @@ package traversal
 // Signatures:
 // Local(*String (Traversal))
 func (g String) Local(traversal String) String {
-	g = g.append(".local(" + traversal.Raw().String() + ")")
+	g.AddStep("local", traversal)
 
 	return g
 }
