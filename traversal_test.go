@@ -23,10 +23,10 @@ package grammes
 import (
 	"testing"
 
+	. "github.com/smartystreets/goconvey/convey"
+
 	"github.com/northwesternmutual/grammes/query/graph"
 	"github.com/northwesternmutual/grammes/query/traversal"
-
-	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestTraversal(t *testing.T) {

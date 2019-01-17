@@ -22,11 +22,10 @@ package grammes
 
 import (
 	"encoding/json"
+	"testing"
 	"errors"
 	"sync"
-	"testing"
-	// "time"
-
+	
 	"github.com/google/uuid"
 	. "github.com/smartystreets/goconvey/convey"
 
