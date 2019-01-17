@@ -59,7 +59,7 @@ func TestPackageRequest(t *testing.T) {
 		}
 
 		Convey("And the request is packaged", func() {
-			msg, err := PackageRequest(req)
+			msg, err := PackageRequest(req, "3")
 
 			Convey("Then msg should not be nil", func() {
 				So(msg, ShouldNotBeNil)
@@ -81,7 +81,7 @@ func TestPackageRequestJsonMarshalError(t *testing.T) {
 	Convey("Given a request", t, func() {
 		var req Request
 		Convey("And PackageRequest throws an error", func() {
-			msg, err := PackageRequest(req)
+			msg, err := PackageRequest(req, "3")
 			Convey("Then msg should be nil", func() {
 				So(msg, ShouldBeNil)
 			})
