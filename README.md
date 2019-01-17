@@ -4,7 +4,8 @@
 
 # Grammes
 
-[![Build Status](http://trams-jenkins.nm.nmfco.com:8080/job/grammes/job/master/badge/icon)](http://trams-jenkins.nm.nmfco.com:8080/job/grammes/job/master/)
+[![Build Status](https://travis-ci.com/northwesternmutual/grammes.svg?branch=master)](https://travis-ci.com/northwesternmutual/grammes) [![Coverage Status](https://coveralls.io/repos/github/northwesternmutual/grammes/badge.svg?branch=master)](https://coveralls.io/github/northwesternmutual/grammes?branch=master) [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](https://godoc.org/github.com/northwesternmutual/grammes) [![Go Report Card](https://goreportcard.com/badge/github.com/northwesternmutual/grammes)](https://goreportcard.com/report/github.com/northwesternmutual/grammes)
+
 
 Grammes is an API/Wrapper for Gremlin and Janusgraph. It's written purely in Golang and allows for easy use of Gremlin without touching the Gremlin terminal.
 
