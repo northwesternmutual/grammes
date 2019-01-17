@@ -24,7 +24,6 @@ import (
 	"encoding/json"
 
 	"github.com/northwesternmutual/grammes/gremconnect"
-	"github.com/northwesternmutual/grammes/gremerror"
 )
 
 var (
@@ -45,27 +44,17 @@ func (c *Client) readWorker(errs chan error, quit chan struct{}) {
 		if msg, err = c.conn.Read(); err != nil {
 			errs <- err
 			c.broken = true
-			c.logger.Error("reading connection",
-				gremerror.NewGrammesError("readWorker", err),
-			)
-
 			break
 		}
 
-		c.logger.Debug("readWorker: Successfully read from connection", map[string]interface{}{})
-
 		if msg != nil {
-			if err = c.handleResponse(msg); err != nil {
+			if err := c.handleResponse(msg); err != nil {
 				errs <- err
-				c.logger.Error("handling response error",
-					gremerror.NewGrammesError("readWorker", err),
-				)
 			}
 		}
 
 		select {
 		case <-quit:
-			c.logger.Debug("readWorker: Quit", map[string]interface{}{})
 			return
 		default:
 			continue
