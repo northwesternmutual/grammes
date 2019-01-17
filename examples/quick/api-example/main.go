@@ -33,7 +33,7 @@ func main() {
 	logger := exampleutil.SetupLogger()
 	defer logger.Sync()
 
-	g := quick.G
+	g := quick.Traversal()
 
 	// ------------------------------------- Adding Vertex using AddVertex
 	logger.Info("Adding Vertices...")
