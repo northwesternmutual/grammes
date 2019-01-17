@@ -26,29 +26,31 @@ import (
 
 	"github.com/google/uuid"
 	. "github.com/smartystreets/goconvey/convey"
-	
+
 	"github.com/northwesternmutual/grammes/gremconnect"
 )
 
 func TestDial(t *testing.T) {
-	Convey("Given a mock dialer and error channel", t, func() {
+	Convey("Given a mock dialer", t, func() {
 		readCount = 1
 		dialer := &mockDialer{}
+		logger := &testLogger{}
+		var c *Client
 		Convey("And connection is successful", func() {
 			connect = nil
 			Convey("When Dial is called with the mock dialer", func() {
-				c, _ := Dial(dialer)
+				c, _ = Dial(dialer, WithLogger(logger))
 				Convey("Then c.Schema should not be nil", func() {
 					So(c.IsBroken(), ShouldBeFalse)
 				})
 			})
 
 		})
-		
+
 		Convey("And connection is unsuccessful", func() {
 			connect = errors.New("ERR")
 			Convey("When Dial is called with the mock dialer", func() {
-				c, _ := Dial(dialer)
+				c, _ = Dial(dialer, WithLogger(logger))
 				Convey("Then c.Schema should not be nil", func() {
 					So(c.IsBroken(), ShouldBeTrue)
 				})
@@ -79,32 +81,6 @@ func TestDialWithWebSocket(t *testing.T) {
 				c, _ := DialWithWebSocket(host)
 				Convey("Then client shouldn't be nil", func() {
 					So(c, ShouldNotBeNil)
-				})
-			})
-		})
-	})
-}
-
-func TestDropAll(t *testing.T) {
-	defer func() {
-		gremconnect.GenUUID = uuid.NewUUID
-	}()
-	gremconnect.GenUUID = func() (uuid.UUID, error) {
-		var a [16]byte
-		copy(a[:], "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
-		return uuid.UUID(a), nil
-	}
-	readCount = 1
-	Convey("Given a mock dialer", t, func() {
-		dialer := &mockDialer{}
-		Convey("And connection is successful", func() {
-			connect = nil
-			c, _ := Dial(dialer)
-			Convey("When DropAll is called", func() {
-				readCount = 0
-				err := c.DropAll()
-				Convey("Then err should be nil", func() {
-					So(err, ShouldBeNil)
 				})
 			})
 		})

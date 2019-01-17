@@ -23,12 +23,115 @@ package grammes
 import (
 	"errors"
 	"testing"
+	"time"
 
 	"github.com/google/uuid"
 	. "github.com/smartystreets/goconvey/convey"
 
 	"github.com/northwesternmutual/grammes/gremconnect"
 )
+
+type mockDialerReadError gremconnect.WebSocket
+
+func (*mockDialerReadError) Connect() error     { return connect }
+func (*mockDialerReadError) Close() error       { return nil }
+func (*mockDialerReadError) Write([]byte) error { return nil }
+func (m *mockDialerReadError) Read() ([]byte, error) {
+	if readCount < 1 {
+		readCount++
+		m.Quit <- struct{}{}
+		return []byte(response), errors.New("ERROR")
+	}
+	return nil, nil
+}
+func (*mockDialerReadError) Ping(chan error)                  {}
+func (*mockDialerReadError) IsConnected() bool                { return isConnected }
+func (*mockDialerReadError) IsDisposed() bool                 { return isDisposed }
+func (*mockDialerReadError) Auth() (*gremconnect.Auth, error) { return &gremconnect.Auth{}, nil }
+func (*mockDialerReadError) Address() string                  { return "" }
+func (m *mockDialerReadError) GetQuit() chan struct{} {
+	m.Quit = make(chan struct{})
+	return m.Quit
+}
+func (*mockDialerReadError) SetAuth(string, string) {}
+func (*mockDialerReadError) SetTimeout(int)         {}
+func (*mockDialerReadError) SetPingInterval(int)    {}
+func (*mockDialerReadError) SetWritingWait(int)     {}
+func (*mockDialerReadError) SetReadingWait(int)     {}
+
+func TestReadWorkerErrorReading(t *testing.T) {
+	readCount = 1
+	defer func() {
+		gremconnect.GenUUID = uuid.NewUUID
+	}()
+	gremconnect.GenUUID = func() (uuid.UUID, error) {
+		var a [16]byte
+		copy(a[:], "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
+		return uuid.UUID(a), nil
+	}
+	Convey("Given a client that represents the Gremlin client", t, func() {
+		connect = nil
+		dialer := &mockDialerReadError{}
+		c, _ := Dial(dialer)
+		Convey("When there is an error reading the message", func() {
+			errReceived := false
+			go func() {
+				for {
+					select {
+					case <-c.err:
+						errReceived = true
+						return
+					default:
+						continue
+					}
+				}
+			}()
+			readCount = 0
+			time.Sleep(10 * time.Millisecond)
+			Convey("Then the error should be sent through the channel", func() {
+				So(errReceived, ShouldBeTrue)
+			})
+		})
+	})
+}
+
+func TestReadWorkerErrorHandlingResponse(t *testing.T) {
+	readCount = 1
+	defer func() {
+		gremconnect.GenUUID = uuid.NewUUID
+		gremMarshalResponse = gremconnect.MarshalResponse
+	}()
+	gremconnect.GenUUID = func() (uuid.UUID, error) {
+		var a [16]byte
+		copy(a[:], "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
+		return uuid.UUID(a), nil
+	}
+	gremMarshalResponse = func([]byte) (gremconnect.Response, error) { return gremconnect.Response{}, errors.New("ERROR") }
+	Convey("Given a client that represents the Gremlin client", t, func() {
+		connect = nil
+		dialer := &mockDialer{}
+		c, _ := Dial(dialer)
+		Convey("When there is an error handling the response", func() {
+			errReceived := false
+			go func() {
+				for {
+					select {
+					case <-c.err:
+						errReceived = true
+						return
+					default:
+						continue
+					}
+				}
+			}()
+			readCount = 0
+			time.Sleep(125 * time.Millisecond)
+			Convey("Then the error should be sent through the channel", func() {
+				So(errReceived, ShouldBeTrue)
+			})
+		})
+	})
+}
 
 func TestHandleResponseErrorMarshalling(t *testing.T) {
 	readCount = 1

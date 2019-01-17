@@ -21,6 +21,7 @@
 package grammes
 
 import (
+	"strconv"
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
@@ -47,6 +48,32 @@ func TestWithLogger(t *testing.T) {
 			c, _ := Dial(dialer, WithLogger(l))
 			Convey("Then the client logger should be set", func() {
 				So(c.logger, ShouldResemble, l)
+			})
+		})
+	})
+}
+
+func TestWithGremlinVersion(t *testing.T) {
+	Convey("Given a Gremlin version and dialer", t, func() {
+		v := 3
+		dialer := &mockDialer{}
+		Convey("When Dial is called with Gremlin Version", func() {
+			c, _ := Dial(dialer, WithGremlinVersion(v))
+			Convey("Then the client Gremlin version should be set", func() {
+				So(c.gremlinVersion, ShouldEqual, strconv.Itoa(v))
+			})
+		})
+	})
+}
+
+func TestWithMaxConcurrentMessages(t *testing.T) {
+	Convey("Given an int and dialer", t, func() {
+		m := 2
+		dialer := &mockDialer{}
+		Convey("When Dial is called with max concurrent messages", func() {
+			c, _ := Dial(dialer, WithMaxConcurrentMessages(m))
+			Convey("Then the client request channel should be set", func() {
+				So(c.request, ShouldNotBeNil)
 			})
 		})
 	})
