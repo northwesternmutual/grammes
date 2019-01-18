@@ -299,7 +299,7 @@ func TestSetTimeout(t *testing.T) {
 		Convey("And SetTimeout is called", func() {
 			dialer.SetTimeout(t)
 			Convey("Then the timeout should be set in the dialer", func() {
-				So(dialer.timeout, ShouldEqual, time.Duration(t)*time.Second)
+				So(dialer.timeout, ShouldEqual, t)
 			})
 		})
 	})
@@ -312,7 +312,7 @@ func TestSetPingInterval(t *testing.T) {
 		Convey("And SetPingInterval is called", func() {
 			dialer.SetPingInterval(p)
 			Convey("Then the ping interval should be set in the dialer", func() {
-				So(dialer.pingInterval, ShouldEqual, time.Duration(p)*time.Second)
+				So(dialer.pingInterval, ShouldEqual, p)
 			})
 		})
 	})
@@ -325,7 +325,7 @@ func TestSetWritingWait(t *testing.T) {
 		Convey("And SetWritingWait is called", func() {
 			dialer.SetWritingWait(w)
 			Convey("Then the writing wait should be set in the dialer", func() {
-				So(dialer.writingWait, ShouldEqual, time.Duration(w)*time.Second)
+				So(dialer.writingWait, ShouldEqual, w)
 			})
 		})
 	})
@@ -338,7 +338,7 @@ func TestSetReadingWait(t *testing.T) {
 		Convey("And SetReadingWait is called", func() {
 			dialer.SetReadingWait(r)
 			Convey("Then the reading wait should be set in the dialer", func() {
-				So(dialer.readingWait, ShouldEqual, time.Duration(r)*time.Second)
+				So(dialer.readingWait, ShouldEqual, r)
 			})
 		})
 	})
