@@ -295,7 +295,7 @@ func TestSetAuth(t *testing.T) {
 func TestSetTimeout(t *testing.T) {
 	Convey("Given a WebSocket, and timeout interval", t, func() {
 		dialer := &WebSocket{}
-		t := 5
+		t := 5 * time.Second
 		Convey("And SetTimeout is called", func() {
 			dialer.SetTimeout(t)
 			Convey("Then the timeout should be set in the dialer", func() {
@@ -308,7 +308,7 @@ func TestSetTimeout(t *testing.T) {
 func TestSetPingInterval(t *testing.T) {
 	Convey("Given a WebSocket and a ping interval", t, func() {
 		dialer := &WebSocket{}
-		p := 5
+		p := 5 * time.Second
 		Convey("And SetPingInterval is called", func() {
 			dialer.SetPingInterval(p)
 			Convey("Then the ping interval should be set in the dialer", func() {
@@ -321,7 +321,7 @@ func TestSetPingInterval(t *testing.T) {
 func TestSetWritingWait(t *testing.T) {
 	Convey("Given a WebSocket and a writing wait", t, func() {
 		dialer := &WebSocket{}
-		w := 5
+		w := 5 * time.Second
 		Convey("And SetWritingWait is called", func() {
 			dialer.SetWritingWait(w)
 			Convey("Then the writing wait should be set in the dialer", func() {
@@ -334,7 +334,7 @@ func TestSetWritingWait(t *testing.T) {
 func TestSetReadingWait(t *testing.T) {
 	Convey("Given a WebSocket and a reading wait", t, func() {
 		dialer := &WebSocket{}
-		r := 5
+		r := 5 * time.Second
 		Convey("And SetReadingWait is called", func() {
 			dialer.SetReadingWait(r)
 			Convey("Then the reading wait should be set in the dialer", func() {
