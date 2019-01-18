@@ -38,8 +38,8 @@ func TestFrom(t *testing.T) {
 
 		Convey("When 'Emit' is called with a traversal", func() {
 			result := g.From(NewTraversal().Label())
-			Convey("Then result should equal 'g.from(g.label())'", func() {
-				So(result.String(), ShouldEqual, "g.from(g.label())")
+			Convey("Then result should equal 'g.from(label())'", func() {
+				So(result.String(), ShouldEqual, "g.from(label())")
 			})
 		})
 	})
