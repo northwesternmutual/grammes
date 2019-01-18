@@ -22,10 +22,11 @@ package grammes
 
 import (
 	"encoding/json"
-	"testing"
 	"errors"
 	"sync"
-	
+	"testing"
+	"time"
+
 	"github.com/google/uuid"
 	. "github.com/smartystreets/goconvey/convey"
 
@@ -75,11 +76,11 @@ func (m *mockDialerWriteError) GetQuit() chan struct{} {
 	m.Quit = make(chan struct{})
 	return m.Quit
 }
-func (*mockDialerWriteError) SetAuth(string, string) {}
-func (*mockDialerWriteError) SetTimeout(int)         {}
-func (*mockDialerWriteError) SetPingInterval(int)    {}
-func (*mockDialerWriteError) SetWritingWait(int)     {}
-func (*mockDialerWriteError) SetReadingWait(int)     {}
+func (*mockDialerWriteError) SetAuth(string, string)        {}
+func (*mockDialerWriteError) SetTimeout(time.Duration)      {}
+func (*mockDialerWriteError) SetPingInterval(time.Duration) {}
+func (*mockDialerWriteError) SetWritingWait(time.Duration)  {}
+func (*mockDialerWriteError) SetReadingWait(time.Duration)  {}
 
 func TestWriteWorkerErrorWriting(t *testing.T) {
 	Convey("Given a client that represents the Gremlin client", t, func() {
@@ -239,11 +240,11 @@ func (m *mockDialerAuthError) GetQuit() chan struct{} {
 	m.Quit = make(chan struct{})
 	return m.Quit
 }
-func (*mockDialerAuthError) SetAuth(string, string) {}
-func (*mockDialerAuthError) SetTimeout(int)         {}
-func (*mockDialerAuthError) SetPingInterval(int)    {}
-func (*mockDialerAuthError) SetWritingWait(int)     {}
-func (*mockDialerAuthError) SetReadingWait(int)     {}
+func (*mockDialerAuthError) SetAuth(string, string)        {}
+func (*mockDialerAuthError) SetTimeout(time.Duration)      {}
+func (*mockDialerAuthError) SetPingInterval(time.Duration) {}
+func (*mockDialerAuthError) SetWritingWait(time.Duration)  {}
+func (*mockDialerAuthError) SetReadingWait(time.Duration)  {}
 
 func TestAuthenticateAuthError(t *testing.T) {
 	readCount = 1

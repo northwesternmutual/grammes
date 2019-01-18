@@ -53,11 +53,11 @@ func (m *mockDialerReadError) GetQuit() chan struct{} {
 	m.Quit = make(chan struct{})
 	return m.Quit
 }
-func (*mockDialerReadError) SetAuth(string, string) {}
-func (*mockDialerReadError) SetTimeout(int)         {}
-func (*mockDialerReadError) SetPingInterval(int)    {}
-func (*mockDialerReadError) SetWritingWait(int)     {}
-func (*mockDialerReadError) SetReadingWait(int)     {}
+func (*mockDialerReadError) SetAuth(string, string)        {}
+func (*mockDialerReadError) SetTimeout(time.Duration)      {}
+func (*mockDialerReadError) SetPingInterval(time.Duration) {}
+func (*mockDialerReadError) SetWritingWait(time.Duration)  {}
+func (*mockDialerReadError) SetReadingWait(time.Duration)  {}
 
 func TestReadWorkerErrorReading(t *testing.T) {
 	readCount = 1
