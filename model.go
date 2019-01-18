@@ -28,10 +28,21 @@ import (
 var (
 	// NewWebSocketDialer returns websocket with established connection.
 	NewWebSocketDialer = gremconnect.NewWebSocketDialer
-	// NewVertexStruct returns a vertex struct meant for adding it.
-	NewVertexStruct = model.NewVertexStruct
-	// NewPropertyStruct returns a property struct meant for adding it to a vertex.
-	NewPropertyStruct = model.NewPropertyStruct
+	// NewVertex returns a vertex struct meant for adding it.
+	NewVertex = model.NewVertex
+	// NewProperty returns a property struct meant for adding it to a vertex.
+	NewProperty = model.NewProperty
+
+	// Unmarshal functions.
+
+	// UnmarshalEdgeList returns a new EdgeList meant to unmarshal.
+	UnmarshalEdgeList = model.UnmarshalEdgeList
+	// UnmarshalIDList returns a new IDList meant to unmarshal.
+	UnmarshalIDList = model.UnmarshalIDList
+	// UnmarshalVertexList returns a new VertexList meant to unmarshal.
+	UnmarshalVertexList = model.UnmarshalVertexList
+	// UnmarshalPropertyList returns a new PropertyList meant to unmarshal.
+	UnmarshalPropertyList = model.UnmarshalPropertyList
 )
 
 // Localhost is used when connecting to a local Gremlin server.

@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package grammes
+package model
 
 import (
 	"encoding/json"
@@ -60,4 +60,16 @@ func UnmarshalIDList(data []byte) ([]ID, error) {
 	}
 
 	return list.IDs, nil
+}
+
+// UnmarshalPropertyList is a utility to unmarshal a list
+// or array of IDs properly.
+func UnmarshalPropertyList(data []byte) ([]Property, error) {
+	var list PropertyList
+
+	if err := json.Unmarshal(data, &list); err != nil {
+		return nil, gremerror.NewUnmarshalError("UnmarshalIDList", data, err)
+	}
+
+	return list.Properties, nil
 }
