@@ -22,6 +22,7 @@ package grammes
 
 import (
 	"strconv"
+	"time"
 
 	"github.com/northwesternmutual/grammes/logging"
 )
@@ -72,32 +73,32 @@ func WithAuthUserPass(user, pass string) ClientConfiguration {
 
 // WithTimeout sets the timeout to wait when dialing
 // with the dialer in seconds.
-func WithTimeout(seconds int) ClientConfiguration {
+func WithTimeout(interval time.Duration) ClientConfiguration {
 	return func(c *Client) {
-		c.conn.SetTimeout(seconds)
+		c.conn.SetTimeout(interval)
 	}
 }
 
 // WithPingInterval sets the interval of ping sending for know is
 // connection is alive and in consequence the client is connected.
-func WithPingInterval(seconds int) ClientConfiguration {
+func WithPingInterval(interval time.Duration) ClientConfiguration {
 	return func(c *Client) {
-		c.conn.SetPingInterval(seconds)
+		c.conn.SetPingInterval(interval)
 	}
 }
 
 // WithWritingWait sets the time to wait when
 // writing with the dialer in seconds.
-func WithWritingWait(seconds int) ClientConfiguration {
+func WithWritingWait(interval time.Duration) ClientConfiguration {
 	return func(c *Client) {
-		c.conn.SetWritingWait(seconds)
+		c.conn.SetWritingWait(interval)
 	}
 }
 
 // WithReadingWait sets the time to wait when
 // reading with the dialer in seconds.
-func WithReadingWait(seconds int) ClientConfiguration {
+func WithReadingWait(interval time.Duration) ClientConfiguration {
 	return func(c *Client) {
-		c.conn.SetReadingWait(seconds)
+		c.conn.SetReadingWait(interval)
 	}
 }

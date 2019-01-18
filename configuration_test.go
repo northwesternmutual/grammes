@@ -23,6 +23,7 @@ package grammes
 import (
 	"strconv"
 	"testing"
+	"time"
 
 	. "github.com/smartystreets/goconvey/convey"
 )
@@ -95,7 +96,7 @@ func TestWithAuthUserPass(t *testing.T) {
 
 func TestWithTimeout(t *testing.T) {
 	Convey("Given a timeout and dialer", t, func() {
-		t := 5
+		t := 5 * time.Second
 		dialer := &mockDialer{}
 		Convey("And Dial is called with timeout", func() {
 			_, err := Dial(dialer, WithTimeout(t))
@@ -108,7 +109,7 @@ func TestWithTimeout(t *testing.T) {
 
 func TestWithPingInterval(t *testing.T) {
 	Convey("Given a ping interval and dialer", t, func() {
-		p := 5
+		p := 5 * time.Second
 		dialer := &mockDialer{}
 		Convey("And Dial is called with ping interval", func() {
 			_, err := Dial(dialer, WithPingInterval(p))
@@ -121,7 +122,7 @@ func TestWithPingInterval(t *testing.T) {
 
 func TestWithWritingWait(t *testing.T) {
 	Convey("Given a writing wait and dialer", t, func() {
-		w := 5
+		w := 5 * time.Second
 		dialer := &mockDialer{}
 		Convey("And Dial is called with writing wait", func() {
 			_, err := Dial(dialer, WithWritingWait(w))
@@ -134,7 +135,7 @@ func TestWithWritingWait(t *testing.T) {
 
 func TestWithReadingWait(t *testing.T) {
 	Convey("Given a reading wait and dialer", t, func() {
-		r := 5
+		r := 5 * time.Second
 		dialer := &mockDialer{}
 		Convey("And Dial is called with reading wait", func() {
 			_, err := Dial(dialer, WithReadingWait(r))

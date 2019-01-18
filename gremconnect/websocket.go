@@ -182,21 +182,21 @@ func (ws *WebSocket) SetAuth(user, pass string) {
 }
 
 // SetTimeout will set the dialing timeout
-func (ws *WebSocket) SetTimeout(seconds int) {
-	ws.timeout = time.Duration(seconds) * time.Second
+func (ws *WebSocket) SetTimeout(interval time.Duration) {
+	ws.timeout = interval
 }
 
 // SetPingInterval sets how often the websocket will ping the server.
-func (ws *WebSocket) SetPingInterval(seconds int) {
-	ws.pingInterval = time.Duration(seconds) * time.Second
+func (ws *WebSocket) SetPingInterval(interval time.Duration) {
+	ws.pingInterval = interval
 }
 
 // SetWritingWait sets how long the wait is for waiting
-func (ws *WebSocket) SetWritingWait(seconds int) {
-	ws.writingWait = time.Duration(seconds) * time.Second
+func (ws *WebSocket) SetWritingWait(interval time.Duration) {
+	ws.writingWait = interval
 }
 
 // SetReadingWait sets how long the reading will wait
-func (ws *WebSocket) SetReadingWait(seconds int) {
-	ws.readingWait = time.Duration(seconds) * time.Second
+func (ws *WebSocket) SetReadingWait(interval time.Duration) {
+	ws.readingWait = interval
 }

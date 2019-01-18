@@ -46,10 +46,10 @@ type Dialer interface {
 
 	// Configuration Setters
 	SetAuth(string, string)
-	SetTimeout(int)
-	SetPingInterval(int)
-	SetWritingWait(int)
-	SetReadingWait(int)
+	SetTimeout(time.Duration)
+	SetPingInterval(time.Duration)
+	SetWritingWait(time.Duration)
+	SetReadingWait(time.Duration)
 }
 
 // NewWebSocketDialer returns a new WebSocket dialer to use when

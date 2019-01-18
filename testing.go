@@ -130,8 +130,8 @@ func (m *mockDialer) GetQuit() chan struct{} {
 	m.Quit = make(chan struct{})
 	return m.Quit
 }
-func (*mockDialer) SetAuth(string, string) {}
-func (*mockDialer) SetTimeout(int)         {}
-func (*mockDialer) SetPingInterval(int)    {}
-func (*mockDialer) SetWritingWait(int)     {}
-func (*mockDialer) SetReadingWait(int)     {}
+func (*mockDialer) SetAuth(string, string)        {}
+func (*mockDialer) SetTimeout(time.Duration)      {}
+func (*mockDialer) SetPingInterval(time.Duration) {}
+func (*mockDialer) SetWritingWait(time.Duration)  {}
+func (*mockDialer) SetReadingWait(time.Duration)  {}
