@@ -72,7 +72,7 @@ func setupClient() *Client {
 		results:         &sync.Map{},
 		resultMessenger: &sync.Map{},
 		respMutex:       &sync.Mutex{},
-		logger:          logging.NewBasicLogger(),
+		logger:          logging.NewNilLogger(),
 		gremlinVersion:  "3",
 	}
 }
