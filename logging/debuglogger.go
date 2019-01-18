@@ -19,3 +19,48 @@
 // THE SOFTWARE.
 
 package logging
+
+import (
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+)
+
+// DebugLogger is the basic logger used for debugging an application.
+// This will log everything in the debug level.
+type DebugLogger struct {
+	zapper *zap.Logger
+}
+
+// NewDebugLogger returns a new debug logging
+// object for the Grammes client to use.
+func NewDebugLogger() *DebugLogger {
+	config := zap.NewDevelopmentConfig()
+	config.Level = zap.NewAtomicLevelAt(zapcore.DebugLevel)
+	config.EncoderConfig.EncodeLevel = zapcore.LowercaseColorLevelEncoder
+	zap, _ := config.Build()
+	return &DebugLogger{zapper: zap}
+}
+
+// PrintQuery will print the query at DebugLevel by default
+func (logger *DebugLogger) PrintQuery(q string) {
+	logger.zapper.Debug("[Grammes]", zap.String("query", q))
+}
+
+// Error logs at ErrorLevel
+func (logger *DebugLogger) Error(msg string, err error) {
+	logger.zapper.Error(msg, zap.Error(err))
+}
+
+// Fatal logs at FatalLevel
+func (logger *DebugLogger) Fatal(msg string, err error) {
+	logger.zapper.Fatal(msg, zap.Error(err))
+}
+
+// Debug logs at DebugLevel
+func (logger *DebugLogger) Debug(msg string, params map[string]interface{}) {
+	var fields []zap.Field
+	for k, v := range params {
+		fields = append(fields, zap.Any(k, v))
+	}
+	logger.zapper.Debug(msg, fields...)
+}

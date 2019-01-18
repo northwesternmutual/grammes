@@ -19,3 +19,25 @@
 // THE SOFTWARE.
 
 package logging
+
+// NilLogger is the default logger used for the Grammes client.
+// This logger will not print anything out.
+type NilLogger struct{}
+
+// NewNilLogger returns a nil logging
+// object for the Grammes client to use.
+func NewNilLogger() *NilLogger {
+	return &NilLogger{}
+}
+
+// PrintQuery nothing.
+func (*NilLogger) PrintQuery(q string) {}
+
+// Error logs nothing.
+func (*NilLogger) Error(msg string, err error) {}
+
+// Fatal logs nothing.
+func (*NilLogger) Fatal(msg string, err error) {}
+
+// Debug logs nothing.
+func (*NilLogger) Debug(msg string, params map[string]interface{}) {}

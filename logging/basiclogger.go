@@ -39,8 +39,8 @@ type BasicLogger struct {
 	zapper *zap.Logger
 }
 
-// NewBasicLogger returns a new default logging
-// object for the Grammes client to use.
+// NewBasicLogger returns a logger that is used for
+// development, but only logs at the Error level.
 func NewBasicLogger() *BasicLogger {
 	config := zap.NewDevelopmentConfig()
 	config.Level = zap.NewAtomicLevelAt(zapcore.ErrorLevel)
