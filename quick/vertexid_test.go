@@ -24,12 +24,11 @@ import (
 	"errors"
 	"testing"
 
+	. "github.com/smartystreets/goconvey/convey"
+	
+	"github.com/northwesternmutual/grammes"
 	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes/manager"
-
-	grammes "github.com/northwesternmutual/grammes"
-
-	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestVertexIDsByQuery(t *testing.T) {
@@ -55,11 +54,11 @@ func TestVertexIDsByQuery(t *testing.T) {
 }
 
 func TestVertexIDsByQueryClientError(t *testing.T) {
-	tempCheckForClient := CheckForClient
+	tempcheckForClient := checkForClient
 	defer func() {
-		CheckForClient = tempCheckForClient
+		checkForClient = tempcheckForClient
 	}()
-	CheckForClient = func(string) error { return errors.New("ERROR") }
+	checkForClient = func(string) error { return errors.New("ERROR") }
 	Convey("Given a host string and query", t, func() {
 		host := "testhost"
 		var q mockQuery
@@ -117,11 +116,11 @@ func TestVertexIDs(t *testing.T) {
 }
 
 func TestVertexIDsClientError(t *testing.T) {
-	tempCheckForClient := CheckForClient
+	tempcheckForClient := checkForClient
 	defer func() {
-		CheckForClient = tempCheckForClient
+		checkForClient = tempcheckForClient
 	}()
-	CheckForClient = func(string) error { return errors.New("ERROR") }
+	checkForClient = func(string) error { return errors.New("ERROR") }
 	Convey("Given a host string, label and properties", t, func() {
 		host := "testhost"
 		label := "testlabel"

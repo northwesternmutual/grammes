@@ -53,7 +53,6 @@ func (graph String) AddVertex(params ...interface{}) String {
 				// Token or other types.
 				graph = graph.append(fmt.Sprintf(",%v", p))
 			}
-			// g.append(fmt.Sprintf(",%v", p))
 		}
 	}
 

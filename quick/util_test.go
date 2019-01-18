@@ -23,10 +23,11 @@ package quick
 import (
 	"testing"
 
-	"github.com/northwesternmutual/grammes"
-	"github.com/northwesternmutual/grammes/logging"
-	"github.com/northwesternmutual/grammes/manager"
 	. "github.com/smartystreets/goconvey/convey"
+
+	"github.com/northwesternmutual/grammes/manager"
+	"github.com/northwesternmutual/grammes/logging"
+	"github.com/northwesternmutual/grammes"
 )
 
 func TestUnexportedExecuteQuery(t *testing.T) {
@@ -88,7 +89,7 @@ func TestUnexportedExecuteQueryWithClientAndLogger(t *testing.T) {
 	})
 }
 
-func TestCheckForClientWithLogger(t *testing.T) {
+func TestcheckForClientWithLogger(t *testing.T) {
 	defer func() {
 		client = nil
 		logger = nil
@@ -96,8 +97,8 @@ func TestCheckForClientWithLogger(t *testing.T) {
 	logger = logging.NewBasicLogger()
 	Convey("Given a host", t, func() {
 		host := "testhost"
-		Convey("When CheckForClient is called with no client", func() {
-			err := CheckForClient(host)
+		Convey("When checkForClient is called with no client", func() {
+			err := checkForClient(host)
 			Convey("Then an error should be returned", func() {
 				So(err, ShouldNotBeNil)
 			})
@@ -105,15 +106,15 @@ func TestCheckForClientWithLogger(t *testing.T) {
 	})
 }
 
-func TestCheckForClient(t *testing.T) {
+func TestcheckForClient(t *testing.T) {
 	defer func() {
 		client = nil
 		logger = nil
 	}()
 	Convey("Given a host", t, func() {
 		host := "testhost"
-		Convey("When CheckForClient is called with no logger or client established", func() {
-			err := CheckForClient(host)
+		Convey("When checkForClient is called with no logger or client established", func() {
+			err := checkForClient(host)
 			Convey("Then an error should be returned", func() {
 				So(err, ShouldNotBeNil)
 			})

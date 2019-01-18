@@ -27,7 +27,7 @@ import (
 // DropVertexLabel will search for a vertex with the
 // provided label and drop it if such a vertex exists.
 func DropVertexLabel(host, label string) error {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return err
 	}
@@ -44,7 +44,7 @@ func DropVertexLabel(host, label string) error {
 // DropVertexByID will search for vertices with the
 // provided IDs and drop them if such vertices exist.
 func DropVertexByID(host string, ids ...int64) error {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return err
 	}
@@ -61,7 +61,7 @@ func DropVertexByID(host string, ids ...int64) error {
 // DropVerticesByQuery will consume the given query
 // and drop the corresponding vertices.
 func DropVerticesByQuery(host string, q query.Query) error {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return err
 	}

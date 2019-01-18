@@ -24,12 +24,11 @@ import (
 	"errors"
 	"testing"
 
+	. "github.com/smartystreets/goconvey/convey"
+	
 	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes/manager"
-
-	grammes "github.com/northwesternmutual/grammes"
-
-	. "github.com/smartystreets/goconvey/convey"
+	"github.com/northwesternmutual/grammes"
 )
 
 func TestDropAll(t *testing.T) {
@@ -54,11 +53,11 @@ func TestDropAll(t *testing.T) {
 }
 
 func TestDropAllClientError(t *testing.T) {
-	tempCheckForClient := CheckForClient
+	tempcheckForClient := checkForClient
 	defer func() {
-		CheckForClient = tempCheckForClient
+		checkForClient = tempcheckForClient
 	}()
-	CheckForClient = func(string) error { return errors.New("ERROR") }
+	checkForClient = func(string) error { return errors.New("ERROR") }
 	Convey("Given a host string", t, func() {
 		host := "testhost"
 		Convey("When DropAll is called and encounters an error checking for the client", func() {
@@ -114,11 +113,11 @@ func TestSetVertexProperty(t *testing.T) {
 }
 
 func TestSetVertexPropertyClientError(t *testing.T) {
-	tempCheckForClient := CheckForClient
+	tempcheckForClient := checkForClient
 	defer func() {
-		CheckForClient = tempCheckForClient
+		checkForClient = tempcheckForClient
 	}()
-	CheckForClient = func(string) error { return errors.New("ERROR") }
+	checkForClient = func(string) error { return errors.New("ERROR") }
 	Convey("Given a host string, ID int and properties", t, func() {
 		host := "testhost"
 		id := int64(123)
@@ -175,11 +174,11 @@ func TestVertexCount(t *testing.T) {
 }
 
 func TestVertexCountClientError(t *testing.T) {
-	tempCheckForClient := CheckForClient
+	tempcheckForClient := checkForClient
 	defer func() {
-		CheckForClient = tempCheckForClient
+		checkForClient = tempcheckForClient
 	}()
-	CheckForClient = func(string) error { return errors.New("ERROR") }
+	checkForClient = func(string) error { return errors.New("ERROR") }
 	Convey("Given a host string", t, func() {
 		host := "testhost"
 		Convey("When VertexCount is called and encounters an error checking for the client", func() {

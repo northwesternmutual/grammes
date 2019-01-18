@@ -38,8 +38,8 @@ type Vertex struct {
 	Value VertexValue `json:"@value"`
 }
 
-// NewVertexStruct is to create a Vertex struct without all the hassle.
-func NewVertexStruct(label string, properties ...interface{}) Vertex {
+// NewVertex is to create a Vertex struct without all the hassle.
+func NewVertex(label string, properties ...interface{}) Vertex {
 	var v = Vertex{
 		Type: "g:Vertex",
 		Value: VertexValue{
@@ -55,7 +55,7 @@ func NewVertexStruct(label string, properties ...interface{}) Vertex {
 
 	for i := 0; i < len(properties); i += 2 {
 		v.Value.Properties[properties[i].(string)] = []Property{
-			NewPropertyStruct(properties[i].(string), properties[i+1]),
+			NewProperty(properties[i].(string), properties[i+1]),
 		}
 	}
 

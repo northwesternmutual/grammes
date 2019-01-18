@@ -22,7 +22,7 @@ package quick
 
 // DropAll drops everything from the graph.
 func DropAll(host string) error {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return err
 	}
@@ -39,7 +39,7 @@ func DropAll(host string) error {
 // SetVertexProperty will search the graph for a vertex
 // with the given ID and set the properties provided.
 func SetVertexProperty(host string, id int64, properties ...interface{}) error {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return err
 	}
@@ -56,7 +56,7 @@ func SetVertexProperty(host string, id int64, properties ...interface{}) error {
 // VertexCount retrieves the number of vertices
 // that are currently on the graph as an int64.
 func VertexCount(host string) (int64, error) {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return 0, err
 	}

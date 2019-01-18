@@ -23,10 +23,11 @@ package quick
 import (
 	"testing"
 
-	"github.com/northwesternmutual/grammes"
+	. "github.com/smartystreets/goconvey/convey"
+
 	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes/manager"
-	. "github.com/smartystreets/goconvey/convey"
+	"github.com/northwesternmutual/grammes"
 )
 
 func TestExecuteQuery(t *testing.T) {

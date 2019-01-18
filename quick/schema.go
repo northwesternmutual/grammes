@@ -30,7 +30,7 @@ import (
 // graph directly. This method returns the schema id
 // of the edge label added.
 func AddEdgeLabel(multi multiplicity.Multiplicity, host, label string) (int64, error) {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return 0, err
 	}
@@ -49,7 +49,7 @@ func AddEdgeLabel(multi multiplicity.Multiplicity, host, label string) (int64, e
 // time. This function is called similarly to your
 // favorite logger.
 func AddEdgeLabels(host string, multiplicityAndLabels ...interface{}) ([]int64, error) {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func AddEdgeLabels(host string, multiplicityAndLabels ...interface{}) ([]int64, 
 // graph directly. This method returns the schema id
 // of the edge label added.
 func AddPropertyKey(host, propertyName string, datatype datatype.DataType, cardinality cardinality.Cardinality) (int64, error) {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return 0, err
 	}
@@ -84,7 +84,7 @@ func AddPropertyKey(host, propertyName string, datatype datatype.DataType, cardi
 // CommitSchema will take all of your schema changes
 // and apply them to the schema once they are ready.
 func CommitSchema(host string) ([]byte, error) {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return nil, err
 	}

@@ -21,9 +21,10 @@
 package graph
 
 import (
+	"testing"
+
 	"github.com/northwesternmutual/grammes/query/cardinality"
 	"github.com/northwesternmutual/grammes/query/datatype"
-	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
 )
@@ -39,7 +40,7 @@ func TestMakePropertyKey(t *testing.T) {
 			cr = "LIST"
 			result := g.MakePropertyKey("labelTest", dt, cr)
 			Convey("Then result should equal 'graph.makePropertyKey('labelTest').dataType(String.class).cardinality(LIST)'", func() {
-				So(result.String(), ShouldEqual, "graph.makePropertyKey('labelTest').dataType(String.class).cardinality(LIST)")
+				So(result.String(), ShouldEqual, "graph.makePropertyKey(\"labelTest\").dataType(String.class).cardinality(LIST)")
 			})
 		})
 	})

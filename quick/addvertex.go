@@ -30,7 +30,7 @@ import (
 // be used like a normal vertex in case you'd rather make a vertex
 // through a structured format rather than a gremlin command.
 func AddAPIVertex(host string, data grammes.APIData) (grammes.Vertex, error) {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return nilVertex, err
 	}
@@ -48,7 +48,7 @@ func AddAPIVertex(host string, data grammes.APIData) (grammes.Vertex, error) {
 // a new vertex out of it in the Gremlin server. The only
 // exception is that you cannot manually set the ID.
 func AddVertexByStruct(host string, vertex grammes.Vertex) (grammes.Vertex, error) {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return nilVertex, err
 	}
@@ -65,7 +65,7 @@ func AddVertexByStruct(host string, vertex grammes.Vertex) (grammes.Vertex, erro
 // AddVertex will add a vertex label to the
 // graph that is associated with the given host.
 func AddVertex(host, label string, properties ...interface{}) (grammes.Vertex, error) {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return nilVertex, err
 	}
@@ -82,7 +82,7 @@ func AddVertex(host, label string, properties ...interface{}) (grammes.Vertex, e
 // AddVertexLabels will do the same as AddVertexLabel, but with
 // the ability to add multiple labels at a time.
 func AddVertexLabels(host string, labels ...string) ([]grammes.Vertex, error) {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func AddVertexLabels(host string, labels ...string) ([]grammes.Vertex, error) {
 // AddVertexByQuery takes a query and returns an added Vertex
 // by turning it into a string.
 func AddVertexByQuery(host string, q query.Query) (grammes.Vertex, error) {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return nilVertex, err
 	}

@@ -24,15 +24,14 @@ import (
 	"errors"
 	"testing"
 
+	. "github.com/smartystreets/goconvey/convey"
+	
+	"github.com/northwesternmutual/grammes"
 	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes/manager"
 	"github.com/northwesternmutual/grammes/query/cardinality"
 	"github.com/northwesternmutual/grammes/query/datatype"
 	"github.com/northwesternmutual/grammes/query/multiplicity"
-
-	grammes "github.com/northwesternmutual/grammes"
-
-	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestAddEdgeLabel(t *testing.T) {
@@ -59,11 +58,11 @@ func TestAddEdgeLabel(t *testing.T) {
 }
 
 func TestAddEdgeLabelClientError(t *testing.T) {
-	tempCheckForClient := CheckForClient
+	tempcheckForClient := checkForClient
 	defer func() {
-		CheckForClient = tempCheckForClient
+		checkForClient = tempcheckForClient
 	}()
-	CheckForClient = func(string) error { return errors.New("ERROR") }
+	checkForClient = func(string) error { return errors.New("ERROR") }
 	Convey("Given a host string, multiplicity and label", t, func() {
 		host := "testhost"
 		label := "testlabel"
@@ -124,11 +123,11 @@ func TestAddEdgeLabels(t *testing.T) {
 }
 
 func TestAddEdgeLabelsClientError(t *testing.T) {
-	tempCheckForClient := CheckForClient
+	tempcheckForClient := checkForClient
 	defer func() {
-		CheckForClient = tempCheckForClient
+		checkForClient = tempcheckForClient
 	}()
-	CheckForClient = func(string) error { return errors.New("ERROR") }
+	checkForClient = func(string) error { return errors.New("ERROR") }
 	Convey("Given a host string, multiplicity and labels", t, func() {
 		host := "testhost"
 		label := "testlabel"
@@ -190,11 +189,11 @@ func TestAddPropertyKey(t *testing.T) {
 }
 
 func TestAddPropertyKeyClientError(t *testing.T) {
-	tempCheckForClient := CheckForClient
+	tempcheckForClient := checkForClient
 	defer func() {
-		CheckForClient = tempCheckForClient
+		checkForClient = tempcheckForClient
 	}()
-	CheckForClient = func(string) error { return errors.New("ERROR") }
+	checkForClient = func(string) error { return errors.New("ERROR") }
 	Convey("Given a host string, property name, datatype and cardinality", t, func() {
 		host := "testhost"
 		propertyName := "property"
@@ -255,11 +254,11 @@ func TestCommitSchema(t *testing.T) {
 }
 
 func TestCommitSchemaClientError(t *testing.T) {
-	tempCheckForClient := CheckForClient
+	tempcheckForClient := checkForClient
 	defer func() {
-		CheckForClient = tempCheckForClient
+		checkForClient = tempcheckForClient
 	}()
-	CheckForClient = func(string) error { return errors.New("ERROR") }
+	checkForClient = func(string) error { return errors.New("ERROR") }
 	Convey("Given a host string", t, func() {
 		host := "testhost"
 		Convey("When CommitSchema is called and encounters an error checking for the client", func() {

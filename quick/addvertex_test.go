@@ -23,14 +23,14 @@ package quick
 import (
 	"errors"
 	"testing"
+	"time"
 
+	. "github.com/smartystreets/goconvey/convey"
+	
 	"github.com/northwesternmutual/grammes/gremconnect"
 	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes/manager"
-
-	grammes "github.com/northwesternmutual/grammes"
-
-	. "github.com/smartystreets/goconvey/convey"
+	"github.com/northwesternmutual/grammes"
 )
 
 var (
@@ -76,10 +76,10 @@ func (*mockDialer) Auth() (*gremconnect.Auth, error) { return &gremconnect.Auth{
 func (*mockDialer) Address() string                  { return "" }
 func (*mockDialer) GetQuit() chan struct{}           { return make(chan struct{}) }
 func (*mockDialer) SetAuth(string, string)           {}
-func (*mockDialer) SetTimeout(int)                   {}
-func (*mockDialer) SetPingInterval(int)              {}
-func (*mockDialer) SetWritingWait(int)               {}
-func (*mockDialer) SetReadingWait(int)               {}
+func (*mockDialer) SetTimeout(time.Duration)         {}
+func (*mockDialer) SetPingInterval(time.Duration)    {}
+func (*mockDialer) SetWritingWait(time.Duration)     {}
+func (*mockDialer) SetReadingWait(time.Duration)     {}
 
 // MOCKQUERY
 
@@ -110,11 +110,11 @@ func TestAddAPIVertex(t *testing.T) {
 }
 
 func TestAddAPIVertexClientError(t *testing.T) {
-	tempCheckForClient := CheckForClient
+	tempcheckForClient := checkForClient
 	defer func() {
-		CheckForClient = tempCheckForClient
+		checkForClient = tempcheckForClient
 	}()
-	CheckForClient = func(string) error { return errors.New("ERROR") }
+	checkForClient = func(string) error { return errors.New("ERROR") }
 	Convey("Given a host string and APIData object", t, func() {
 		host := "testhost"
 		var data grammes.APIData
@@ -172,11 +172,11 @@ func TestAddVertexByStruct(t *testing.T) {
 }
 
 func TestAddVertexByStructClientError(t *testing.T) {
-	tempCheckForClient := CheckForClient
+	tempcheckForClient := checkForClient
 	defer func() {
-		CheckForClient = tempCheckForClient
+		checkForClient = tempcheckForClient
 	}()
-	CheckForClient = func(string) error { return errors.New("ERROR") }
+	checkForClient = func(string) error { return errors.New("ERROR") }
 	Convey("Given a host string and Vertex object", t, func() {
 		host := "testhost"
 		var vertex grammes.Vertex
@@ -234,11 +234,11 @@ func TestAddVertex(t *testing.T) {
 }
 
 func TestAddVertexClientError(t *testing.T) {
-	tempCheckForClient := CheckForClient
+	tempcheckForClient := checkForClient
 	defer func() {
-		CheckForClient = tempCheckForClient
+		checkForClient = tempcheckForClient
 	}()
-	CheckForClient = func(string) error { return errors.New("ERROR") }
+	checkForClient = func(string) error { return errors.New("ERROR") }
 	Convey("Given a host string and labelv", t, func() {
 		host := "testhost"
 		label := "testlabel"
@@ -296,11 +296,11 @@ func TestAddVertexLabels(t *testing.T) {
 }
 
 func TestAddVertexLabelsClientError(t *testing.T) {
-	tempCheckForClient := CheckForClient
+	tempcheckForClient := checkForClient
 	defer func() {
-		CheckForClient = tempCheckForClient
+		checkForClient = tempcheckForClient
 	}()
-	CheckForClient = func(string) error { return errors.New("ERROR") }
+	checkForClient = func(string) error { return errors.New("ERROR") }
 	Convey("Given a host string", t, func() {
 		host := "testhost"
 		Convey("When AddVertexLabels is called and there is an error checking for the client", func() {
@@ -357,11 +357,11 @@ func TestAddVertexByQuery(t *testing.T) {
 }
 
 func TestAddVertexByQueryClientError(t *testing.T) {
-	tempCheckForClient := CheckForClient
+	tempcheckForClient := checkForClient
 	defer func() {
-		CheckForClient = tempCheckForClient
+		checkForClient = tempcheckForClient
 	}()
-	CheckForClient = func(string) error { return errors.New("ERROR") }
+	checkForClient = func(string) error { return errors.New("ERROR") }
 	Convey("Given a host string and query", t, func() {
 		host := "testhost"
 		var q mockQuery

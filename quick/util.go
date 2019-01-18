@@ -21,10 +21,10 @@
 package quick
 
 import (
-	"github.com/northwesternmutual/grammes"
-	"github.com/northwesternmutual/grammes/logging"
-	"github.com/northwesternmutual/grammes/query/graph"
 	"github.com/northwesternmutual/grammes/query/traversal"
+	"github.com/northwesternmutual/grammes/query/graph"
+	"github.com/northwesternmutual/grammes/logging"
+	"github.com/northwesternmutual/grammes"
 )
 
 // CustomTraversal is have a custom prefix for your
@@ -73,9 +73,9 @@ var executeQuery = func(host string, query string) (res []byte, err error) {
 	return
 }
 
-// CheckForClient checks for the existence of a
+// checkForClient checks for the existence of a
 // client that we can use to perform quick operations.
-var CheckForClient = func(host string) (err error) {
+var checkForClient = func(host string) (err error) {
 	if client == nil {
 		if logger == nil {
 			client, err = grammes.DialWithWebSocket(host)

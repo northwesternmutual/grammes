@@ -28,7 +28,7 @@ import (
 // VerticesByQuery will gather any vertices and return them
 // based on the fed in traversal query.
 func VerticesByQuery(host string, q query.Query) ([]grammes.Vertex, error) {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func VerticesByQuery(host string, q query.Query) ([]grammes.Vertex, error) {
 // the vertices on the graph and store them into a structured
 // format for an easier way to interact with the data.
 func AllVertices(host string) ([]grammes.Vertex, error) {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func AllVertices(host string) ([]grammes.Vertex, error) {
 // vertex on the graph. This is the best way of finding
 // vertices without any conflicting labels or properties.
 func VertexByID(host string, id int64) (grammes.Vertex, error) {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return nilVertex, err
 	}
@@ -82,7 +82,7 @@ func VertexByID(host string, id int64) (grammes.Vertex, error) {
 // Vertices will gather any vertices and return them
 // based on the fed in traversal.
 func Vertices(host, label string, properties ...interface{}) ([]grammes.Vertex, error) {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return nil, err
 	}

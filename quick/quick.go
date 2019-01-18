@@ -18,22 +18,4 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package graph
-
-import (
-	"testing"
-
-	. "github.com/smartystreets/goconvey/convey"
-)
-
-func TestMakeEdgeLabel(t *testing.T) {
-	Convey("Given a *String that represents the verbose graph traversal", t, func() {
-		graph := NewGraph()
-		Convey("When 'MakeEdgeLabel' is called with a label string", func() {
-			result := graph.MakeEdgeLabel("label")
-			Convey("Then result should equal 'graph.makeEdgeLabel('label')'", func() {
-				So(result.String(), ShouldEqual, "graph.makeEdgeLabel(\"label\")")
-			})
-		})
-	})
-}
+package quick

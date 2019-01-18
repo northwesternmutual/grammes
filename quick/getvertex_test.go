@@ -24,12 +24,11 @@ import (
 	"errors"
 	"testing"
 
+	. "github.com/smartystreets/goconvey/convey"
+	
 	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes/manager"
-
-	grammes "github.com/northwesternmutual/grammes"
-
-	. "github.com/smartystreets/goconvey/convey"
+	"github.com/northwesternmutual/grammes"
 )
 
 func TestVerticesByQuery(t *testing.T) {
@@ -55,11 +54,11 @@ func TestVerticesByQuery(t *testing.T) {
 }
 
 func TestVerticesByQueryClientError(t *testing.T) {
-	tempCheckForClient := CheckForClient
+	tempcheckForClient := checkForClient
 	defer func() {
-		CheckForClient = tempCheckForClient
+		checkForClient = tempcheckForClient
 	}()
-	CheckForClient = func(string) error { return errors.New("ERROR") }
+	checkForClient = func(string) error { return errors.New("ERROR") }
 	Convey("Given a host string and query", t, func() {
 		host := "testhost"
 		var q mockQuery
@@ -116,11 +115,11 @@ func TestAllVertices(t *testing.T) {
 }
 
 func TestAllVerticesClientError(t *testing.T) {
-	tempCheckForClient := CheckForClient
+	tempcheckForClient := checkForClient
 	defer func() {
-		CheckForClient = tempCheckForClient
+		checkForClient = tempcheckForClient
 	}()
-	CheckForClient = func(string) error { return errors.New("ERROR") }
+	checkForClient = func(string) error { return errors.New("ERROR") }
 	Convey("Given a host string", t, func() {
 		host := "testhost"
 		Convey("When AllVertices is called and encounters an error checking for the client", func() {
@@ -176,11 +175,11 @@ func TestVertexByID(t *testing.T) {
 }
 
 func TestVertexByIDClientError(t *testing.T) {
-	tempCheckForClient := CheckForClient
+	tempcheckForClient := checkForClient
 	defer func() {
-		CheckForClient = tempCheckForClient
+		checkForClient = tempcheckForClient
 	}()
-	CheckForClient = func(string) error { return errors.New("ERROR") }
+	checkForClient = func(string) error { return errors.New("ERROR") }
 	Convey("Given a host string and ID int", t, func() {
 		host := "testhost"
 		id := int64(123)
@@ -238,11 +237,11 @@ func TestVertices(t *testing.T) {
 }
 
 func TestVerticesClientError(t *testing.T) {
-	tempCheckForClient := CheckForClient
+	tempcheckForClient := checkForClient
 	defer func() {
-		CheckForClient = tempCheckForClient
+		checkForClient = tempcheckForClient
 	}()
-	CheckForClient = func(string) error { return errors.New("ERROR") }
+	checkForClient = func(string) error { return errors.New("ERROR") }
 	Convey("Given a host string, label and properties", t, func() {
 		host := "testhost"
 		label := "testlabel"

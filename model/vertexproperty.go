@@ -42,9 +42,9 @@ type Property struct {
 	Value PropertyValue `json:"@value"`
 }
 
-// NewPropertyStruct will just shorten the struggle of filling
+// NewProperty will just shorten the struggle of filling
 // a property struct. This is meant to be used when creating a Vertex struct.
-func NewPropertyStruct(label string, value interface{}) Property {
+func NewProperty(label string, value interface{}) Property {
 	return Property{
 		Value: PropertyValue{
 			Label: label,

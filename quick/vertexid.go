@@ -26,7 +26,7 @@ import "github.com/northwesternmutual/grammes/query"
 // run through and extract all the vertex IDs matching the
 // traversal and return them in an array of int64.
 func VertexIDsByQuery(host string, q query.Query) ([]int64, error) {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func VertexIDsByQuery(host string, q query.Query) ([]int64, error) {
 // VertexIDs takes the label and optional properties to retrieve
 // the IDs desired from the graph.
 func VertexIDs(host, label string, properties ...interface{}) ([]int64, error) {
-	err := CheckForClient(host)
+	err := checkForClient(host)
 	if err != nil {
 		return nil, err
 	}
