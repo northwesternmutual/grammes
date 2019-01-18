@@ -18,4 +18,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/*
+Package quick is used for when you want to execute queries to the
+graph database without having to use a Grammes client.
+
+Although more convenient at times; this package does perform
+slower than the typical Grammes client due to the extra
+checks each function needs to do for checking if it has
+a client to the given connection address.
+*/
 package quick

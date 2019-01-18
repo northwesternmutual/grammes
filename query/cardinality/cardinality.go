@@ -18,6 +18,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/*
+Package cardinality contains the object that describes number of relationship occurrences for objects.
+
+See:
+	TinkerPop: http://tinkerpop.apache.org/javadocs/3.3.3/core/org/apache/tinkerpop/gremlin/structure/VertexProperty.Cardinality.html
+	Wikipedia: https://en.wikipedia.org/wiki/Cardinality
+
+Cardinality describes the maximum number of possible relationships.
+
+A note about Cardinality:
+
+This object implements the Parameter interfaces used by graph traversals.
+*/
 package cardinality
 
 // Tinkerpop:

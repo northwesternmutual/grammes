@@ -18,4 +18,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/*
+Package logging provides some zap loggers for the use of a Grammes client.
+
+By default the Grammes client uses a NilLogger for the logger.
+This can be changed by using the WithLogger function in the grammes package.
+*/
 package logging

@@ -18,13 +18,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package predicate
+/*
+Package graph contains a verbose graph traversal.
 
-// Predicate is used when you're trying to find
-// values like IDs or property values that meet
-// within the criteria.
-type Predicate string
+String acts as a verbose graph traversal in this package.
+This object has many steps (not all as of yet) to interact with the graph and its schema.
 
-func (p *Predicate) String() string {
-	return string(*p)
-}
+A note about String:
+
+This object implements the Query interface.
+*/
+package graph

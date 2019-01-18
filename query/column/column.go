@@ -18,6 +18,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/*
+Package column contains the object to reference particular parts of a column.
+
+See: http://tinkerpop.apache.org/javadocs/3.3.3/core/org/apache/tinkerpop/gremlin/structure/Column.html
+
+Column is the object that defines parts of a column in Gremlin.
+These values are such as:
+Keys - Define the keys associated with the columns.
+Values - Define the values associated with the columns.
+
+A note about Column:
+
+This object implements the Parameter interfaces used by graph traversals.
+*/
 package column
 
 // http://tinkerpop.apache.org/javadocs/3.3.3/core/org/apache/tinkerpop/gremlin/structure/Column.html

@@ -18,6 +18,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/*
+Package operator contains the object to apply mathematical operations to a graph traversal.
+
+Contains the name for mathematical operators in the Gremlin traversal language.
+
+A note about Operator:
+
+This object implements the Parameter interfaces used by graph traversals.
+*/
 package operator
 
 // Operator unlike Numberhelper doesn't have functions

@@ -19,32 +19,10 @@
 // THE SOFTWARE.
 
 /*
-Package token contains the object to define parts of a vertex.
+Package testing is used when testing with the Grammes package.
 
-Using a token to create a vertex can allow you to choose a custom
-Key, ID, Label, or Value before creating it.
-
-A note about Token:
-
-This object implements the Parameter interface used by graph traversals.
+Using this package is for testing and using a GraphManager mock to
+help testing the Grammes client without having to use a real
+Graph database.
 */
-package token
-
-// Token allows for more concise
-// Traversal definitions.
-type Token string
-
-const (
-	// ID represents Element.id()
-	ID Token = "T.id"
-	// Key represents Property.key()
-	Key Token = "T.key"
-	// Label represents Element.label()
-	Label Token = "T.label"
-	// Value represents Property.value()
-	Value Token = "T.value"
-)
-
-func (t Token) String() string {
-	return string(t)
-}
+package testing

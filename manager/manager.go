@@ -18,4 +18,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/*
+Package manager contains the graph managers to query the database.
+
+This package manages all queries that go to the graph database and their
+interfaces for mocking them out when testing.
+*/
 package manager

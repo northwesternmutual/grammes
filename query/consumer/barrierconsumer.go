@@ -18,6 +18,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/*
+Package consumer contains the object to control how barriers emit their values.
+
+See: http://tinkerpop.apache.org/javadocs/3.2.1/core/org/apache/tinkerpop/gremlin/process/traversal/SackFunctions.Barrier.html
+
+BarrierConsumer is any step that requires all left traversers to be processed
+prior to emitting result traversers to the right.
+This acts like a barrier (hence the name).
+
+A note about BarrierConsumer:
+
+This object implements the Parameter interfaces used by graph traversals.
+*/
 package consumer
 
 // http://tinkerpop.apache.org/javadocs/3.2.1/core/org/apache/tinkerpop/gremlin/process/traversal/SackFunctions.Barrier.html

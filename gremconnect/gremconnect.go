@@ -19,32 +19,12 @@
 // THE SOFTWARE.
 
 /*
-Package token contains the object to define parts of a vertex.
+Package gremconnect has the connection related structs and functions.
 
-Using a token to create a vertex can allow you to choose a custom
-Key, ID, Label, or Value before creating it.
+Functions in this package relate to authentication and connection to
+the graph database of choice.
 
-A note about Token:
-
-This object implements the Parameter interface used by graph traversals.
+This package also includes the available dialers to use for the Grammes
+client such as the websocket dialer.
 */
-package token
-
-// Token allows for more concise
-// Traversal definitions.
-type Token string
-
-const (
-	// ID represents Element.id()
-	ID Token = "T.id"
-	// Key represents Property.key()
-	Key Token = "T.key"
-	// Label represents Element.label()
-	Label Token = "T.label"
-	// Value represents Property.value()
-	Value Token = "T.value"
-)
-
-func (t Token) String() string {
-	return string(t)
-}
+package gremconnect

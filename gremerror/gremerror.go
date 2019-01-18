@@ -18,6 +18,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/*
+Package gremerror holds custom error types to return in the Grammes package.
+
+All exported functions in this package returns an object that
+implements the error interface.
+*/
 package gremerror
 
 import "errors"

@@ -18,6 +18,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/*
+Package multiplicity contains the object to control property sets for an edge.
+
+See:
+	Titan: http://titan.thinkaurelius.com/javadoc/1.0.0/com/thinkaurelius/titan/core/Multiplicity.html
+	Wikipedia: http://en.wikipedia.org/wiki/Class_diagram#Multiplicity
+	Object-oriented Systems Modeling Laboratory (OSM): http://osm7.cs.byu.edu/OSA/participConst.html
+
+Multiplicity acts as a property set for an edge.
+This includes the number of arrows and vertices of association there are.
+
+A note about Multiplicity:
+
+This object implements the Parameter interfaces used by graph traversals.
+*/
 package multiplicity
 
 import (

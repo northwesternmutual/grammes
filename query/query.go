@@ -18,6 +18,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/*
+Package query contains the interface used to define a graph database query.
+*/
 package query
 
 // Query is the object used to construct queries

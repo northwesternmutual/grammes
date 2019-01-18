@@ -18,6 +18,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/*
+Package pop contains the object that determines the gathered values.
+
+See: http://tinkerpop.apache.org/javadocs/3.3.3/core/org/apache/tinkerpop/gremlin/process/traversal/Pop.html
+
+Pop is for how to return values of a list.
+
+A note about Pop:
+
+This object implements the Parameter interfaces used by graph traversals.
+*/
 package pop
 
 // http://tinkerpop.apache.org/javadocs/3.3.3/core/org/apache/tinkerpop/gremlin/process/traversal/Pop.html

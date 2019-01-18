@@ -18,6 +18,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/*
+Package direction contains the object to denote the direction of an edge.
+
+See: http://tinkerpop.apache.org/javadocs/3.3.3/core/org/apache/tinkerpop/gremlin/structure/Direction.html
+
+Direction controls the direction of an edge or location of a vertex on an edge.
+
+A note about Direction:
+
+This object implements the Parameter interfaces used by graph traversals.
+*/
 package direction
 
 // Tinkerpop:

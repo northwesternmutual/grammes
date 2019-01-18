@@ -19,32 +19,22 @@
 // THE SOFTWARE.
 
 /*
-Package token contains the object to define parts of a vertex.
+Package predicate contains the object to control the searching predicates of a graph traversal.
 
-Using a token to create a vertex can allow you to choose a custom
-Key, ID, Label, or Value before creating it.
+Predicates are used for when you're trying to narrow the search of a vertex or vertices
+on the graph without having to perform multiple searches.
 
-A note about Token:
+A note about Predicate:
 
-This object implements the Parameter interface used by graph traversals.
+This object implements the Parameter interfaces used by graph traversals.
 */
-package token
+package predicate
 
-// Token allows for more concise
-// Traversal definitions.
-type Token string
+// Predicate is used when you're trying to find
+// values like IDs or property values that meet
+// within the criteria.
+type Predicate string
 
-const (
-	// ID represents Element.id()
-	ID Token = "T.id"
-	// Key represents Property.key()
-	Key Token = "T.key"
-	// Label represents Element.label()
-	Label Token = "T.label"
-	// Value represents Property.value()
-	Value Token = "T.value"
-)
-
-func (t Token) String() string {
-	return string(t)
+func (p *Predicate) String() string {
+	return string(*p)
 }

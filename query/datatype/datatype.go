@@ -18,6 +18,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/*
+Package datatype contains the object to represent Datatypes in Gremlin.
+
+DataType and its constant values are the string equivalent of
+the Gremlin language's datatypes when referencing them in a traversal/query.
+
+A note about DataType:
+
+This object implements the Parameter interfaces used by graph traversals.
+*/
 package datatype
 
 // DataType represents all the data types that

@@ -18,6 +18,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/*
+Package scope contains the Scope object to control relations of a graph traversal.
+
+See: http://tinkerpop.apache.org/javadocs/3.3.3/core/org/apache/tinkerpop/gremlin/process/traversal/Scope.html
+
+Scopes can alter how the steps behave given the graph traversal.
+
+A note about Scope:
+
+This object implements the Parameter interface used by graph traversals.
+*/
 package scope
 
 // http://tinkerpop.apache.org/javadocs/3.3.3/core/org/apache/tinkerpop/gremlin/process/traversal/Scope.html

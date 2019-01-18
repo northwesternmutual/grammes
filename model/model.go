@@ -19,32 +19,10 @@
 // THE SOFTWARE.
 
 /*
-Package token contains the object to define parts of a vertex.
+Package model holds structs of the Gremlin counterparts and related methods.
 
-Using a token to create a vertex can allow you to choose a custom
-Key, ID, Label, or Value before creating it.
-
-A note about Token:
-
-This object implements the Parameter interface used by graph traversals.
+These structs can be used as an unmarshalled version of a graph database's
+copy on the graph itself. With these structures you can alter their graph
+counter-part rather than creating manual graph traversals.
 */
-package token
-
-// Token allows for more concise
-// Traversal definitions.
-type Token string
-
-const (
-	// ID represents Element.id()
-	ID Token = "T.id"
-	// Key represents Property.key()
-	Key Token = "T.key"
-	// Label represents Element.label()
-	Label Token = "T.label"
-	// Value represents Property.value()
-	Value Token = "T.value"
-)
-
-func (t Token) String() string {
-	return string(t)
-}
+package model
