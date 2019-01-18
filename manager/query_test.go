@@ -22,6 +22,7 @@ package manager
 
 import (
 	"testing"
+	"time"
 
 	"github.com/northwesternmutual/grammes/gremconnect"
 	"github.com/northwesternmutual/grammes/logging"
@@ -43,10 +44,10 @@ func (*mockDialer) Auth() (*gremconnect.Auth, error) { return &gremconnect.Auth{
 func (*mockDialer) Address() string                  { return "" }
 func (m *mockDialer) GetQuit() chan struct{}         { return make(chan struct{}) }
 func (*mockDialer) SetAuth(string, string)           {}
-func (*mockDialer) SetTimeout(int)                   {}
-func (*mockDialer) SetPingInterval(int)              {}
-func (*mockDialer) SetWritingWait(int)               {}
-func (*mockDialer) SetReadingWait(int)               {}
+func (*mockDialer) SetTimeout(time.Duration)         {}
+func (*mockDialer) SetPingInterval(time.Duration)    {}
+func (*mockDialer) SetWritingWait(time.Duration)     {}
+func (*mockDialer) SetReadingWait(time.Duration)     {}
 
 func TestSetLoggerQM(t *testing.T) {
 	Convey("Given a dialer, string executor and query manager", t, func() {
