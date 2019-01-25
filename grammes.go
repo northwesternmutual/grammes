@@ -30,5 +30,7 @@ What this example does is create a new Grammes Client using the DialWithWebSocke
 With this client it executes a simple string query that just does some simple addition. Then it will return the raw result out.
 
 For further customizability you may check out packages within the `query/` directory.
+
+To see examples on how to use this package further then check out the `examples/` directory.
 */
 package grammes

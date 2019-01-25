@@ -31,8 +31,8 @@ type Dialer interface {
 	// Actions
 	Connect() error
 	Close() error
-	Write([]byte) error
-	Read() ([]byte, error)
+	Write(msg []byte) error
+	Read() (msg []byte, err error)
 	Ping(errs chan error)
 
 	// Checkers
@@ -45,11 +45,11 @@ type Dialer interface {
 	GetQuit() chan struct{}
 
 	// Configuration Setters
-	SetAuth(string, string)
-	SetTimeout(time.Duration)
-	SetPingInterval(time.Duration)
-	SetWritingWait(time.Duration)
-	SetReadingWait(time.Duration)
+	SetAuth(username string, password string)
+	SetTimeout(interval time.Duration)
+	SetPingInterval(interval time.Duration)
+	SetWritingWait(interval time.Duration)
+	SetReadingWait(interval time.Duration)
 }
 
 // NewWebSocketDialer returns a new WebSocket dialer to use when

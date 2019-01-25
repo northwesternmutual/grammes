@@ -47,7 +47,7 @@ type ValueWrapper struct {
 	Partial bool `json:"-"`
 }
 
-// UnmarshalJSON will override the unmarshalling
+// UnmarshalJSON will override the unmarshal
 // process of ValueWrapper and store the correct
 // Value into the variables within the struct.
 func (w *ValueWrapper) UnmarshalJSON(data []byte) error {

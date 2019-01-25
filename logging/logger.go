@@ -30,20 +30,20 @@ type Logger interface {
 	// print out the queries to Stdout or log
 	// them somewhere else you may without
 	// getting extra logs that you don't want.
-	PrintQuery(string)
+	PrintQuery(msg string)
 	// Debug is used when confirming when things
 	// are doing their jobs such as when adding
 	// vertex labels to the schema.
-	Debug(string, map[string]interface{})
+	Debug(msg string, fieldAndVals map[string]interface{})
 	// Error is used when there is a problem but
 	// not a big enough problem to stop an app.
 	// These problems are minor, but not major.
-	Error(string, error)
+	Error(msg string, err error)
 	// Fatal's purpose is to stop the application
 	// because something really wrong happened.
 	// A case of this being used is when trying to
 	// put an odd number of properties in an AddVertex
 	// function. Which would not create a proper query
 	// for the gremlin server and should stop.
-	Fatal(string, error)
+	Fatal(msg string, err error)
 }

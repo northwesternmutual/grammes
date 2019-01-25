@@ -23,13 +23,12 @@ package manager
 import (
 	"encoding/json"
 
-	"github.com/northwesternmutual/grammes/query/cardinality"
-	"github.com/northwesternmutual/grammes/query/datatype"
-	"github.com/northwesternmutual/grammes/query/multiplicity"
-
 	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes/model"
 	"github.com/northwesternmutual/grammes/query"
+	"github.com/northwesternmutual/grammes/query/cardinality"
+	"github.com/northwesternmutual/grammes/query/datatype"
+	"github.com/northwesternmutual/grammes/query/multiplicity"
 )
 
 var (
@@ -41,6 +40,8 @@ var (
 	nilVertex = model.Vertex{}
 )
 
+// unmarshalID will simply take a raw response and
+// unmarshal it into an ID.
 func unmarshalID(data []byte) (id int64, err error) {
 	var resp model.VertexList
 	err = jsonUnmarshal(data, &resp)
@@ -52,65 +53,96 @@ func unmarshalID(data []byte) (id int64, err error) {
 	return id, err
 }
 
+// executor is the function type that is used when passing in executeRequest.
 type executor func(string, map[string]string, map[string]string) ([]byte, error)
 
+// executor is the function type that is used when passing in ExecuteStringQuery.
 type stringExecutor func(string) ([]byte, error)
 
 // MiscQuerier are miscellaneous queries for the server to perform.
 type MiscQuerier interface {
+	// DropAll will drop all vertices on the graph.
 	DropAll() error
-	VertexCount() (int64, error)
-	SetVertexProperty(int64, ...interface{}) error
+	// VertexCount will return the number of vertices on the graph.
+	VertexCount() (count int64, err error)
+	// SetVertexProperty will either add or set the property of a vertex.
+	SetVertexProperty(id int64, keyAndVals ...interface{}) error
 }
 
 // SchemaQuerier handles all schema related queries to the graph.
 type SchemaQuerier interface {
-	AddEdgeLabel(multiplicity.Multiplicity, string) (int64, error)
-	AddEdgeLabels(...interface{}) ([]int64, error)
-	AddPropertyKey(string, datatype.DataType, cardinality.Cardinality) (int64, error)
-	CommitSchema() ([]byte, error)
+	// AddEdgeLabel adds a new edge label to the schema.
+	AddEdgeLabel(multi multiplicity.Multiplicity, label string) (id int64, err error)
+	// AddEdgeLabels adds new edge labels to the schema.
+	AddEdgeLabels(multiplicityAndLabels ...interface{}) (ids []int64, err error)
+	// AddPropertyKey adds a new property key to the schema.
+	AddPropertyKey(label string, dt datatype.DataType, card cardinality.Cardinality) (id int64, err error)
+	// CommitSchema will finalize your changes and apply them to the schema.
+	CommitSchema() (res []byte, err error)
 }
 
 // GetVertexQuerier are functions specifically related to getting vertices.
 type GetVertexQuerier interface {
-	AllVertices() ([]model.Vertex, error)
-	VertexByID(int64) (model.Vertex, error)
-	VerticesByString(string) ([]model.Vertex, error)
-	VerticesByQuery(query.Query) ([]model.Vertex, error)
-	Vertices(string, ...interface{}) ([]model.Vertex, error)
+	// AllVertices will return a slice of all vertices on the graph.
+	AllVertices() (vertices []model.Vertex, err error)
+	// VertexByID will return a single vertex based on the ID provided.
+	VertexByID(id int64) (vertex model.Vertex, err error)
+	// VerticesByString will return already unmarshalled vertex structs from a string query.
+	VerticesByString(stringQuery string) (vertices []model.Vertex, err error)
+	// VerticesByQuery will return already unmarshalled vertex structs from a query object.
+	VerticesByQuery(queryObj query.Query) (vertices []model.Vertex, err error)
+	// Vertices will return vertices based on the label and properties.
+	Vertices(label string, properties ...interface{}) (vertices []model.Vertex, err error)
 }
 
 // GetVertexIDQuerier holds functions to gather IDs from the graph.
 type GetVertexIDQuerier interface {
-	VertexIDsByString(string) ([]int64, error)
-	VertexIDsByQuery(query.Query) ([]int64, error)
-	VertexIDs(string, ...interface{}) ([]int64, error)
+	// VertexIDsByString returns a slice of IDs from a string query.
+	VertexIDsByString(stringQuery string) (ids []int64, err error)
+	// VertexIDsByQuery returns a slice of IDs from a query object.
+	VertexIDsByQuery(queryObj query.Query) (ids []int64, err error)
+	// VertexIDs returns a slice of IDs based on the label and properties.
+	VertexIDs(label string, properties ...interface{}) (ids []int64, err error)
 }
 
 // AddVertexQuerier are queries specific to adding vertices.
 type AddVertexQuerier interface {
-	AddVertexByString(string) (model.Vertex, error)
-	AddAPIVertex(model.APIData) (model.Vertex, error)
-	AddVertexLabels(...string) ([]model.Vertex, error)
-	AddVertexByQuery(query.Query) (model.Vertex, error)
-	AddVertexByStruct(model.Vertex) (model.Vertex, error)
-	AddVertex(string, ...interface{}) (model.Vertex, error)
+	// AddAPIVertex adds a vertex to the graph based on the API struct.
+	AddAPIVertex(api model.APIData) (vertex model.Vertex, err error)
+	// AddVertexByString adds a vertex to the graph using a string query.
+	AddVertexByString(stringQuery string) (vertex model.Vertex, err error)
+	// AddVertexLabels adds multiple labels to the graph.
+	AddVertexLabels(labels ...string) (vertices []model.Vertex, err error)
+	// AddVertexByQuery adds a vertex to the graph using a query object.
+	AddVertexByQuery(queryObj query.Query) (vertex model.Vertex, err error)
+	// AddVertexByStruct adds a vertex to the graph with a vertex struct.
+	AddVertexByStruct(vertexStruct model.Vertex) (vertex model.Vertex, err error)
+	// AddVertex adds a vertex to the graph with label and properties provided.
+	AddVertex(label string, properties ...interface{}) (vertex model.Vertex, err error)
 }
 
 // DropQuerier has functions related to dropping vertices from the graph.
 type DropQuerier interface {
-	DropVertexLabel(string) error
-	DropVertexByID(...int64) error
-	DropVerticesByString(string) error
-	DropVerticesByQuery(query.Query) error
+	// DropVertexLabel drops all vertices with given label.
+	DropVertexLabel(label string) error
+	// DropVertexByID drops vertices based on their IDs.
+	DropVertexByID(ids ...int64) error
+	// DropVerticesByString drops vertices using a string query.
+	DropVerticesByString(stringQuery string) error
+	// DropVerticesByQuery drops vertices using a query object.
+	DropVerticesByQuery(queryObj query.Query) error
 }
 
 // ExecuteQuerier handles the raw queries to the server.
 type ExecuteQuerier interface {
-	ExecuteQuery(query.Query) ([]byte, error)
-	ExecuteStringQuery(string) ([]byte, error)
-	ExecuteBoundQuery(query.Query, map[string]string, map[string]string) ([]byte, error)
-	ExecuteBoundStringQuery(string, map[string]string, map[string]string) ([]byte, error)
+	// ExecuteQuery will execute a query object and return its raw result.
+	ExecuteQuery(queryObj query.Query) (res []byte, err error)
+	// ExecuteStringQuery will execute a string query and return its raw result.
+	ExecuteStringQuery(stringQuery string) (res []byte, err error)
+	// ExecuteBoundQuery will execute a query object with bindings and return its raw result.
+	ExecuteBoundQuery(queryObj query.Query, bindings map[string]string, rebindings map[string]string) (res []byte, err error)
+	// ExecuteBoundStringQuery will execute a string query with bindings and return its raw result.
+	ExecuteBoundStringQuery(stringQuery string, bindings map[string]string, rebindings map[string]string) (res []byte, err error)
 }
 
 // VertexQuerier handles the vertices on the graph.
@@ -128,14 +160,23 @@ type GraphManager interface {
 	ExecuteQuerier
 	SchemaQuerier
 
+	// Returns the interface and functions associated with the MiscQuerier.
 	MiscQuerier() MiscQuerier
+	// Returns the interface and functions associated with the AddVertexQuerier.
 	AddVertexQuerier() AddVertexQuerier
+	// Returns the interface and functions associated with the GetVertexQuerier.
 	GetVertexQuerier() GetVertexQuerier
+	// Returns the interface and functions associated with the GetVertexIDQuerier.
 	GetVertexIDQuerier() GetVertexIDQuerier
+	// Returns the interface and functions associated with the DropQuerier.
 	DropQuerier() DropQuerier
+	// Returns the interface and functions associated with the VertexQuerier.
 	VertexQuerier() VertexQuerier
+	// Returns the interface and functions associated with the ExecuteQuerier.
 	ExecuteQuerier() ExecuteQuerier
+	// Returns the interface and functions associated with the SchemaQuerier.
 	SchemaQuerier() SchemaQuerier
 
+	// Sets the logging object used by the GraphManager.
 	SetLogger(logging.Logger)
 }

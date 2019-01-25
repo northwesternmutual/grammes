@@ -26,7 +26,7 @@ import (
 	"github.com/northwesternmutual/grammes"
 )
 
-func Example() {
+func Example_newClient() {
 	// Creates a new client with the localhost IP.
 	client, err := grammes.DialWithWebSocket("ws://127.0.0.1:8182")
 	if err != nil {
