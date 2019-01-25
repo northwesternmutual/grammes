@@ -110,9 +110,9 @@ func TestVertexCountQueryError(t *testing.T) {
 
 func TestVertexCountUnmarshalError(t *testing.T) {
 	defer func() {
-		JSONUnmarshal = json.Unmarshal
+		jsonUnmarshal = json.Unmarshal
 	}()
-	JSONUnmarshal = func([]byte, interface{}) error { return errors.New("ERROR") }
+	jsonUnmarshal = func([]byte, interface{}) error { return errors.New("ERROR") }
 	Convey("Given a string executor and misc query manager", t, func() {
 		execute := func(string) ([]byte, error) { return nil, nil }
 		mm := newMiscQueryManager(logging.NewBasicLogger(), execute)

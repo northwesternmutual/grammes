@@ -22,8 +22,8 @@ package manager
 
 import (
 	"github.com/northwesternmutual/grammes/query/traversal"
-	"strings"
 	"strconv"
+	"strings"
 
 	"github.com/northwesternmutual/grammes/gremerror"
 	"github.com/northwesternmutual/grammes/logging"
@@ -49,7 +49,7 @@ func (v *vertexIDQueryManager) VertexIDsByString(q string) ([]int64, error) {
 	if !strings.HasSuffix(q, ".id()") {
 		q += ".id()"
 	}
-	
+
 	// retrieve all the vertices from the graph.
 	res, err := v.executeStringQuery(q)
 	if err != nil {
@@ -58,19 +58,19 @@ func (v *vertexIDQueryManager) VertexIDsByString(q string) ([]int64, error) {
 		)
 		return nil, err
 	}
-	
+
 	var rawIDs model.IDList
-	
-	err = JSONUnmarshal(res, &rawIDs)
+
+	err = jsonUnmarshal(res, &rawIDs)
 	if err != nil {
 		v.logger.Error("id unmarshal",
 			gremerror.NewUnmarshalError("VertexIDs", res, err),
 		)
 		return nil, err
 	}
-	
+
 	var ids []int64
-	
+
 	for _, id := range rawIDs.IDs {
 		ids = append(ids, id.Value)
 	}
@@ -95,8 +95,8 @@ func (v *vertexIDQueryManager) VertexIDsByQuery(query query.Query) ([]int64, err
 // VertexIDs takes the label and optional properties to retrieve
 // the IDs desired from the graph.
 func (v *vertexIDQueryManager) VertexIDs(label string, properties ...interface{}) ([]int64, error) {
-	if len(properties) % 2 != 0 {
-		v.logger.Error("number of parameters [" + strconv.Itoa(len(properties)) + "]",
+	if len(properties)%2 != 0 {
+		v.logger.Error("number of parameters ["+strconv.Itoa(len(properties))+"]",
 			gremerror.NewGrammesError("VertexIDs", gremerror.ErrOddNumberOfParameters),
 		)
 		return nil, gremerror.ErrOddNumberOfParameters

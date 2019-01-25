@@ -38,7 +38,7 @@ type stringExecutor func(string) ([]byte, error)
 
 func unmarshalID(data []byte) (id int64, err error) {
 	var resp model.VertexList
-	err = JSONUnmarshal(data, &resp)
+	err = jsonUnmarshal(data, &resp)
 	if err == nil {
 		if len(resp.Vertices) > 0 {
 			id = resp.Vertices[0].ID()
@@ -47,9 +47,9 @@ func unmarshalID(data []byte) (id int64, err error) {
 	return id, err
 }
 
-// JSONUnmarshal is for monkey patching the
+// jsonUnmarshal is for monkey patching the
 // unmarshal process when testing these files.
-var JSONUnmarshal = json.Unmarshal
+var jsonUnmarshal = json.Unmarshal
 
 // nilVertex is used for returning nothing in
 // a vertex related function.

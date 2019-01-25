@@ -41,9 +41,9 @@ func TestUnmarshalID(t *testing.T) {
 
 func TestUnmarshalIDError(t *testing.T) {
 	defer func() {
-		JSONUnmarshal = json.Unmarshal
+		jsonUnmarshal = json.Unmarshal
 	}()
-	JSONUnmarshal = func([]byte, interface{}) error { return errors.New("ERROR") }
+	jsonUnmarshal = func([]byte, interface{}) error { return errors.New("ERROR") }
 	Convey("Given a byte ID response", t, func() {
 		Convey("When unmarshalID is called and encounters an error", func() {
 			_, err := unmarshalID([]byte(vertexResponse))

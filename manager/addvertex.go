@@ -145,7 +145,7 @@ func (v *addVertexQueryManager) AddVertexByString(query string) (model.Vertex, e
 	var list model.VertexList
 
 	// Create the resulting vertices from the query.
-	err = JSONUnmarshal(res, &list)
+	err = jsonUnmarshal(res, &list)
 	if err != nil {
 		v.logger.Error("vertices unmarshal",
 			gremerror.NewUnmarshalError("AddVertexByString", res, err),

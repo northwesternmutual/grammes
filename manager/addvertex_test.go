@@ -177,9 +177,9 @@ func TestAddVertexByQuery(t *testing.T) {
 
 func TestAddVertexByStringJsonUnmarshalError(t *testing.T) {
 	defer func() {
-		JSONUnmarshal = json.Unmarshal
+		jsonUnmarshal = json.Unmarshal
 	}()
-	JSONUnmarshal = func([]byte, interface{}) error { return errors.New("ERROR") }
+	jsonUnmarshal = func([]byte, interface{}) error { return errors.New("ERROR") }
 	Convey("Given a string executor and vertex query manager", t, func() {
 		execute := func(string) ([]byte, error) { return []byte(vertexResponse), nil }
 		qm := newAddVertexQueryManager(logging.NewBasicLogger(), execute)
@@ -194,9 +194,9 @@ func TestAddVertexByStringJsonUnmarshalError(t *testing.T) {
 
 func TestAddVertexByStringReturnnilVertex(t *testing.T) {
 	defer func() {
-		JSONUnmarshal = json.Unmarshal
+		jsonUnmarshal = json.Unmarshal
 	}()
-	JSONUnmarshal = func([]byte, interface{}) error { return nil }
+	jsonUnmarshal = func([]byte, interface{}) error { return nil }
 	Convey("Given a string executor and vertex query manager", t, func() {
 		execute := func(string) ([]byte, error) { return []byte(vertexResponse), nil }
 		qm := newAddVertexQueryManager(logging.NewBasicLogger(), execute)

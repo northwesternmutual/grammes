@@ -58,9 +58,9 @@ func TestVertexIDsByStringQueryError(t *testing.T) {
 
 func TestVertexIDsByStringUnmarshalError(t *testing.T) {
 	defer func() {
-		JSONUnmarshal = json.Unmarshal
+		jsonUnmarshal = json.Unmarshal
 	}()
-	JSONUnmarshal = func([]byte, interface{}) error { return errors.New("ERROR") }
+	jsonUnmarshal = func([]byte, interface{}) error { return errors.New("ERROR") }
 	Convey("Given a string executor and query manager", t, func() {
 		execute := func(string) ([]byte, error) { return []byte(idResponse), nil }
 		qm := newVertexIDQueryManager(logging.NewBasicLogger(), execute)

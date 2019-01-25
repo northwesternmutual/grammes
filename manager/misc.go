@@ -23,9 +23,9 @@ package manager
 import (
 	"strconv"
 
-	"github.com/northwesternmutual/grammes/model"
-	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes/gremerror"
+	"github.com/northwesternmutual/grammes/logging"
+	"github.com/northwesternmutual/grammes/model"
 	"github.com/northwesternmutual/grammes/query/traversal"
 )
 
@@ -85,7 +85,7 @@ func (m *miscQueryManager) VertexCount() (int64, error) {
 
 	var rawIDs model.IDList
 
-	err = JSONUnmarshal(res, &rawIDs)
+	err = jsonUnmarshal(res, &rawIDs)
 	if err != nil {
 		m.logger.Error("id unmarshal",
 			gremerror.NewUnmarshalError("VertrexCount", res, err),

@@ -55,7 +55,7 @@ func (c *getVertexQueryManager) VerticesByString(query string) ([]model.Vertex, 
 	var vertices model.VertexList
 
 	// Unmarshal the response into the structs.
-	err = JSONUnmarshal(res, &vertices)
+	err = jsonUnmarshal(res, &vertices)
 	if err != nil {
 		c.logger.Error("vertices unmarshal",
 			gremerror.NewUnmarshalError("Vertices", res, err),
