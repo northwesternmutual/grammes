@@ -32,28 +32,14 @@ import (
 	"github.com/northwesternmutual/grammes/query"
 )
 
-type executor func(string, map[string]string, map[string]string) ([]byte, error)
-
-type stringExecutor func(string) ([]byte, error)
-
-func unmarshalID(data []byte) (id int64, err error) {
-	var resp model.VertexList
-	err = jsonUnmarshal(data, &resp)
-	if err == nil {
-		if len(resp.Vertices) > 0 {
-			id = resp.Vertices[0].ID()
-		}
-	}
-	return id, err
-}
-
-// jsonUnmarshal is for monkey patching the
-// unmarshal process when testing these files.
-var jsonUnmarshal = json.Unmarshal
-
-// nilVertex is used for returning nothing in
-// a vertex related function.
-var nilVertex = model.Vertex{}
+var (
+	// jsonUnmarshal is for monkey patching the
+	// unmarshal process when testing these files.
+	jsonUnmarshal = json.Unmarshal
+	// nilVertex is used for returning nothing in
+	// a vertex related function.
+	nilVertex = model.Vertex{}
+)
 
 // MiscQuerier are miscellaneous queries for the server to perform.
 type MiscQuerier interface {
@@ -137,4 +123,19 @@ type GraphManager interface {
 	SchemaQuerier() SchemaQuerier
 
 	SetLogger(logging.Logger)
+}
+
+type executor func(string, map[string]string, map[string]string) ([]byte, error)
+
+type stringExecutor func(string) ([]byte, error)
+
+func unmarshalID(data []byte) (id int64, err error) {
+	var resp model.VertexList
+	err = jsonUnmarshal(data, &resp)
+	if err == nil {
+		if len(resp.Vertices) > 0 {
+			id = resp.Vertices[0].ID()
+		}
+	}
+	return id, err
 }
