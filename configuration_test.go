@@ -31,7 +31,7 @@ import (
 func TestWithErrorChannel(t *testing.T) {
 	Convey("Given an error channel and dialer", t, func() {
 		var errs chan error
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
 		Convey("When Dial is called with error channel", func() {
 			c, _ := Dial(dialer, WithErrorChannel(errs))
 			Convey("Then the client error channel should be set", func() {
@@ -43,12 +43,11 @@ func TestWithErrorChannel(t *testing.T) {
 
 func TestWithLogger(t *testing.T) {
 	Convey("Given a logger and dialer", t, func() {
-		var l testLogger
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
 		Convey("When Dial is called with logger", func() {
-			c, _ := Dial(dialer, WithLogger(l))
+			c, _ := mockDial(dialer, WithLogger(dialer.logger))
 			Convey("Then the client logger should be set", func() {
-				So(c.logger, ShouldResemble, l)
+				So(c.logger, ShouldResemble, dialer.logger)
 			})
 		})
 	})
@@ -57,9 +56,9 @@ func TestWithLogger(t *testing.T) {
 func TestWithGremlinVersion(t *testing.T) {
 	Convey("Given a Gremlin version and dialer", t, func() {
 		v := 3
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
 		Convey("When Dial is called with Gremlin Version", func() {
-			c, _ := Dial(dialer, WithGremlinVersion(v))
+			c, _ := mockDial(dialer, WithGremlinVersion(v))
 			Convey("Then the client Gremlin version should be set", func() {
 				So(c.gremlinVersion, ShouldEqual, strconv.Itoa(v))
 			})
@@ -70,9 +69,9 @@ func TestWithGremlinVersion(t *testing.T) {
 func TestWithMaxConcurrentMessages(t *testing.T) {
 	Convey("Given an int and dialer", t, func() {
 		m := 2
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
 		Convey("When Dial is called with max concurrent messages", func() {
-			c, _ := Dial(dialer, WithMaxConcurrentMessages(m))
+			c, _ := mockDial(dialer, WithMaxConcurrentMessages(m))
 			Convey("Then the client request channel should be set", func() {
 				So(c.request, ShouldNotBeNil)
 			})
@@ -84,9 +83,9 @@ func TestWithAuthUserPass(t *testing.T) {
 	Convey("Given a username, password and dialer", t, func() {
 		user := "testuser"
 		pass := "testpass"
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
 		Convey("And Dial is called with username and password", func() {
-			_, err := Dial(dialer, WithAuthUserPass(user, pass))
+			_, err := mockDial(dialer, WithAuthUserPass(user, pass))
 			Convey("Then no error should be encountered", func() {
 				So(err, ShouldBeNil)
 			})
@@ -96,10 +95,10 @@ func TestWithAuthUserPass(t *testing.T) {
 
 func TestWithTimeout(t *testing.T) {
 	Convey("Given a timeout and dialer", t, func() {
-		t := 5 * time.Second
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
+		dialer.timeout = 5 * time.Second
 		Convey("And Dial is called with timeout", func() {
-			_, err := Dial(dialer, WithTimeout(t))
+			_, err := mockDial(dialer, WithTimeout(dialer.timeout))
 			Convey("Then no error should be encountered", func() {
 				So(err, ShouldBeNil)
 			})
@@ -109,10 +108,10 @@ func TestWithTimeout(t *testing.T) {
 
 func TestWithPingInterval(t *testing.T) {
 	Convey("Given a ping interval and dialer", t, func() {
-		p := 5 * time.Second
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
+		dialer.pingInterval = 5 * time.Second
 		Convey("And Dial is called with ping interval", func() {
-			_, err := Dial(dialer, WithPingInterval(p))
+			_, err := mockDial(dialer, WithPingInterval(dialer.pingInterval))
 			Convey("Then no error should be encountered", func() {
 				So(err, ShouldBeNil)
 			})
@@ -122,10 +121,10 @@ func TestWithPingInterval(t *testing.T) {
 
 func TestWithWritingWait(t *testing.T) {
 	Convey("Given a writing wait and dialer", t, func() {
-		w := 5 * time.Second
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
+		dialer.writingWait = 5 * time.Second
 		Convey("And Dial is called with writing wait", func() {
-			_, err := Dial(dialer, WithWritingWait(w))
+			_, err := mockDial(dialer, WithWritingWait(dialer.writingWait))
 			Convey("Then no error should be encountered", func() {
 				So(err, ShouldBeNil)
 			})
@@ -135,10 +134,10 @@ func TestWithWritingWait(t *testing.T) {
 
 func TestWithReadingWait(t *testing.T) {
 	Convey("Given a reading wait and dialer", t, func() {
-		r := 5 * time.Second
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
+		dialer.readingWait = 5 * time.Second
 		Convey("And Dial is called with reading wait", func() {
-			_, err := Dial(dialer, WithReadingWait(r))
+			_, err := mockDial(dialer, WithReadingWait(dialer.readingWait))
 			Convey("Then no error should be encountered", func() {
 				So(err, ShouldBeNil)
 			})

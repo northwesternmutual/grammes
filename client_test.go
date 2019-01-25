@@ -32,14 +32,10 @@ import (
 
 func TestDial(t *testing.T) {
 	Convey("Given a mock dialer", t, func() {
-		readCount = 1
-		dialer := &mockDialer{}
-		logger := &testLogger{}
-		var c *Client
+		dialer := &mockDialerStruct{}
 		Convey("And connection is successful", func() {
-			connect = nil
 			Convey("When Dial is called with the mock dialer", func() {
-				c, _ = Dial(dialer, WithLogger(logger))
+				c, _ := Dial(dialer, WithLogger(dialer.logger))
 				Convey("Then c.Schema should not be nil", func() {
 					So(c.IsBroken(), ShouldBeFalse)
 				})
@@ -48,9 +44,9 @@ func TestDial(t *testing.T) {
 		})
 
 		Convey("And connection is unsuccessful", func() {
-			connect = errors.New("ERR")
+			dialer.connect = errors.New("ERR")
 			Convey("When Dial is called with the mock dialer", func() {
-				c, _ = Dial(dialer, WithLogger(logger))
+				c, _ := Dial(dialer, WithLogger(dialer.logger))
 				Convey("Then c.Schema should not be nil", func() {
 					So(c.IsBroken(), ShouldBeTrue)
 				})
@@ -61,13 +57,12 @@ func TestDial(t *testing.T) {
 }
 
 func TestDialWithWebSocket(t *testing.T) {
-	readCount = 1
 	tempNewWebSocketDialer := NewWebSocketDialer
 	defer func() {
 		NewWebSocketDialer = tempNewWebSocketDialer
 		gremconnect.GenUUID = uuid.NewUUID
 	}()
-	NewWebSocketDialer = func(string) gremconnect.Dialer { return &mockDialer{} }
+	NewWebSocketDialer = func(string) gremconnect.Dialer { return &mockDialerStruct{} }
 	gremconnect.GenUUID = func() (uuid.UUID, error) {
 		var a [16]byte
 		copy(a[:], "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
@@ -76,7 +71,6 @@ func TestDialWithWebSocket(t *testing.T) {
 	Convey("Given a host string and error channel", t, func() {
 		host := ""
 		Convey("And connection is successful", func() {
-			connect = nil
 			Convey("When NewClient is called", func() {
 				c, _ := DialWithWebSocket(host)
 				Convey("Then client shouldn't be nil", func() {
@@ -89,13 +83,12 @@ func TestDialWithWebSocket(t *testing.T) {
 
 func TestSetLogger(t *testing.T) {
 	Convey("Given a client and a logger", t, func() {
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
 		c, _ := Dial(dialer)
-		var l testLogger
 		Convey("and SetLogger is called", func() {
-			c.SetLogger(l)
+			c.SetLogger(dialer.logger)
 			Convey("Then the client logger should resemble l", func() {
-				So(c.logger, ShouldResemble, l)
+				So(c.logger, ShouldResemble, dialer.logger)
 			})
 		})
 	})
@@ -103,7 +96,7 @@ func TestSetLogger(t *testing.T) {
 
 func TestIsBroken(t *testing.T) {
 	Convey("Given a client", t, func() {
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
 		c, _ := Dial(dialer)
 		c.broken = false
 		Convey("And IsBroken is called", func() {
@@ -117,7 +110,7 @@ func TestIsBroken(t *testing.T) {
 
 func TestAddress(t *testing.T) {
 	Convey("Given a client", t, func() {
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
 		c, _ := Dial(dialer)
 		Convey("And Address is called", func() {
 			a := c.Address()
@@ -130,7 +123,7 @@ func TestAddress(t *testing.T) {
 
 func TestAuth(t *testing.T) {
 	Convey("Given a client", t, func() {
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
 		c, _ := Dial(dialer)
 		Convey("And Auth is called", func() {
 			auth, _ := c.Auth()

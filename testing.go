@@ -21,18 +21,16 @@
 package grammes
 
 import (
+	"errors"
 	"time"
+
+	"github.com/gorilla/websocket"
 
 	"github.com/northwesternmutual/grammes/gremconnect"
 	"github.com/northwesternmutual/grammes/query/graph"
 )
 
 var (
-	readCount         int
-	connect           error
-	isConnected       = true
-	isDisposed        = false
-	response          = newVertexResponse
 	newVertexResponse = `
 	{
 		"requestId": "61616161-6161-6161-2d61-6161612d6161",
@@ -56,38 +54,32 @@ var (
 		}
 	}
 	`
-	vertexIDsResponse = `
+	newVertexResponse407 = `
 	{
 		"requestId": "61616161-6161-6161-2d61-6161612d6161",
 		"status": {
 			"message": "",
-			"code": 200,
+			"code": 407,
 			"attributes": {}
 		},
 		"result": {
 			"data": [{
-				"@type": "g:Int64",
-				"@value": 28720
+				"@type": "g:Vertex",
+				"@value": {
+					"id": {
+						"@type": "g:Int64",
+						"@value": 28720
+					},
+					"label": "newvertex"
+				}
 			}],
 			"meta": {}
 		}
 	}
 	`
-	vertexCountResponse = `
+	badResponse = `
 	{
-		"requestId": "61616161-6161-6161-2d61-6161612d6161",
-		"status": {
-			"message": "",
-			"code": 200,
-			"attributes": {}
-		},
-		"result": {
-			"data": [{
-				"@type": "g:Int64",
-				"@value": 1
-			}],
-			"meta": {}
-		}
+		"BADRESPONSE"
 	}
 	`
 )
@@ -105,33 +97,123 @@ type mockString graph.String
 
 func (mockString) String() string { return "TEST" }
 
-// MOCKDIALER
-
-type mockDialer gremconnect.WebSocket
-
-func (*mockDialer) Connect() error     { return connect }
-func (*mockDialer) Close() error       { return nil }
-func (*mockDialer) Write([]byte) error { return nil }
-func (m *mockDialer) Read() ([]byte, error) {
-	if readCount < 1 {
-		time.Sleep(100 * time.Millisecond)
-		readCount++
-		m.Quit <- struct{}{}
-		return []byte(response), nil
-	}
-	return nil, nil
+type mockDialerStruct struct {
+	connect      error
+	isConnected  bool
+	isDisposed   bool
+	response     string
+	logger       testLogger
+	address      string
+	conn         *websocket.Conn
+	auth         *gremconnect.Auth
+	disposed     bool
+	connected    bool
+	pingInterval time.Duration
+	writingWait  time.Duration
+	readingWait  time.Duration
+	timeout      time.Duration
+	quit         chan struct{}
 }
-func (*mockDialer) Ping(chan error)                  {}
-func (*mockDialer) IsConnected() bool                { return isConnected }
-func (*mockDialer) IsDisposed() bool                 { return isDisposed }
-func (*mockDialer) Auth() (*gremconnect.Auth, error) { return &gremconnect.Auth{}, nil }
-func (*mockDialer) Address() string                  { return "" }
-func (m *mockDialer) GetQuit() chan struct{} {
+
+func (m *mockDialerStruct) Connect() error     { return m.connect }
+func (*mockDialerStruct) Close() error         { return nil }
+func (m *mockDialerStruct) Write([]byte) error { return nil }
+func (m *mockDialerStruct) Read() ([]byte, error) {
+	time.Sleep(100 * time.Millisecond)
+	m.quit <- struct{}{}
+	return []byte(m.response), nil
+}
+func (*mockDialerStruct) Ping(chan error)                  {}
+func (m *mockDialerStruct) IsConnected() bool              { return m.isConnected }
+func (m *mockDialerStruct) IsDisposed() bool               { return m.isDisposed }
+func (*mockDialerStruct) Auth() (*gremconnect.Auth, error) { return &gremconnect.Auth{}, nil }
+func (*mockDialerStruct) Address() string                  { return "" }
+func (m *mockDialerStruct) GetQuit() chan struct{} {
+	m.quit = make(chan struct{})
+	return m.quit
+}
+func (*mockDialerStruct) SetAuth(string, string)        {}
+func (*mockDialerStruct) SetTimeout(time.Duration)      {}
+func (*mockDialerStruct) SetPingInterval(time.Duration) {}
+func (*mockDialerStruct) SetWritingWait(time.Duration)  {}
+func (*mockDialerStruct) SetReadingWait(time.Duration)  {}
+
+func mockDial(conn gremconnect.Dialer, cfgs ...ClientConfiguration) (*Client, error) {
+	c := setupClient()
+	c.conn = conn
+	for _, conf := range cfgs {
+		conf(c)
+	}
+	return c, nil
+}
+
+type mockDialerWriteError gremconnect.WebSocket
+
+func (*mockDialerWriteError) Connect() error                   { return nil }
+func (*mockDialerWriteError) Close() error                     { return nil }
+func (*mockDialerWriteError) Write([]byte) error               { return errors.New("ERROR") }
+func (*mockDialerWriteError) Read() ([]byte, error)            { return nil, nil }
+func (*mockDialerWriteError) Ping(chan error)                  {}
+func (*mockDialerWriteError) IsConnected() bool                { return true }
+func (*mockDialerWriteError) IsDisposed() bool                 { return false }
+func (*mockDialerWriteError) Auth() (*gremconnect.Auth, error) { return &gremconnect.Auth{}, nil }
+func (*mockDialerWriteError) Address() string                  { return "" }
+func (m *mockDialerWriteError) GetQuit() chan struct{} {
 	m.Quit = make(chan struct{})
 	return m.Quit
 }
-func (*mockDialer) SetAuth(string, string)        {}
-func (*mockDialer) SetTimeout(time.Duration)      {}
-func (*mockDialer) SetPingInterval(time.Duration) {}
-func (*mockDialer) SetWritingWait(time.Duration)  {}
-func (*mockDialer) SetReadingWait(time.Duration)  {}
+func (*mockDialerWriteError) SetAuth(string, string)        {}
+func (*mockDialerWriteError) SetTimeout(time.Duration)      {}
+func (*mockDialerWriteError) SetPingInterval(time.Duration) {}
+func (*mockDialerWriteError) SetWritingWait(time.Duration)  {}
+func (*mockDialerWriteError) SetReadingWait(time.Duration)  {}
+
+type mockDialerAuthError gremconnect.WebSocket
+
+func (*mockDialerAuthError) Connect() error     { return nil }
+func (*mockDialerAuthError) Close() error       { return nil }
+func (*mockDialerAuthError) Write([]byte) error { return nil }
+func (m *mockDialerAuthError) Read() ([]byte, error) {
+	return []byte(newVertexResponse), nil
+}
+func (*mockDialerAuthError) Ping(chan error)   {}
+func (*mockDialerAuthError) IsConnected() bool { return true }
+func (*mockDialerAuthError) IsDisposed() bool  { return false }
+func (*mockDialerAuthError) Auth() (*gremconnect.Auth, error) {
+	return &gremconnect.Auth{}, errors.New("ERROR")
+}
+func (*mockDialerAuthError) Address() string { return "" }
+func (m *mockDialerAuthError) GetQuit() chan struct{} {
+	m.Quit = make(chan struct{})
+	return m.Quit
+}
+func (*mockDialerAuthError) SetAuth(string, string)        {}
+func (*mockDialerAuthError) SetTimeout(time.Duration)      {}
+func (*mockDialerAuthError) SetPingInterval(time.Duration) {}
+func (*mockDialerAuthError) SetWritingWait(time.Duration)  {}
+func (*mockDialerAuthError) SetReadingWait(time.Duration)  {}
+
+type mockDialerReadError gremconnect.WebSocket
+
+func (*mockDialerReadError) Connect() error     { return nil }
+func (*mockDialerReadError) Close() error       { return nil }
+func (*mockDialerReadError) Write([]byte) error { return nil }
+func (m *mockDialerReadError) Read() ([]byte, error) {
+	time.Sleep(100 * time.Millisecond)
+	m.Quit <- struct{}{}
+	return []byte(newVertexResponse), errors.New("ERROR")
+}
+func (*mockDialerReadError) Ping(chan error)                  {}
+func (*mockDialerReadError) IsConnected() bool                { return true }
+func (*mockDialerReadError) IsDisposed() bool                 { return false }
+func (*mockDialerReadError) Auth() (*gremconnect.Auth, error) { return &gremconnect.Auth{}, nil }
+func (*mockDialerReadError) Address() string                  { return "" }
+func (m *mockDialerReadError) GetQuit() chan struct{} {
+	m.Quit = make(chan struct{})
+	return m.Quit
+}
+func (*mockDialerReadError) SetAuth(string, string)        {}
+func (*mockDialerReadError) SetTimeout(time.Duration)      {}
+func (*mockDialerReadError) SetPingInterval(time.Duration) {}
+func (*mockDialerReadError) SetWritingWait(time.Duration)  {}
+func (*mockDialerReadError) SetReadingWait(time.Duration)  {}

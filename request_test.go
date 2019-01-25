@@ -25,7 +25,6 @@ import (
 	"errors"
 	"sync"
 	"testing"
-	"time"
 
 	"github.com/google/uuid"
 	. "github.com/smartystreets/goconvey/convey"
@@ -34,7 +33,6 @@ import (
 )
 
 func TestExecuteRequest(t *testing.T) {
-	readCount = 1
 	defer func() {
 		gremconnect.GenUUID = uuid.NewUUID
 	}()
@@ -45,13 +43,12 @@ func TestExecuteRequest(t *testing.T) {
 	}
 
 	Convey("Given a client that represents the Gremlin client", t, func() {
-		connect = nil
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
+		dialer.response = newVertexResponse
 		c, _ := Dial(dialer)
 		Convey("When 'executeRequest' is called with query", func() {
 			q := "testQuery"
 			var b, r map[string]string
-			readCount = 0
 			res, err := c.executeRequest(q, b, r)
 			Convey("Then err should be nil and the test result should be returned", func() {
 				So(err, ShouldBeNil)
@@ -61,30 +58,8 @@ func TestExecuteRequest(t *testing.T) {
 	})
 }
 
-type mockDialerWriteError gremconnect.WebSocket
-
-func (*mockDialerWriteError) Connect() error                   { return connect }
-func (*mockDialerWriteError) Close() error                     { return nil }
-func (*mockDialerWriteError) Write([]byte) error               { return errors.New("ERROR") }
-func (*mockDialerWriteError) Read() ([]byte, error)            { return nil, nil }
-func (*mockDialerWriteError) Ping(chan error)                  {}
-func (*mockDialerWriteError) IsConnected() bool                { return isConnected }
-func (*mockDialerWriteError) IsDisposed() bool                 { return isDisposed }
-func (*mockDialerWriteError) Auth() (*gremconnect.Auth, error) { return &gremconnect.Auth{}, nil }
-func (*mockDialerWriteError) Address() string                  { return "" }
-func (m *mockDialerWriteError) GetQuit() chan struct{} {
-	m.Quit = make(chan struct{})
-	return m.Quit
-}
-func (*mockDialerWriteError) SetAuth(string, string)        {}
-func (*mockDialerWriteError) SetTimeout(time.Duration)      {}
-func (*mockDialerWriteError) SetPingInterval(time.Duration) {}
-func (*mockDialerWriteError) SetWritingWait(time.Duration)  {}
-func (*mockDialerWriteError) SetReadingWait(time.Duration)  {}
-
 func TestWriteWorkerErrorWriting(t *testing.T) {
 	Convey("Given a client that represents the Gremlin client", t, func() {
-		connect = nil
 		dialer := &mockDialerWriteError{}
 		c, _ := Dial(dialer)
 		Convey("When there is an error writing the message", func() {
@@ -102,7 +77,7 @@ func TestWriteWorkerErrorWriting(t *testing.T) {
 					}
 				}
 			}()
-			c.dispatchRequest([]byte(response))
+			c.dispatchRequest([]byte(newVertexResponse))
 			wg.Wait()
 			Convey("Then the error should be sent through the channel", func() {
 				So(errReceived, ShouldBeTrue)
@@ -112,7 +87,6 @@ func TestWriteWorkerErrorWriting(t *testing.T) {
 }
 
 func TestExecuteRequestErrorPreparingRequest(t *testing.T) {
-	readCount = 1
 	defer func() {
 		gremconnect.GenUUID = uuid.NewUUID
 		gremPrepareRequest = gremconnect.PrepareRequest
@@ -127,13 +101,11 @@ func TestExecuteRequestErrorPreparingRequest(t *testing.T) {
 		return req, "test", errors.New("ERROR")
 	}
 	Convey("Given a client that represents the Gremlin client", t, func() {
-		connect = nil
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
 		c, _ := Dial(dialer)
 		Convey("When 'executeRequest' is called and preparing the request throws an error", func() {
 			bindings := make(map[string]string)
 			rebindings := make(map[string]string)
-			readCount = 0
 			_, err := c.executeRequest("testing", bindings, rebindings)
 			Convey("Then the error should be returned", func() {
 				So(err, ShouldNotBeNil)
@@ -143,7 +115,6 @@ func TestExecuteRequestErrorPreparingRequest(t *testing.T) {
 }
 
 func TestExecuteRequestErrorPackagingRequest(t *testing.T) {
-	readCount = 1
 	defer func() {
 		gremconnect.GenUUID = uuid.NewUUID
 		gremPackageRequest = gremconnect.PackageRequest
@@ -155,13 +126,11 @@ func TestExecuteRequestErrorPackagingRequest(t *testing.T) {
 	}
 	gremPackageRequest = func(gremconnect.Request, string) ([]byte, error) { return nil, errors.New("ERROR") }
 	Convey("Given a client that represents the Gremlin client", t, func() {
-		connect = nil
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
 		c, _ := Dial(dialer)
 		Convey("When 'executeRequest' is called and packaging the request throws an error", func() {
 			bindings := make(map[string]string)
 			rebindings := make(map[string]string)
-			readCount = 0
 			_, err := c.executeRequest("testing", bindings, rebindings)
 			Convey("Then the error should be returned", func() {
 				So(err, ShouldNotBeNil)
@@ -171,7 +140,6 @@ func TestExecuteRequestErrorPackagingRequest(t *testing.T) {
 }
 
 func TestExecuteRequestErrorRetrievingResponse(t *testing.T) {
-	readCount = 1
 	defer func() {
 		gremconnect.GenUUID = uuid.NewUUID
 		jsonMarshalData = json.Marshal
@@ -183,13 +151,12 @@ func TestExecuteRequestErrorRetrievingResponse(t *testing.T) {
 	}
 	jsonMarshalData = func(interface{}) ([]byte, error) { return nil, errors.New("ERROR") }
 	Convey("Given a client that represents the Gremlin client", t, func() {
-		connect = nil
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
+		dialer.response = newVertexResponse
 		c, _ := Dial(dialer)
 		Convey("When 'executeRequest' is called and retrieving the response throws an error", func() {
 			bindings := make(map[string]string)
 			rebindings := make(map[string]string)
-			readCount = 0
 			_, err := c.executeRequest("testing", bindings, rebindings)
 			Convey("Then the error should be returned", func() {
 				So(err, ShouldNotBeNil)
@@ -199,7 +166,6 @@ func TestExecuteRequestErrorRetrievingResponse(t *testing.T) {
 }
 
 func TestAuthenticate(t *testing.T) {
-	readCount = 1
 	defer func() {
 		gremconnect.GenUUID = uuid.NewUUID
 	}()
@@ -209,8 +175,7 @@ func TestAuthenticate(t *testing.T) {
 		return uuid.UUID(a), nil
 	}
 	Convey("Given a client that represents the Gremlin client", t, func() {
-		connect = nil
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
 		c, _ := Dial(dialer)
 		Convey("When 'authenticate' is called with query", func() {
 			err := c.authenticate("requestIDtest")
@@ -221,33 +186,7 @@ func TestAuthenticate(t *testing.T) {
 	})
 }
 
-type mockDialerAuthError gremconnect.WebSocket
-
-func (*mockDialerAuthError) Connect() error     { return connect }
-func (*mockDialerAuthError) Close() error       { return nil }
-func (*mockDialerAuthError) Write([]byte) error { return nil }
-func (m *mockDialerAuthError) Read() ([]byte, error) {
-	return []byte(response), nil
-}
-func (*mockDialerAuthError) Ping(chan error)   {}
-func (*mockDialerAuthError) IsConnected() bool { return isConnected }
-func (*mockDialerAuthError) IsDisposed() bool  { return isDisposed }
-func (*mockDialerAuthError) Auth() (*gremconnect.Auth, error) {
-	return &gremconnect.Auth{}, errors.New("ERROR")
-}
-func (*mockDialerAuthError) Address() string { return "" }
-func (m *mockDialerAuthError) GetQuit() chan struct{} {
-	m.Quit = make(chan struct{})
-	return m.Quit
-}
-func (*mockDialerAuthError) SetAuth(string, string)        {}
-func (*mockDialerAuthError) SetTimeout(time.Duration)      {}
-func (*mockDialerAuthError) SetPingInterval(time.Duration) {}
-func (*mockDialerAuthError) SetWritingWait(time.Duration)  {}
-func (*mockDialerAuthError) SetReadingWait(time.Duration)  {}
-
 func TestAuthenticateAuthError(t *testing.T) {
-	readCount = 1
 	defer func() {
 		gremconnect.GenUUID = uuid.NewUUID
 	}()
@@ -257,7 +196,6 @@ func TestAuthenticateAuthError(t *testing.T) {
 		return uuid.UUID(a), nil
 	}
 	Convey("Given a client without auth credentials", t, func() {
-		connect = nil
 		dialer := &mockDialerAuthError{}
 		c, _ := Dial(dialer)
 		Convey("When authenticate is called", func() {
@@ -270,7 +208,6 @@ func TestAuthenticateAuthError(t *testing.T) {
 }
 
 func TestAuthenticateErrorPraparingAuthRequest(t *testing.T) {
-	readCount = 1
 	defer func() {
 		gremconnect.GenUUID = uuid.NewUUID
 		gremPrepareAuthRequest = gremconnect.PrepareAuthRequest
@@ -284,8 +221,8 @@ func TestAuthenticateErrorPraparingAuthRequest(t *testing.T) {
 		return gremconnect.Request{}, errors.New("ERROR")
 	}
 	Convey("Given a client", t, func() {
-		connect = nil
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
+		dialer.response = newVertexResponse
 		c, _ := Dial(dialer)
 		Convey("When authenticate is called and preparing the request throws an error", func() {
 			err := c.authenticate("testauth")
@@ -297,7 +234,6 @@ func TestAuthenticateErrorPraparingAuthRequest(t *testing.T) {
 }
 
 func TestAuthenticateErrorPackagingRequest(t *testing.T) {
-	readCount = 1
 	defer func() {
 		gremconnect.GenUUID = uuid.NewUUID
 		gremPackageRequest = gremconnect.PackageRequest
@@ -309,8 +245,8 @@ func TestAuthenticateErrorPackagingRequest(t *testing.T) {
 	}
 	gremPackageRequest = func(gremconnect.Request, string) ([]byte, error) { return nil, errors.New("ERROR") }
 	Convey("Given a client that represents the Gremlin client", t, func() {
-		connect = nil
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
+		dialer.response = newVertexResponse
 		c, _ := Dial(dialer)
 		Convey("When authenticate is called and packaging the request throws an error", func() {
 			err := c.authenticate("testauth")

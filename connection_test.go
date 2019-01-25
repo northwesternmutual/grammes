@@ -31,7 +31,6 @@ import (
 )
 
 func TestLaunchConnection(t *testing.T) {
-	readCount = 1
 	defer func() {
 		gremconnect.GenUUID = uuid.NewUUID
 	}()
@@ -41,10 +40,10 @@ func TestLaunchConnection(t *testing.T) {
 		return uuid.UUID(a), nil
 	}
 
-	Convey("Given an error channel and a client", t, func() {
-		connect = nil
-		dialer := &mockDialer{}
-		c, _ := Dial(dialer)
+	Convey("Given a client", t, func() {
+		dialer := &mockDialerStruct{}
+		dialer.connect = nil
+		c, _ := mockDial(dialer)
 		Convey("and launchConnection() is called", func() {
 			err := c.launchConnection()
 			Convey("Then the err should be nil", func() {
@@ -55,7 +54,6 @@ func TestLaunchConnection(t *testing.T) {
 }
 
 func TestClose(t *testing.T) {
-	readCount = 1
 	defer func() {
 		gremconnect.GenUUID = uuid.NewUUID
 	}()
@@ -65,9 +63,9 @@ func TestClose(t *testing.T) {
 		return uuid.UUID(a), nil
 	}
 
-	Convey("Given an error channel and a client", t, func() {
-		connect = nil
-		dialer := &mockDialer{}
+	Convey("Given a client", t, func() {
+		dialer := &mockDialerStruct{}
+		dialer.connect = nil
 		c, _ := Dial(dialer)
 		Convey("Then no errors or panics should be thrown when Close() is called", func() {
 			c.Close()
@@ -76,7 +74,6 @@ func TestClose(t *testing.T) {
 }
 
 func TestIsConnected(t *testing.T) {
-	readCount = 1
 	defer func() {
 		gremconnect.GenUUID = uuid.NewUUID
 	}()
@@ -86,13 +83,14 @@ func TestIsConnected(t *testing.T) {
 		copy(a[:], "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
 		return uuid.UUID(a), nil
 	}
-	Convey("Given an error channel and a client", t, func() {
-		dialer := &mockDialer{}
+	Convey("Given a client", t, func() {
+		dialer := &mockDialerStruct{}
+		dialer.connect = nil
 		c, _ := Dial(dialer)
 		Convey("When IsConnected() is called", func() {
 			connection := c.IsConnected()
 			Convey("Then the return value should match the isConnected var", func() {
-				So(connection, ShouldEqual, isConnected)
+				So(connection, ShouldEqual, dialer.isConnected)
 			})
 		})
 	})
@@ -100,8 +98,8 @@ func TestIsConnected(t *testing.T) {
 
 func TestRedial(t *testing.T) {
 	Convey("Given a client", t, func() {
-		dialer := &mockDialer{}
-		c, _ := Dial(dialer)
+		dialer := &mockDialerStruct{}
+		c, _ := mockDial(dialer)
 		Convey("When Redial is called", func() {
 			err := c.Redial(dialer)
 			Convey("Then the error should be nil", func() {
@@ -116,16 +114,16 @@ func TestConnect(t *testing.T) {
 	defer func() {
 		NewWebSocketDialer = tempNewWebSocketDialer
 	}()
-	NewWebSocketDialer = func(string) gremconnect.Dialer { return &mockDialer{} }
+	NewWebSocketDialer = func(string) gremconnect.Dialer { return &mockDialerStruct{} }
 	Convey("Given a client", t, func() {
-		dialer := &mockDialer{}
-		c, _ := Dial(dialer)
+		dialer := &mockDialerStruct{}
+		c, _ := mockDial(dialer)
+		c.conn = dialer
 		Convey("And Connect is called with the client", func() {
-			isDisposed = true
+			dialer.isDisposed = true
 			err := c.Connect()
 			Convey("Then no error should be returned", func() {
 				So(err, ShouldBeNil)
-				isDisposed = false
 			})
 		})
 	})
@@ -144,16 +142,13 @@ func TestConnectNoConnection(t *testing.T) {
 }
 
 func TestConnectErrorLaunchingConnection(t *testing.T) {
-	defer func() {
-		isDisposed = false
-	}()
 	Convey("Given a client", t, func() {
-		dialer := &mockDialer{}
+		dialer := &mockDialerStruct{}
 		c := setupClient()
 		c.conn = dialer
 		Convey("When Connect is called and launching the connection throws an error", func() {
-			isDisposed = true
-			connect = errors.New("ERROR")
+			dialer.isDisposed = true
+			dialer.connect = errors.New("ERROR")
 			err := c.Connect()
 			Convey("Then the error should be returned", func() {
 				So(err, ShouldNotBeNil)
