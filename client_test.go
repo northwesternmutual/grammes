@@ -31,6 +31,8 @@ import (
 )
 
 func TestDial(t *testing.T) {
+	t.Parallel()
+
 	Convey("Given a mock dialer", t, func() {
 		dialer := &mockDialerStruct{}
 		Convey("And connection is successful", func() {
@@ -57,6 +59,8 @@ func TestDial(t *testing.T) {
 }
 
 func TestDialWithWebSocket(t *testing.T) {
+	t.Parallel()
+
 	tempNewWebSocketDialer := NewWebSocketDialer
 	defer func() {
 		NewWebSocketDialer = tempNewWebSocketDialer
@@ -95,6 +99,8 @@ func TestSetLogger(t *testing.T) {
 }
 
 func TestIsBroken(t *testing.T) {
+	t.Parallel()
+
 	Convey("Given a client", t, func() {
 		dialer := &mockDialerStruct{}
 		c, _ := Dial(dialer)
@@ -109,6 +115,8 @@ func TestIsBroken(t *testing.T) {
 }
 
 func TestAddress(t *testing.T) {
+	t.Parallel()
+
 	Convey("Given a client", t, func() {
 		dialer := &mockDialerStruct{}
 		c, _ := Dial(dialer)
@@ -122,6 +130,8 @@ func TestAddress(t *testing.T) {
 }
 
 func TestAuth(t *testing.T) {
+	t.Parallel()
+
 	Convey("Given a client", t, func() {
 		dialer := &mockDialerStruct{}
 		c, _ := Dial(dialer)

@@ -29,6 +29,8 @@ import (
 )
 
 func TestWithErrorChannel(t *testing.T) {
+	t.Parallel()
+
 	Convey("Given an error channel and dialer", t, func() {
 		var errs chan error
 		dialer := &mockDialerStruct{}
@@ -42,6 +44,8 @@ func TestWithErrorChannel(t *testing.T) {
 }
 
 func TestWithLogger(t *testing.T) {
+	t.Parallel()
+
 	Convey("Given a logger and dialer", t, func() {
 		dialer := &mockDialerStruct{}
 		Convey("When Dial is called with logger", func() {
@@ -54,6 +58,8 @@ func TestWithLogger(t *testing.T) {
 }
 
 func TestWithGremlinVersion(t *testing.T) {
+	t.Parallel()
+
 	Convey("Given a Gremlin version and dialer", t, func() {
 		v := 3
 		dialer := &mockDialerStruct{}
@@ -67,6 +73,8 @@ func TestWithGremlinVersion(t *testing.T) {
 }
 
 func TestWithMaxConcurrentMessages(t *testing.T) {
+	t.Parallel()
+
 	Convey("Given an int and dialer", t, func() {
 		m := 2
 		dialer := &mockDialerStruct{}
@@ -80,6 +88,8 @@ func TestWithMaxConcurrentMessages(t *testing.T) {
 }
 
 func TestWithAuthUserPass(t *testing.T) {
+	t.Parallel()
+
 	Convey("Given a username, password and dialer", t, func() {
 		user := "testuser"
 		pass := "testpass"
@@ -94,6 +104,8 @@ func TestWithAuthUserPass(t *testing.T) {
 }
 
 func TestWithTimeout(t *testing.T) {
+	t.Parallel()
+
 	Convey("Given a timeout and dialer", t, func() {
 		dialer := &mockDialerStruct{}
 		dialer.timeout = 5 * time.Second
@@ -107,6 +119,8 @@ func TestWithTimeout(t *testing.T) {
 }
 
 func TestWithPingInterval(t *testing.T) {
+	t.Parallel()
+
 	Convey("Given a ping interval and dialer", t, func() {
 		dialer := &mockDialerStruct{}
 		dialer.pingInterval = 5 * time.Second
@@ -120,6 +134,8 @@ func TestWithPingInterval(t *testing.T) {
 }
 
 func TestWithWritingWait(t *testing.T) {
+	t.Parallel()
+
 	Convey("Given a writing wait and dialer", t, func() {
 		dialer := &mockDialerStruct{}
 		dialer.writingWait = 5 * time.Second
@@ -133,6 +149,8 @@ func TestWithWritingWait(t *testing.T) {
 }
 
 func TestWithReadingWait(t *testing.T) {
+	t.Parallel()
+
 	Convey("Given a reading wait and dialer", t, func() {
 		dialer := &mockDialerStruct{}
 		dialer.readingWait = 5 * time.Second

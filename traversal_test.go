@@ -30,6 +30,8 @@ import (
 )
 
 func TestTraversal(t *testing.T) {
+	t.Parallel()
+
 	Convey("Given we call the Traversal function", t, func() {
 		expected := traversal.String("g")
 		t := Traversal()
@@ -40,6 +42,8 @@ func TestTraversal(t *testing.T) {
 }
 
 func TestCustomTraversal(t *testing.T) {
+	t.Parallel()
+
 	Convey("Given a query string", t, func() {
 		q := "testQuery"
 		expected := traversal.String("testQuery")
@@ -53,6 +57,8 @@ func TestCustomTraversal(t *testing.T) {
 }
 
 func TestVerboseTraversal(t *testing.T) {
+	t.Parallel()
+
 	Convey("Given we call the VerboseTraversal function", t, func() {
 		expected := graph.String("graph")
 		t := VerboseTraversal()

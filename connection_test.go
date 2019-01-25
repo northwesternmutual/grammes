@@ -31,6 +31,7 @@ import (
 )
 
 func TestLaunchConnection(t *testing.T) {
+
 	defer func() {
 		gremconnect.GenUUID = uuid.NewUUID
 	}()
@@ -54,6 +55,7 @@ func TestLaunchConnection(t *testing.T) {
 }
 
 func TestClose(t *testing.T) {
+
 	defer func() {
 		gremconnect.GenUUID = uuid.NewUUID
 	}()
@@ -97,6 +99,8 @@ func TestIsConnected(t *testing.T) {
 }
 
 func TestRedial(t *testing.T) {
+	t.Parallel()
+
 	Convey("Given a client", t, func() {
 		dialer := &mockDialerStruct{}
 		c, _ := mockDial(dialer)
@@ -110,6 +114,7 @@ func TestRedial(t *testing.T) {
 }
 
 func TestConnect(t *testing.T) {
+
 	tempNewWebSocketDialer := NewWebSocketDialer
 	defer func() {
 		NewWebSocketDialer = tempNewWebSocketDialer
@@ -130,6 +135,8 @@ func TestConnect(t *testing.T) {
 }
 
 func TestConnectNoConnection(t *testing.T) {
+	t.Parallel()
+
 	Convey("Given a client", t, func() {
 		c := setupClient()
 		Convey("When Connect is called without a connection", func() {
@@ -142,6 +149,9 @@ func TestConnectNoConnection(t *testing.T) {
 }
 
 func TestConnectErrorLaunchingConnection(t *testing.T) {
+	// This function returns an error when being called in parallel.
+	// t.Parallel()
+
 	Convey("Given a client", t, func() {
 		dialer := &mockDialerStruct{}
 		c := setupClient()

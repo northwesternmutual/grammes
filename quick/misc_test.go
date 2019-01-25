@@ -25,10 +25,10 @@ import (
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
-	
+
+	"github.com/northwesternmutual/grammes"
 	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes/manager"
-	"github.com/northwesternmutual/grammes"
 )
 
 func TestDropAll(t *testing.T) {

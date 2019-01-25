@@ -44,7 +44,7 @@ func main() {
 	client.DropAll()
 
 	// Create a vertex structure with all of the properties.
-	var vert = grammes.NewVertexStruct("person", "name", "damien")
+	var vert = grammes.NewVertex("person", "name", "damien")
 
 	// Add the vertex from the Vertex struct.
 	vertex, err := client.AddVertexByStruct(vert)
