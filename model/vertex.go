@@ -24,15 +24,15 @@ import (
 	"github.com/northwesternmutual/grammes/query/traversal"
 )
 
-// Tinkerpop:
-// http://tinkerpop.apache.org/javadocs/3.2.1/core/org/apache/tinkerpop/gremlin/structure/Vertex.html
-
 // Vertex maintains pointers to both a set
 // of incoming and outgoing Edge objects. The
 // outgoing edges are the edges for which the
 // Vertex is a tail. The incoming edges are those
 // edges for which the Vertex is the head.
-// ---inEdges---> vertex ---outEdges--->.
+//
+// TinkerPop: http://tinkerpop.apache.org/javadocs/3.2.1/core/org/apache/tinkerpop/gremlin/structure/Vertex.html
+//
+//  ---inEdges---> vertex ---outEdges--->.
 type Vertex struct {
 	Type  string      `json:"@type"`
 	Value VertexValue `json:"@value"`

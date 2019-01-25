@@ -50,51 +50,104 @@ var (
 )
 
 // Localhost is used when connecting to a local Gremlin server.
+//
+// This can be used when dialing with a websocket for example:
+//
+//  client, err := grammes.DialWithWebSocket(grammes.Localhost)
+//
+// Localhost is just a simple shortcut instead of hard coding
+// in the string into the connection.
 const Localhost = "ws://127.0.0.1:8182/gremlin"
 
 // Vertex is used to get quick access
 // to the model.Vertex without having to
 // import it everywhere in the grammes package.
+//
+// TinkerPop: http://tinkerpop.apache.org/javadocs/3.2.1/core/org/apache/tinkerpop/gremlin/structure/Vertex.html
+//
+//  ---inEdges---> vertex ---outEdges--->.
+//
+// Vertex maintains pointers to both a set
+// of incoming and outgoing Edge objects. The
+// outgoing edges are the edges for which the
+// Vertex is a tail. The incoming edges are those
+// edges for which the Vertex is the head.
 type Vertex = model.Vertex
 
 // VertexValue is used to get quick access
 // to the model.VertexValue without having to
 // import it everywhere in the grammes package.
+//
+// VertexValue contains the 'value' data
+// from the Vertex object.
 type VertexValue = model.VertexValue
 
 // Edge is used to get quick access
 // to the model.Edge without having to
 // import it everywhere in the grammes package.
+//
+// Tinkerpop: http://tinkerpop.apache.org/javadocs/3.2.1/core/org/apache/tinkerpop/gremlin/structure/Edge.html
+//
+//  outVertex ---label---> inVertex.
+//
+// Edge is the object that builds a
+// connection between two or more vertices.
 type Edge = model.Edge
 
 // Property is used to get quick access
 // to the model.Property without having to
 // import it everywhere in the grammes package.
+//
+// Property holds the type and
+// value of the property. It's extra
+// information used by PropertyDetail.
 type Property = model.Property
 
 // PropertyMap is used to get quick access
 // to the model.PropertyMap without having to
 // import it everywhere in the grammes package.
+//
+// Tinkerpop: http://tinkerpop.apache.org/javadocs/3.2.1/core/org/apache/tinkerpop/gremlin/structure/Property.html
+//
+// PropertyMap is the map used to hold
+// the properties itself. the string key is equivalent
+// to the Gremlin key and the []Property is the value.
+// Properties can have multiple values; this is why we must
+// have it as a slice of Property.
 type PropertyMap = model.PropertyMap
 
 // PropertyValue is used to get quick access
 // to the model.PropertyValue without having to
 // import it everywhere in the grammes package.
+//
+// PropertyValue contains the ID,
+// value, and label of this property's value.
 type PropertyValue = model.PropertyValue
 
 // ID is used to get quick access
 // to the model.ID without having to
 // import it everywhere in the grammes package.
+//
+// ID contains the data stores in the
+// 'ID' data including the type and Value
 type ID = model.ID
 
 // APIData is used to get quick access
 // to the model.APIData without having to
 // import it everywhere in the grammes package.
+//
+// APIData holds the request in which
+// you can make a query with using
+// the Grammes library.
 type APIData = model.APIData
 
 // Data is used to get quick access
 // to the model.Data without having to
 // import it everywhere in the grammes package.
+//
+// Data holds basic information
+// such as the label, name, ID, and properties
+// of what this is being associated with.
 type Data = model.Data
 
 // VertexList is used to get quick access
@@ -116,3 +169,12 @@ type IDList = model.IDList
 // to the model.PropertyList without having to
 // import it everywhere in the grammes package.
 type PropertyList = model.PropertyList
+
+// SimpleValue is used to get quick access
+// to the model.SimpleValue without having to
+// import it everywhere in the grammes package.
+//
+// SimpleValue is used to unmarshal simple value responses
+// from the TinkerPop server. These can include simple datatypes
+// like Int, String, Double, Bool, etc.
+type SimpleValue = model.SimpleValue
