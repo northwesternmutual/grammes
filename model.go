@@ -35,13 +35,17 @@ var (
 
 	// Unmarshal functions.
 
-	// UnmarshalEdgeList returns a new EdgeList meant to unmarshal.
+	// UnmarshalEdgeList is a utility to unmarshal a list
+	// or array of edges properly.
 	UnmarshalEdgeList = model.UnmarshalEdgeList
-	// UnmarshalIDList returns a new IDList meant to unmarshal.
+	// UnmarshalIDList is a utility to unmarshal a list
+	// or array of IDs properly.
 	UnmarshalIDList = model.UnmarshalIDList
-	// UnmarshalVertexList returns a new VertexList meant to unmarshal.
+	// UnmarshalVertexList is a utility to unmarshal a list
+	// or array of vertices properly.
 	UnmarshalVertexList = model.UnmarshalVertexList
-	// UnmarshalPropertyList returns a new PropertyList meant to unmarshal.
+	// UnmarshalPropertyList is a utility to unmarshal a list
+	// or array of IDs properly.
 	UnmarshalPropertyList = model.UnmarshalPropertyList
 )
 
