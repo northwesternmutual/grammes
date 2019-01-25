@@ -41,6 +41,21 @@ var (
 	nilVertex = model.Vertex{}
 )
 
+func unmarshalID(data []byte) (id int64, err error) {
+	var resp model.VertexList
+	err = jsonUnmarshal(data, &resp)
+	if err == nil {
+		if len(resp.Vertices) > 0 {
+			id = resp.Vertices[0].ID()
+		}
+	}
+	return id, err
+}
+
+type executor func(string, map[string]string, map[string]string) ([]byte, error)
+
+type stringExecutor func(string) ([]byte, error)
+
 // MiscQuerier are miscellaneous queries for the server to perform.
 type MiscQuerier interface {
 	DropAll() error
@@ -123,19 +138,4 @@ type GraphManager interface {
 	SchemaQuerier() SchemaQuerier
 
 	SetLogger(logging.Logger)
-}
-
-type executor func(string, map[string]string, map[string]string) ([]byte, error)
-
-type stringExecutor func(string) ([]byte, error)
-
-func unmarshalID(data []byte) (id int64, err error) {
-	var resp model.VertexList
-	err = jsonUnmarshal(data, &resp)
-	if err == nil {
-		if len(resp.Vertices) > 0 {
-			id = resp.Vertices[0].ID()
-		}
-	}
-	return id, err
 }
