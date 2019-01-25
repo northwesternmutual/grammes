@@ -50,4 +50,6 @@ For further instructions please find yourself to the root [README.md](../../READ
 
 ### Test specific steps
 
-- 
+- Adds testing vertices to the graph
+- Gathers all the vertices as `[]Vertex`
+- Logs the gathered vertices' labels and IDs

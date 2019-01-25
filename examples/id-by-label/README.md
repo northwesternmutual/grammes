@@ -50,4 +50,6 @@ For further instructions please find yourself to the root [README.md](../../READ
 
 ### Test specific steps
 
-- 
+- Adds testing vertices to the graph
+- Gathers vertex IDs that have a specific label
+- Logs the IDs

@@ -50,4 +50,7 @@ For further instructions please find yourself to the root [README.md](../../READ
 
 ### Test specific steps
 
-- 
+- Adds testing vertices to the graph that have edges between them
+- Shows how to traverse through the edges to get from one vertex to another
+  - Using the Vertex struct
+- Logs edges and vertices on either side

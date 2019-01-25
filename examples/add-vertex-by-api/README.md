@@ -50,4 +50,5 @@ For further instructions please find yourself to the root [README.md](../../READ
 
 ### Test specific steps
 
-- 
+- Adds vertex to graph using a JSON object
+- Logs the number of vertices on the graph

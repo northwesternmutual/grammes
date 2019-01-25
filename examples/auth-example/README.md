@@ -48,4 +48,5 @@ For further instructions please find yourself to the root [README.md](../../READ
 
 ### Test specific steps
 
-- 
+- Creates a client using a client configuration to add a username and password
+- Logs the Grammes client's authentication credentials

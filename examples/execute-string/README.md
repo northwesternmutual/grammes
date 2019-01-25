@@ -50,4 +50,4 @@ For further instructions please find yourself to the root [README.md](../../READ
 
 ### Test specific steps
 
-- 
+- Adds vertex using a string query with no bindings

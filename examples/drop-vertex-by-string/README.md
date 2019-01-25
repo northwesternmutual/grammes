@@ -50,4 +50,6 @@ For further instructions please find yourself to the root [README.md](../../READ
 
 ### Test specific steps
 
-- 
+- Adds testing vertices to the graph
+- Drops a specific vertex using a string query
+- Logs the vertex count

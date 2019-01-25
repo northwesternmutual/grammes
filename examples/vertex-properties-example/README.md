@@ -50,4 +50,7 @@ For further instructions please find yourself to the root [README.md](../../READ
 
 ### Test specific steps
 
-- 
+- Adds testing vertex with various properties
+- Logs the properties from the Vertex struct
+- Shows how to gather properties from a vertex without the struct
+- Prints out the properties again after unmarshalling

@@ -50,4 +50,6 @@ For further instructions please find yourself to the root [README.md](../../READ
 
 ### Test specific steps
 
-- 
+- Adds testing vertices that have properties that can be searched
+- Gathers vertices using a search predicate
+- Prints the gathered vertices

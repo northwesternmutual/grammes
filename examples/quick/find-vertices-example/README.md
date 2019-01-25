@@ -58,4 +58,6 @@ For further instructions please find yourself to the root [README.md](../../READ
 
 ### Test specific steps
 
-- 
+- Adds testing vertices to the graph
+- Shows how to gather them from the graph using labels, properties, and IDs
+- Logs the vertices

@@ -50,4 +50,4 @@ For further instructions please find yourself to the root [README.md](../../READ
 
 ### Test specific steps
 
-- 
+- Adds a vertex using a Query object and bindings to assign the label

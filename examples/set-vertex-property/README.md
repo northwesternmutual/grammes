@@ -50,4 +50,7 @@ For further instructions please find yourself to the root [README.md](../../READ
 
 ### Test specific steps
 
-- 
+- Adds testing vertices
+- Sets/Adds properties to the vertices after they're created
+  - Using the GraphManager
+  - Using the Vertex struct

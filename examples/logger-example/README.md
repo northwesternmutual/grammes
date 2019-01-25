@@ -50,4 +50,5 @@ For further instructions please find yourself to the root [README.md](../../READ
 
 ### Test specific steps
 
-- 
+- Creates a Grammes client using a custom logger
+- Adds vertex to the graph to test the custom logger

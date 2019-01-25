@@ -54,3 +54,4 @@ For further instructions please find yourself to the root [README.md](../../READ
 
 ### Test specific steps
 
+- Shows how to change out the logger that's used in the `quick/` package

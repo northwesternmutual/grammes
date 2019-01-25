@@ -50,4 +50,5 @@ For further instructions please find yourself to the root [README.md](../../READ
 
 ### Test specific steps
 
-- 
+- Adds vertex to the graph using a Query object
+- Logs the count of vertices

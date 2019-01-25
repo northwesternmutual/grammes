@@ -58,4 +58,4 @@ For further instructions please find yourself to the root [README.md](../../READ
 
 ### Test specific steps
 
-- 
+- Shows how to execute string queries without a client
