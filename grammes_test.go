@@ -33,6 +33,37 @@ func Example_newClient() {
 		log.Fatalf("Error while creating client: %s\n", err.Error())
 	}
 
+	_ = client
+}
+
+func Example_executeQuery() {
+	// Creates a new client with the localhost IP.
+	client, err := grammes.DialWithWebSocket("ws://127.0.0.1:8182")
+	if err != nil {
+		log.Fatalf("Error while creating client: %s\n", err.Error())
+	}
+
+	// Create a graph traversal to use when querying.
+	g := grammes.Traversal()
+
+	// Executing a basic query to add a vertex to the graph
+	// with label "testingVertex" and property "name" that equals "damien"
+	res, err := client.ExecuteQuery(g.AddV("testingVertex").Property("name", "damien"))
+	if err != nil {
+		log.Fatalf("Querying error: %s\n", err.Error())
+	}
+
+	// Print out the result as a string
+	log.Println(string(res))
+}
+
+func Example_executeStringQuery() {
+	// Creates a new client with the localhost IP.
+	client, err := grammes.DialWithWebSocket("ws://127.0.0.1:8182")
+	if err != nil {
+		log.Fatalf("Error while creating client: %s\n", err.Error())
+	}
+
 	// Executing a basic query to assure that the client is working.
 	res, err := client.ExecuteStringQuery("1+3")
 	if err != nil {

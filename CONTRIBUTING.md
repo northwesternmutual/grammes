@@ -65,8 +65,8 @@ import (
 
   "go.uber.org/zap"
 
-  "github.com/northwesternmutual/grammes/query/traversal"
-  "github.com/northwesternmutual/grammes/manager"
+  "github.com/northwesternmutual/grammes/query/token"
+  "github.com/northwesternmutual/grammes"
 )
 ```
 
