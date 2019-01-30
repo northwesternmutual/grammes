@@ -21,35 +21,48 @@
 package main
 
 import (
+	"flag"
+
 	"github.com/northwesternmutual/grammes/examples/exampleutil"
 	"github.com/northwesternmutual/grammes/quick"
 
 	"go.uber.org/zap"
 )
 
+var (
+	// addr is used for holding the connection IP address.
+	// for example this could be, "ws://127.0.0.1:8182"
+	addr string
+)
 
 func main() {
-	localhost := "ws://127.0.0.1:8182/gremlin"
-	
-	// Setup the logger using zap.
+	flag.StringVar(&addr, "h", "", "Connection IP")
+	flag.Parse()
+
 	logger := exampleutil.SetupLogger()
+
+	if addr == "" {
+		logger.Fatal("No host address provided. Please run: go run main.go -h <host address>")
+		return
+	}
+
 	defer func() {
 		logger.Sync()
-		quick.DropAll(localhost)
+		quick.DropAll(addr)
 	}()
 
-	quick.DropAll(localhost)
+	quick.DropAll(addr)
 
 	// ------------------------------------- Gathering the Vertices from Graph
 	logger.Info("Gathering Vertices...")
 
-	quick.AddVertex(localhost, "testvertex1")
-	quick.AddVertex(localhost, "testvertex2")
-	quick.AddVertex(localhost, "testvertex3")
+	quick.AddVertex(addr, "testvertex1")
+	quick.AddVertex(addr, "testvertex2")
+	quick.AddVertex(addr, "testvertex3")
 
 	// Using this command it takes all of the vertices from the graph
 	// by using `g.V()` and unmarshals them into a structured format.
-	vertices, err := quick.AllVertices(localhost)
+	vertices, err := quick.AllVertices(addr)
 	if err != nil {
 		logger.Fatal("Error getting all vertices", zap.Error(err))
 	}

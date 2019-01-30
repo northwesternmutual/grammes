@@ -21,17 +21,31 @@
 package main
 
 import (
+	"flag"
+
 	"go.uber.org/zap"
 
 	"github.com/northwesternmutual/grammes/examples/exampleutil"
 	"github.com/northwesternmutual/grammes/quick"
 )
 
+var (
+	// addr is used for holding the connection IP address.
+	// for example this could be, "ws://127.0.0.1:8182"
+	addr string
+)
+
 func main() {
-	// Setup the logger using zap.
-	localhost := "ws://127.0.0.1:8182"
+	flag.StringVar(&addr, "h", "", "Connection IP")
+	flag.Parse()
+
 	logger := exampleutil.SetupLogger()
 	defer logger.Sync()
+
+	if addr == "" {
+		logger.Fatal("No host address provided. Please run: go run main.go -h <host address>")
+		return
+	}
 
 	g := quick.Traversal()
 
@@ -39,17 +53,17 @@ func main() {
 	logger.Info("Adding Vertices...")
 
 	// Drop the vertices from the graph beforehand for no interference.
-	quick.ExecuteQuery(localhost, g.V().Drop())
+	quick.ExecuteQuery(addr, g.V().Drop())
 
 	logger.Info("All vertices dropped from graph...")
 
 	// Add all the testing vertices to the graph using QuickAddVertex.
-	quick.AddVertex(localhost, "testingVertex1")
-	quick.AddVertex(localhost, "testingVertex2")
-	quick.AddVertex(localhost, "testingVertex3")
+	quick.AddVertex(addr, "testingVertex1")
+	quick.AddVertex(addr, "testingVertex2")
+	quick.AddVertex(addr, "testingVertex3")
 
 	// Gather all of the vertices in the graph by label.
-	res, err := quick.ExecuteQuery(localhost, g.V().Label())
+	res, err := quick.ExecuteQuery(addr, g.V().Label())
 	if err != nil {
 		logger.Fatal("Error executing query", zap.Error(err))
 	}

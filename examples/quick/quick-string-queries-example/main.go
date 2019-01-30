@@ -21,6 +21,8 @@
 package main
 
 import (
+	"flag"
+
 	"github.com/northwesternmutual/grammes/examples/exampleutil"
 	"github.com/northwesternmutual/grammes/quick"
 
@@ -28,29 +30,38 @@ import (
 )
 
 var (
-	localhost = "ws://127.0.0.1:8182/gremlin"
+	// addr is used for holding the connection IP address.
+	// for example this could be, "ws://127.0.0.1:8182"
+	addr string
 )
 
 func main() {
-	// Setup the logger using zap.
+	flag.StringVar(&addr, "h", "", "Connection IP")
+	flag.Parse()
+
 	logger := exampleutil.SetupLogger()
 	defer logger.Sync()
+
+	if addr == "" {
+		logger.Fatal("No host address provided. Please run: go run main.go -h <host address>")
+		return
+	}
 
 	// ------------------------------------- Executing Queries using QuickExecuteStringQuery
 	logger.Info("Executing Basic String Queries...")
 
 	{
 		// Drop the vertices from the graph beforehand for no interference.
-		quick.ExecuteStringQuery(localhost, "g.V().drop()")
+		quick.ExecuteStringQuery(addr, "g.V().drop()")
 
 		// Adding a Vertex with traversal through QuickExecuteStringQuery
-		quick.ExecuteStringQuery(localhost, "g.addV('traversalVertex')")
+		quick.ExecuteStringQuery(addr, "g.addV('traversalVertex')")
 
 		// Adding a Vertex with graph through QuickExecuteStringQuery
-		quick.ExecuteStringQuery(localhost, "graph.addVertex(T.label, 'graphingVertex')")
+		quick.ExecuteStringQuery(addr, "graph.addVertex(T.label, 'graphingVertex')")
 
 		// Storing a result byte array after executing a query.
-		res, err := quick.ExecuteStringQuery(localhost, "g.V().label()")
+		res, err := quick.ExecuteStringQuery(addr, "g.V().label()")
 		if err != nil {
 			logger.Fatal("Error executing query", zap.Error(err))
 		}

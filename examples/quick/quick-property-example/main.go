@@ -21,17 +21,31 @@
 package main
 
 import (
+	"flag"
+
 	"go.uber.org/zap"
 
 	"github.com/northwesternmutual/grammes/examples/exampleutil"
 	"github.com/northwesternmutual/grammes/quick"
 )
 
+var (
+	// addr is used for holding the connection IP address.
+	// for example this could be, "ws://127.0.0.1:8182"
+	addr string
+)
+
 func main() {
-	localhost := "ws://127.0.0.1:8182/gremlin"
-	// Setup the logger using zap.
+	flag.StringVar(&addr, "h", "", "Connection IP")
+	flag.Parse()
+
 	logger := exampleutil.SetupLogger()
 	defer logger.Sync()
+
+	if addr == "" {
+		logger.Fatal("No host address provided. Please run: go run main.go -h <host address>")
+		return
+	}
 
 	// ------------------------------------- Adding Property to Vertex
 	logger.Info("Adding Property to Vertex...")
@@ -39,23 +53,23 @@ func main() {
 	g := quick.Traversal()
 
 	// Drop all of the vertices already in the graph for no interference.
-	quick.ExecuteQuery(localhost, g.V().Drop())
+	quick.ExecuteQuery(addr, g.V().Drop())
 
 	logger.Info("All vertices dropped from the graph...")
 
 	// Add a testing vertex to add a property to and saving the ID.
-	v, err := quick.AddVertex(localhost, "person")
+	v, err := quick.AddVertex(addr, "person")
 	if err != nil {
 		logger.Fatal("Error adding vertex", zap.Error(err))
 	}
 	id := v.ID()
 
 	// Add the testing properties to testing vertex.
-	quick.SetVertexProperty(localhost, id, "first", "damien")
-	quick.SetVertexProperty(localhost, id, "last", "stamates")
+	quick.SetVertexProperty(addr, id, "first", "damien")
+	quick.SetVertexProperty(addr, id, "last", "stamates")
 
 	// Gather the properties from the vertex via a grammes query command.
-	vertex, err := quick.VertexByID(localhost, id)
+	vertex, err := quick.VertexByID(addr, id)
 	if err != nil {
 		logger.Fatal("Error getting vertex", zap.Error(err))
 	}

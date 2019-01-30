@@ -21,6 +21,8 @@
 package main
 
 import (
+	"flag"
+
 	"go.uber.org/zap"
 
 	"github.com/northwesternmutual/grammes"
@@ -42,26 +44,43 @@ type CustomLogger struct {
 // PrintQuery will print the query out
 // using the zap library rather than log.
 func (c *CustomLogger) PrintQuery(q string) { c.logger.Info("QUERY", zap.String("cmd", q)) }
+
 // Debug debugs the logs to stdout.
 func (c *CustomLogger) Debug(msg string, fields map[string]interface{}) {
 	arguments := []zap.Field{}
 	for k, v := range fields {
-		arguments = append(arguments, zap.Any(k,v))
+		arguments = append(arguments, zap.Any(k, v))
 	}
 	c.logger.Debug(msg, arguments...)
 }
 
 // Error handles errors
 func (*CustomLogger) Error(string, error) {}
+
 // Fatal handles errors that are fatal
 func (*CustomLogger) Fatal(string, error) {}
 
+var (
+	// addr is used for holding the connection IP address.
+	// for example this could be, "ws://127.0.0.1:8182"
+	addr string
+)
+
 func main() {
+	flag.StringVar(&addr, "h", "", "Connection IP")
+	flag.Parse()
+
 	logger := exampleutil.SetupLogger()
+	defer logger.Sync()
+
+	if addr == "" {
+		logger.Fatal("No host address provided. Please run: go run main.go -h <host address>")
+		return
+	}
 
 	// Create a client with the custom logger.
-	client, err := grammes.DialWithWebSocket("ws://127.0.0.1:8182",
-		grammes.WithLogger(&CustomLogger{logger:logger}),
+	client, err := grammes.DialWithWebSocket(addr,
+		grammes.WithLogger(&CustomLogger{logger: logger}),
 	)
 	if err != nil {
 		logger.Fatal("Failed to create client", zap.Error(err))
@@ -72,7 +91,7 @@ func main() {
 	if err != nil {
 		logger.Fatal("Error while adding vertex", zap.Error(err))
 	}
-	
+
 	// Drop the testing vertex.
 	err = client.DropAll()
 	if err != nil {

@@ -21,6 +21,8 @@
 package main
 
 import (
+	"flag"
+
 	"go.uber.org/zap"
 
 	"github.com/northwesternmutual/grammes"
@@ -31,13 +33,28 @@ import (
 // and show the ability to get edges from
 // vertices and vertices from edges.
 
+var (
+	// addr is used for holding the connection IP address.
+	// for example this could be, "ws://127.0.0.1:8182"
+	addr string
+)
+
 func main() {
+	flag.StringVar(&addr, "h", "", "Connection IP")
+	flag.Parse()
+
 	logger := exampleutil.SetupLogger()
 	defer logger.Sync()
 
-	client, err := grammes.DialWithWebSocket("ws://127.0.0.1:8182")
+	if addr == "" {
+		logger.Fatal("No host address provided. Please run: go run main.go -h <host address>")
+		return
+	}
+
+	// Create a new Grammes client with a standard websocket.
+	client, err := grammes.DialWithWebSocket(addr)
 	if err != nil {
-		logger.Fatal("Failed to create client", zap.Error(err))
+		logger.Fatal("Couldn't create client", zap.Error(err))
 	}
 
 	// Drop all vertices on the graph currently.

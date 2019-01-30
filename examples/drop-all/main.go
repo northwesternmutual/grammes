@@ -21,18 +21,34 @@
 package main
 
 import (
+	"flag"
+
 	"go.uber.org/zap"
 
 	"github.com/northwesternmutual/grammes"
 	"github.com/northwesternmutual/grammes/examples/exampleutil"
 )
 
+var (
+	// addr is used for holding the connection IP address.
+	// for example this could be, "ws://127.0.0.1:8182"
+	addr string
+)
+
 func main() {
+	flag.StringVar(&addr, "h", "", "Connection IP")
+	flag.Parse()
+
 	logger := exampleutil.SetupLogger()
 	defer logger.Sync()
 
+	if addr == "" {
+		logger.Fatal("No host address provided. Please run: go run main.go -h <host address>")
+		return
+	}
+
 	// Create a new Grammes client with a standard websocket.
-	client, err := grammes.DialWithWebSocket("ws://127.0.0.1:8182")
+	client, err := grammes.DialWithWebSocket(addr)
 	if err != nil {
 		logger.Fatal("Couldn't create client", zap.Error(err))
 	}
@@ -51,10 +67,10 @@ func main() {
 
 	// Log the amount of vertices that are now on the graph.
 	logger.Info("Counted vertices", zap.Int64("count", count))
-	
+
 	// Now drop all of the vertices.
 	client.DropAll()
-	
+
 	// Recount the vertices on the graph
 	count, err = client.VertexCount()
 	if err != nil {

@@ -21,37 +21,50 @@
 package main
 
 import (
-	"github.com/northwesternmutual/grammes/examples/exampleutil"
-	"github.com/northwesternmutual/grammes/quick"
+	"flag"
 
 	"go.uber.org/zap"
+
+	"github.com/northwesternmutual/grammes/examples/exampleutil"
+	"github.com/northwesternmutual/grammes/quick"
+)
+
+var (
+	// addr is used for holding the connection IP address.
+	// for example this could be, "ws://127.0.0.1:8182"
+	addr string
 )
 
 func main() {
-	localhost := "ws://127.0.0.1:8182"
-	// g := quick.G
+	flag.StringVar(&addr, "h", "", "Connection IP")
+	flag.Parse()
 
 	logger := exampleutil.SetupLogger()
 	defer logger.Sync()
 
+	if addr == "" {
+		logger.Fatal("No host address provided. Please run: go run main.go -h <host address>")
+		return
+	}
+
 	// remove any interfering vertices left on the graph.
-	quick.DropAll(localhost)
+	quick.DropAll(addr)
 
 	// drop the testing vertices when we're done with them.
-	defer quick.DropAll(localhost)
+	defer quick.DropAll(addr)
 
 	// Add some testing vertices with the
 	// same labels but different properties.
-	quick.AddVertex(localhost, "Person", "name", "damien")
-	quick.AddVertex(localhost, "Person", "name", "bahram")
+	quick.AddVertex(addr, "Person", "name", "damien")
+	quick.AddVertex(addr, "Person", "name", "bahram")
 
 	// Retrieve the IDs of the vertices I'm trying to find.
-	damienID, _ := quick.VertexIDs(localhost, "Person", "name", "damien")
-	bahramID, _ := quick.VertexIDs(localhost, "Person", "name", "bahram")
+	damienID, _ := quick.VertexIDs(addr, "Person", "name", "damien")
+	bahramID, _ := quick.VertexIDs(addr, "Person", "name", "bahram")
 
 	// Use the IDs to retrieve the Vertex structures.
-	damienV, _ := quick.VertexByID(localhost, damienID[0])
-	bahramV, _ := quick.VertexByID(localhost, bahramID[0])
+	damienV, _ := quick.VertexByID(addr, damienID[0])
+	bahramV, _ := quick.VertexByID(addr, bahramID[0])
 
 	// Log out the data retrieved.
 	logger.Info("Vertex", zap.Any("id", damienV.ID()))

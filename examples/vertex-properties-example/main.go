@@ -22,6 +22,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 
 	"github.com/northwesternmutual/grammes"
@@ -29,12 +30,26 @@ import (
 	"go.uber.org/zap"
 )
 
+var (
+	// addr is used for holding the connection IP address.
+	// for example this could be, "ws://127.0.0.1:8182"
+	addr string
+)
+
 func main() {
+	flag.StringVar(&addr, "h", "", "Connection IP")
+	flag.Parse()
+
 	logger := exampleutil.SetupLogger()
 	defer logger.Sync()
 
+	if addr == "" {
+		logger.Fatal("No host address provided. Please run: go run main.go -h <host address>")
+		return
+	}
+
 	// Create a new Grammes client with a standard websocket.
-	client, err := grammes.DialWithWebSocket(grammes.Localhost)
+	client, err := grammes.DialWithWebSocket(addr)
 	if err != nil {
 		logger.Fatal("Couldn't create client", zap.Error(err))
 	}

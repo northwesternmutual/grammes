@@ -21,24 +21,17 @@
 package main
 
 import (
+	"flag"
+
 	"github.com/northwesternmutual/grammes/examples/exampleutil"
 	"github.com/northwesternmutual/grammes/quick"
 
 	"go.uber.org/zap"
 )
 
-var (
-	// localhost contains the local address
-	// needed to connect to a gremlin server.
-	localhost = "ws://127.0.0.1:8182"
-	// this is the designated logging system
-	// being used to keep track of this program.
-	logger *zap.Logger
-)
-
 // CustomLogger is our new logger
 // to print using zap.
-type CustomLogger struct {}
+type CustomLogger struct{}
 
 // PrintQuery will print the query out
 // using the zap library rather than log.
@@ -50,7 +43,7 @@ func (*CustomLogger) PrintQuery(q string) {
 func (*CustomLogger) Debug(msg string, fields map[string]interface{}) {
 	var arguments []zap.Field
 	for k, v := range fields {
-		arguments = append(arguments, zap.Any(k,v))
+		arguments = append(arguments, zap.Any(k, v))
 	}
 	if len(arguments) > 0 {
 		logger.Debug(msg, arguments...)
@@ -63,13 +56,28 @@ func (*CustomLogger) Error(string, error) {}
 // Fatal
 func (*CustomLogger) Fatal(string, error) {}
 
+var (
+	// this is the designated logging system
+	// being used to keep track of this program.
+	logger *zap.Logger
+	// addr is used for holding the connection IP address.
+	// for example this could be, "ws://127.0.0.1:8182"
+	addr string
+)
+
 func main() {
-	// Setup the logger using zap.
-	logger = exampleutil.SetupLogger()
-	
+	flag.StringVar(&addr, "h", "", "Connection IP")
+	flag.Parse()
+
+	logger := exampleutil.SetupLogger()
 	defer logger.Sync()
+
+	if addr == "" {
+		logger.Fatal("No host address provided. Please run: go run main.go -h <host address>")
+		return
+	}
 
 	quick.SetLogger(&CustomLogger{})
 
-	quick.DropAll(localhost)
+	quick.DropAll(addr)
 }

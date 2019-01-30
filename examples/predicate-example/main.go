@@ -21,19 +21,35 @@
 package main
 
 import (
+	"flag"
+
 	"go.uber.org/zap"
-	
+
 	"github.com/northwesternmutual/grammes"
-	"github.com/northwesternmutual/grammes/query/predicate"
 	"github.com/northwesternmutual/grammes/examples/exampleutil"
+	"github.com/northwesternmutual/grammes/query/predicate"
+)
+
+var (
+	// addr is used for holding the connection IP address.
+	// for example this could be, "ws://127.0.0.1:8182"
+	addr string
 )
 
 func main() {
+	flag.StringVar(&addr, "h", "", "Connection IP")
+	flag.Parse()
+
 	logger := exampleutil.SetupLogger()
 	defer logger.Sync()
 
+	if addr == "" {
+		logger.Fatal("No host address provided. Please run: go run main.go -h <host address>")
+		return
+	}
+
 	// Create a new Grammes client with a standard websocket.
-	client, err := grammes.DialWithWebSocket("ws://127.0.0.1:8182")
+	client, err := grammes.DialWithWebSocket(addr)
 	if err != nil {
 		logger.Fatal("Couldn't create client", zap.Error(err))
 	}
@@ -63,7 +79,7 @@ func main() {
 	// Print out all the vertices that were retrieved.
 	// This should be 2 prints.
 	for _, v := range vertices {
-		logger.Info("Vertex", zap.Any("Age",v.PropertyValue("age", 0)))
+		logger.Info("Vertex", zap.Any("Age", v.PropertyValue("age", 0)))
 	}
 
 	client.DropAll()
