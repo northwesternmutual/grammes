@@ -26,7 +26,7 @@ package traversal
 // Signatures:
 // Repeat(*String (Traversal))
 func (g String) Repeat(traversal String) String {
-	g.AddStep("repeat", traversal)
+	g.AddStep("repeat", traversal.Raw())
 
 	return g
 }

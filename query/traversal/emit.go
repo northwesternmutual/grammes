@@ -29,7 +29,7 @@ package traversal
 // Emit(*String (Traversal))
 func (g String) Emit(predOrTrav ...interface{}) String {
 	if len(predOrTrav) > 0 {
-		g.AddStep("emit", predOrTrav[0])
+		g.AddStep("emit", predOrTrav[0].(String).Raw())
 	} else {
 		g.AddStep("emit")
 	}
