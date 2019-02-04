@@ -89,7 +89,7 @@ func TestUnexportedExecuteQueryWithClientAndLogger(t *testing.T) {
 	})
 }
 
-func TestcheckForClientWithLogger(t *testing.T) {
+func TestCheckForClientWithLogger(t *testing.T) {
 	defer func() {
 		client = nil
 		logger = nil
@@ -106,7 +106,7 @@ func TestcheckForClientWithLogger(t *testing.T) {
 	})
 }
 
-func TestcheckForClient(t *testing.T) {
+func TestCheckForClient(t *testing.T) {
 	defer func() {
 		client = nil
 		logger = nil

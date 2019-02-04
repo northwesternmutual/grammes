@@ -37,13 +37,15 @@ var (
 	// addr is used for holding the connection IP address.
 	// for example this could be, "ws://127.0.0.1:8182"
 	addr string
+
+	logger *zap.Logger
 )
 
 func main() {
 	flag.StringVar(&addr, "h", "", "Connection IP")
 	flag.Parse()
 
-	logger := exampleutil.SetupLogger()
+	logger = exampleutil.SetupLogger()
 	defer logger.Sync()
 
 	if addr == "" {
@@ -74,9 +76,6 @@ func main() {
 		logger.Fatal("Failed to add vertex", zap.Error(err))
 	}
 
-	// Create a graph traversal.
-	// g := grammes.Traversal()
-
 	// Add an edge between the two vertices and
 	// add two properties to the edge.
 	vertex1.AddEdge(client, "friendsWith", vertex2.ID(),
@@ -90,6 +89,10 @@ func main() {
 		logger.Fatal("Error while querying for outer edges", zap.Error(err))
 	}
 
+	printEdges(client, edges)
+}
+
+func printEdges(client *grammes.Client, edges []grammes.Edge) {
 	if len(edges) > 0 {
 		// Get the vertices based on the edge's
 		// stored ID's about its related vertices.
@@ -111,20 +114,20 @@ func main() {
 		}
 		// Print the information about the edge including
 		// its ID, label, and its properties.
-
+	
 		logger.Info("Edge",
 			zap.String("ID", edges[0].ID()),
 			zap.String("Label", edges[0].Label()),
 			zap.Any("ageDiff", edges[0].PropertyValue("ageDiff")),
 			zap.Any("driveDist", edges[0].PropertyValue("driveDist")),
 		)
-
+	
 		logger.Info("OutVertex",
 			zap.Int64("ID", edges[0].OutVertexID()),
 			zap.String("Label", edges[0].OutVertexLabel()),
 			zap.Any("Name", v1.PropertyValue("name", 0)),
 		)
-
+	
 		logger.Info("InVertex",
 			zap.Int64("ID", edges[0].InVertexID()),
 			zap.String("Label", edges[0].InVertexLabel()),

@@ -67,7 +67,7 @@ func MarshalResponse(msg []byte) (Response, error) {
 
 // responseDetectError detects any possible errors in responses
 // from Gremlin Server and generates an error for each code
-func responseDetectError(code int) (err error) {
+func responseDetectError(code int) error {
 	switch code {
 	case 200:
 		break
@@ -76,25 +76,25 @@ func responseDetectError(code int) (err error) {
 	case 206:
 		break
 	case 401:
-		err = gremerror.NewNetworkError(401, "UNAUTHORIZED")
+		return gremerror.NewNetworkError(401, "UNAUTHORIZED")
 	case 407:
-		err = gremerror.NewNetworkError(407, "AUTHENTICATION REQUIRED")
+		return gremerror.NewNetworkError(407, "AUTHENTICATION REQUIRED")
 	case 498:
-		err = gremerror.NewNetworkError(498, "MALFORMED REQUEST")
+		return gremerror.NewNetworkError(498, "MALFORMED REQUEST")
 	case 499:
-		err = gremerror.NewNetworkError(499, "INVALID REQUEST ARGUMENTS")
+		return gremerror.NewNetworkError(499, "INVALID REQUEST ARGUMENTS")
 	case 500:
-		err = gremerror.NewNetworkError(500, "INTERNAL SERVER ERROR")
+		return gremerror.NewNetworkError(500, "INTERNAL SERVER ERROR")
 	case 503:
-		err = gremerror.NewNetworkError(503, "SERVER UNAVAILABLE")
+		return gremerror.NewNetworkError(503, "SERVER UNAVAILABLE")
 	case 597:
-		err = gremerror.NewNetworkError(597, "SCRIPT EVALUATION ERROR")
+		return gremerror.NewNetworkError(597, "SCRIPT EVALUATION ERROR")
 	case 598:
-		err = gremerror.NewNetworkError(598, "SERVER TIMEOUT")
+		return gremerror.NewNetworkError(598, "SERVER TIMEOUT")
 	case 599:
-		err = gremerror.NewNetworkError(599, "SERIALIZATION ERROR")
+		return gremerror.NewNetworkError(599, "SERIALIZATION ERROR")
 	default:
-		err = gremerror.NewNetworkError(code, "UNKNOWN ERROR")
+		return gremerror.NewNetworkError(code, "UNKNOWN ERROR")
 	}
-	return
+	return nil
 }

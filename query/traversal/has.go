@@ -20,12 +20,7 @@
 
 package traversal
 
-import (
-	"fmt"
-	"go/token"
-
-	"github.com/northwesternmutual/grammes/query/predicate"
-)
+import "fmt"
 
 // http://tinkerpop.apache.org/docs/current/reference/#has-step
 
@@ -42,37 +37,19 @@ import (
 // Has(Token, string (P))
 // Has(Token, *String (Traversal))
 func (g String) Has(first interface{}, params ...interface{}) String {
-	g = g.append(".has(")
+	var newParams []interface{}
 
-	switch t := first.(type) {
-	case token.Token:
-		g = g.append(t.String())
-	case string:
-		g = g.append("\"" + t + "\"")
-	default:
-		g = g.append(fmtStr("%v", first))
+	newParams = append(newParams, first)
+
+	for _, p := range params {
+		newParams = append(newParams, p)
 	}
 
-	if len(params) > 2 {
+	if len(newParams) > 3 {
 		fmt.Println("ERROR: Too many parameters to call Has()")
 	}
 
-	if len(params) > 0 {
-		for _, v := range params {
-			switch t := v.(type) {
-			case string:
-				g = g.append(",\"" + t + "\"")
-			case String:
-				g = g.append("," + t.Raw().String())
-			case *predicate.Predicate:
-				g = g.append("," + t.String() + "")
-			default:
-				g = g.append(fmtStr(",%v", v))
-			}
-		}
-	}
-
-	g = g.append(")")
+	g.AddStep("has", newParams...)
 
 	return g
 }

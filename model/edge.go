@@ -83,7 +83,7 @@ func (e *Edge) QueryOutVertex(client queryClient) (Vertex, error) {
 	if client == nil {
 		return Vertex{}, errors.New("QueryOutVertex: nil client given to Edge")
 	}
-	raw := make([]byte, 1)
+
 	raw, err := client.ExecuteQuery(traversal.NewTraversal().
 		V().HasID(e.OutVertexID()))
 	if err != nil {
@@ -106,7 +106,7 @@ func (e *Edge) QueryInVertex(client queryClient) (Vertex, error) {
 	if client == nil {
 		return Vertex{}, errors.New("QueryInVertex: nil client given to Edge")
 	}
-	raw := make([]byte, 1)
+
 	raw, err := client.ExecuteQuery(traversal.NewTraversal().
 		V().HasID(e.InVertexID()))
 	if err != nil {

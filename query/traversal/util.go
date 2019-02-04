@@ -77,30 +77,24 @@ func (g *String) AddStep(step string, params ...interface{}) {
 			buffer.Write(t)
 		case string:
 			buffer.WriteString("\"" + t + "\"")
-		case int32:
-			buffer.WriteString(strconv.Itoa(int(t)))
-		case int64:
-			buffer.WriteString(strconv.Itoa(int(t)))
-		case int:
-			buffer.WriteString(strconv.Itoa(t))
-		case float32:
-			buffer.WriteString(fmt.Sprintf("%f", t))
-		case float64:
-			buffer.WriteString(fmt.Sprintf("%f", t))
-		case bool:
-			buffer.WriteString(strconv.FormatBool(t))
+		default:
+			buffer.WriteString(fmt.Sprintf("%v", t))
 		}
 
-		if len(params) > i+1 {
-			if params[i+1] != nil && params[i+1] != "" {
-				buffer.WriteString(",")
-			}
-		}
+		g.commaSeperator(i, params...)
 	}
 
 	buffer.WriteString(")")
 
 	*g = String(g.String() + buffer.String())
+}
+
+func (g *String) commaSeperator(i int, params ...interface{}) {
+	if len(params) > i+1 {
+		if params[i+1] != nil && params[i+1] != "" {
+			buffer.WriteString(",")
+		}
+	}
 }
 
 // gatherInts will act as a filter for

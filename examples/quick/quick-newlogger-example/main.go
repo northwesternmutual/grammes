@@ -39,7 +39,7 @@ func (*CustomLogger) PrintQuery(q string) {
 	logger.Info("QUERY", zap.String("cmd", q))
 }
 
-// Debug
+// Debug logs to debug level
 func (*CustomLogger) Debug(msg string, fields map[string]interface{}) {
 	var arguments []zap.Field
 	for k, v := range fields {
@@ -50,10 +50,10 @@ func (*CustomLogger) Debug(msg string, fields map[string]interface{}) {
 	}
 }
 
-// Error
+// Error does nothing
 func (*CustomLogger) Error(string, error) {}
 
-// Fatal
+// Fatal does nothing
 func (*CustomLogger) Fatal(string, error) {}
 
 var (

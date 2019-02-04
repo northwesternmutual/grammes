@@ -89,7 +89,6 @@ func (v *Vertex) QueryOutEdges(client queryClient, labels ...string) ([]Edge, er
 		return nil, gremerror.NewGrammesError("QueryOutEdges", gremerror.ErrNilClient)
 	}
 
-	raw := make([]byte, 1)
 	raw, err := client.ExecuteQuery(traversal.NewTraversal().V().HasID(v.ID()).OutE(labels...))
 	if err != nil {
 		return nil, err
