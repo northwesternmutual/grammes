@@ -39,7 +39,7 @@ func Traversal() traversal.String {
 // This can be something such as:
 //  // ==> graph.traversal().withoutStrategies(LazyBarrierStrategy)
 func CustomTraversal(q string) traversal.String {
-	return traversal.String(q)
+	return traversal.NewCustomTraversal(q)
 }
 
 // The graph's verbose traversal

@@ -24,7 +24,11 @@ import "bytes"
 
 // String is used to construct commands
 // for the Grammes API when querying
-type String string
+// type String string
+type String struct {
+	string
+	buffer *bytes.Buffer
+}
 
 // Parameter is used for handling all Gremlin types.
 type Parameter interface {
@@ -38,7 +42,3 @@ type Custom string
 func (c Custom) String() string {
 	return string(c)
 }
-
-var (
-	buffer bytes.Buffer
-)

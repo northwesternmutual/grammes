@@ -21,6 +21,7 @@
 package traversal
 
 import (
+	"bytes"
 	"fmt"
 	"strconv"
 	"strings"
@@ -33,13 +34,23 @@ var fmtStr = fmt.Sprintf
 // NewTraversal will return a new Query with
 // a default value of 'g' to start a command.
 func NewTraversal() (g String) {
-	g = "g"
+	g.string = "g"
+	g.buffer = bytes.NewBufferString("")
 	return
 }
 
-func (g String) String() (query string) {
-	query = string(g)
-	return
+// NewCustomTraversal could be used when you need to specifically
+// need to change some property of the traversal.
+// This can be something such as:
+//  // ==> graph.traversal().withoutStrategies(LazyBarrierStrategy)
+func NewCustomTraversal(str string) (g String) {
+	g.string = str
+	g.buffer = bytes.NewBufferString("")
+	return g
+}
+
+func (g String) String() string {
+	return g.string
 }
 
 // Raw will return the raw traversal commands
@@ -47,52 +58,52 @@ func (g String) String() (query string) {
 func (g String) Raw() String {
 	str := g.String()
 	res := strings.TrimPrefix(str, "g.")
-	cmd := String(res)
+	cmd := NewCustomTraversal(res)
 	return cmd
 }
 
 // append will simply take this Query
 // and append a string to it
-func (g String) append(str string) (trav String) {
-	trav = g + String(str)
-	return
+func (g String) append(str string) String {
+	g.string += str
+	return g
 }
 
 // AddStep will add a new step to the traversal string
 // using a list of parameters.
 func (g *String) AddStep(step string, params ...interface{}) {
-	buffer.Reset()
+	g.buffer.Reset()
 
-	buffer.WriteString("." + step + "(")
+	g.buffer.WriteString("." + step + "(")
 
 	for i, p := range params {
 		switch t := p.(type) {
 		case String:
-			buffer.WriteString(t.Raw().String())
+			g.buffer.WriteString(t.Raw().String())
 		case Parameter:
-			buffer.WriteString(t.String())
+			g.buffer.WriteString(t.String())
 		case byte:
-			buffer.WriteByte(t)
+			g.buffer.WriteByte(t)
 		case []byte:
-			buffer.Write(t)
+			g.buffer.Write(t)
 		case string:
-			buffer.WriteString("\"" + t + "\"")
+			g.buffer.WriteString("\"" + t + "\"")
 		default:
-			buffer.WriteString(fmt.Sprintf("%v", t))
+			g.buffer.WriteString(fmt.Sprintf("%v", t))
 		}
 
 		g.commaSeperator(i, params...)
 	}
 
-	buffer.WriteString(")")
+	g.buffer.WriteString(")")
 
-	*g = String(g.String() + buffer.String())
+	g.string += g.buffer.String()
 }
 
 func (g *String) commaSeperator(i int, params ...interface{}) {
 	if len(params) > i+1 {
 		if params[i+1] != nil && params[i+1] != "" {
-			buffer.WriteString(",")
+			g.buffer.WriteString(",")
 		}
 	}
 }

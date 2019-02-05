@@ -28,17 +28,6 @@ package traversal
 // AddV(string)
 // AddV(*String (Traversal))
 func (g String) AddV(params ...interface{}) String {
-	// g = g.append(".addV(")
-
-	// switch params[0].(type) {
-	// case string:
-	// 	g = g.append("\"" + params[0].(string) + "\"")
-	// case String:
-	// 	g = g.append(params[0].(String).Raw().String())
-	// }
-
-	// g = g.append(")")
-
 	g.AddStep("addV", params...)
 
 	return g
