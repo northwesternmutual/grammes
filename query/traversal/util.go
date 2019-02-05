@@ -102,7 +102,7 @@ func (g *String) AddStep(step string, params ...interface{}) {
 
 func (g *String) commaSeperator(i int, params ...interface{}) {
 	if len(params) > i+1 {
-		if params[i+1] != nil && params[i+1] != "" {
+		if params[i+1] != nil {
 			g.buffer.WriteString(",")
 		}
 	}
