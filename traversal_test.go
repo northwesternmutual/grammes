@@ -33,7 +33,7 @@ func TestTraversal(t *testing.T) {
 	t.Parallel()
 
 	Convey("Given we call the Traversal function", t, func() {
-		expected := traversal.String("g")
+		expected := traversal.NewTraversal()
 		t := Traversal()
 		Convey("Then the return value should match the expected result", func() {
 			So(t, ShouldResemble, expected)
@@ -46,7 +46,7 @@ func TestCustomTraversal(t *testing.T) {
 
 	Convey("Given a query string", t, func() {
 		q := "testQuery"
-		expected := traversal.String("testQuery")
+		expected := traversal.NewCustomTraversal(q)
 		Convey("When CustomTraversal is called", func() {
 			t := CustomTraversal(q)
 			Convey("Then the return value should match the expected result", func() {
