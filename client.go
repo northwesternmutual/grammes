@@ -56,8 +56,6 @@ type Client struct {
 	results *sync.Map
 	// resultMessenger is used to store the ID and notifier when result is ready.
 	resultMessenger *sync.Map
-	// respMutex protects the results sync map from racing.
-	respMutex *sync.Mutex
 	// broken is used to determine if the client is not working properly.
 	broken bool
 	// logger is used to log out debug statements and errors from the client.
@@ -71,7 +69,6 @@ func setupClient() *Client {
 		request:         make(chan []byte, maxConCurrentMessages),
 		results:         &sync.Map{},
 		resultMessenger: &sync.Map{},
-		respMutex:       &sync.Mutex{},
 		logger:          logging.NewNilLogger(),
 		gremlinVersion:  "3",
 	}

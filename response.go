@@ -94,18 +94,12 @@ func (c *Client) saveResponse(resp gremconnect.Response) {
 
 	var container []interface{}
 
-	// Lock the response mutex for thread safety.
-	c.respMutex.Lock()
-
 	// Retrieve the existing data (if there are multiple responses).
 	if existingData, ok := c.results.Load(resp.RequestID); ok {
 		container = existingData.([]interface{})
 	}
 	newData := append(container, resp.Data)  // Combine the old data with the new data.
 	c.results.Store(resp.RequestID, newData) // Add data to buffer for future retrieval
-
-	// Unlock the response mutex.
-	c.respMutex.Unlock()
 
 	notifier, _ := c.resultMessenger.LoadOrStore(resp.RequestID, make(chan int, 1))
 
