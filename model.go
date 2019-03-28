@@ -49,16 +49,6 @@ var (
 	UnmarshalPropertyList = model.UnmarshalPropertyList
 )
 
-// Localhost is used when connecting to a local Gremlin server.
-//
-// This can be used when dialing with a websocket for example:
-//
-//  client, err := grammes.DialWithWebSocket(grammes.Localhost)
-//
-// Localhost is just a simple shortcut instead of hard coding
-// in the string into the connection.
-const Localhost = "ws://127.0.0.1:8182/gremlin"
-
 // Vertex is used to get quick access
 // to the model.Vertex without having to
 // import it everywhere in the grammes package.
