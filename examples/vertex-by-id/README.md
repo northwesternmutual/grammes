@@ -8,7 +8,7 @@ The basics of getting vertices using the `VertexByID` function from a Grammes cl
 
 ## Prerequisites
 
-- Go 1.11.1
+- go 1.12
 - Git
 - Elastic Search
 - Cassandra

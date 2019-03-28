@@ -8,7 +8,7 @@ The basics of counting vertices on the graph using the `VertexCount` function fr
 
 ## Prerequisites
 
-- Go 1.11.1
+- go 1.12
 - Git
 - Elastic Search
 - Cassandra

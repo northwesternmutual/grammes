@@ -10,7 +10,7 @@ The basics on adding vertices using the `AddVertex` function from the `quick` pa
 
 ## Prerequisites
 
-- Go 1.11.1
+- go 1.12
 - Git
 - Elastic Search
 - Cassandra

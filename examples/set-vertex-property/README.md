@@ -8,7 +8,7 @@ The basics of setting vertex properties using the `SetVertexProperty` and `AddPr
 
 ## Prerequisites
 
-- Go 1.11.1
+- go 1.12
 - Git
 - Elastic Search
 - Cassandra

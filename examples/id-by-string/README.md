@@ -8,7 +8,7 @@ The basics of getting vertex IDs using the `VertexIDsByString` function.
 
 ## Prerequisites
 
-- Go 1.11.1
+- go 1.12
 - Git
 - Elastic Search
 - Cassandra

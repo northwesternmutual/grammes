@@ -8,7 +8,7 @@ The basics of setting up a client with a custom logger using a `ClientConfigurat
 
 ## Prerequisites
 
-- Go 1.11.1
+- go 1.12
 - Git
 - Elastic Search
 - Cassandra

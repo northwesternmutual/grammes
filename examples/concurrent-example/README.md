@@ -8,7 +8,7 @@ Shows off that the grammes client can be used concurrently in goroutines.
 
 ## Prerequisites
 
-- Go 1.11.1
+- go 1.12
 - Git
 - Elastic Search
 - Cassandra

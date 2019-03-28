@@ -8,7 +8,7 @@ The basics of executing Gremlin queries that are **NOT** bound using the `Execut
 
 ## Prerequisites
 
-- Go 1.11.1
+- go 1.12
 - Git
 - Elastic Search
 - Cassandra

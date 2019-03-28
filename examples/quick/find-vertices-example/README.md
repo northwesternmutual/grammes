@@ -10,7 +10,7 @@ The basics of querying for vertices using the `VertexIDs` and `VertexByID` funct
 
 ## Prerequisites
 
-- Go 1.11.1
+- go 1.12
 - Git
 - Elastic Search
 - Cassandra

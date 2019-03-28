@@ -10,7 +10,7 @@ The basics of setting up a custom logger and implementing it using the `quick` p
 
 ## Prerequisites
 
-- Go 1.11.1
+- go 1.12
 - Git
 - Elastic Search
 - Cassandra

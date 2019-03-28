@@ -8,7 +8,7 @@ The basics of dropping vertices using only their IDs using the `DropVertexByID` 
 
 ## Prerequisites
 
-- Go 1.11.1
+- go 1.12
 - Git
 - Elastic Search
 - Cassandra

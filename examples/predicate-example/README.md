@@ -8,7 +8,7 @@ The basics of using predicates to narrow searches on your graph.
 
 ## Prerequisites
 
-- Go 1.11.1
+- go 1.12
 - Git
 - Elastic Search
 - Cassandra

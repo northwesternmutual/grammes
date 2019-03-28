@@ -8,7 +8,7 @@ The basics of getting vertices using the `VerticesByString` function from a Gram
 
 ## Prerequisites
 
-- Go 1.11.1
+- go 1.12
 - Git
 - Elastic Search
 - Cassandra
