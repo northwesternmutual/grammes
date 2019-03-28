@@ -134,7 +134,7 @@ func (v *addVertexQueryManager) AddVertexByQuery(q query.Query) (model.Vertex, e
 // AddVertexByString will take a query that's intended to add a vertex
 // and return it as a Vertex struct.
 func (v *addVertexQueryManager) AddVertexByString(query string) (model.Vertex, error) {
-	res, err := v.executeStringQuery(query)
+	responses, err := v.executeStringQuery(query)
 	if err != nil {
 		v.logger.Error("invalid query",
 			gremerror.NewQueryError("AddVertexByString", query, err),
@@ -144,13 +144,18 @@ func (v *addVertexQueryManager) AddVertexByString(query string) (model.Vertex, e
 
 	var list model.VertexList
 
-	// Create the resulting vertices from the query.
-	err = jsonUnmarshal(res, &list)
-	if err != nil {
-		v.logger.Error("vertices unmarshal",
-			gremerror.NewUnmarshalError("AddVertexByString", res, err),
-		)
-		return nilVertex, err
+	for _, res := range responses {
+		var vertPart model.VertexList
+		// Create the resulting vertices from the query.
+		err = jsonUnmarshal(res, &vertPart)
+		if err != nil {
+			v.logger.Error("vertices unmarshal",
+				gremerror.NewUnmarshalError("AddVertexByString", res, err),
+			)
+			return nilVertex, err
+		}
+
+		list.Vertices = append(list.Vertices, vertPart.Vertices...)
 	}
 
 	if len(list.Vertices) > 0 {

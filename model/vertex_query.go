@@ -21,8 +21,6 @@
 package model
 
 import (
-	"encoding/json"
-
 	"github.com/northwesternmutual/grammes/gremerror"
 
 	"github.com/northwesternmutual/grammes/query/traversal"
@@ -39,16 +37,18 @@ func (v *Vertex) QueryRefresh(client queryClient) error {
 
 	var query = newTrav().V().HasID(v.ID())
 
-	res, err := client.ExecuteQuery(query)
+	responses, err := client.ExecuteQuery(query)
 	if err != nil {
 		return gremerror.NewQueryError("QueryRefresh", query.String(), err)
 	}
 
 	var vertices VertexList
-
-	if err = json.Unmarshal(res, &vertices); err != nil {
-		return gremerror.NewUnmarshalError("QueryRefresh", res, err)
+	vertList, err := UnmarshalVertexList(responses)
+	if err != nil {
+		return err
 	}
+
+	vertices.Vertices = vertList
 
 	if len(vertices.Vertices) == 0 {
 		return gremerror.NewGrammesError("QueryRefresh", gremerror.ErrEmptyResponse)
@@ -68,16 +68,18 @@ func (v *Vertex) QueryBothEdges(client queryClient, labels ...string) ([]Edge, e
 
 	var query = newTrav().V().HasID(v.ID()).BothE(labels...)
 
-	res, err := client.ExecuteQuery(query)
+	responses, err := client.ExecuteQuery(query)
 	if err != nil {
 		return nil, gremerror.NewQueryError("QueryBothEdges", query.String(), err)
 	}
 
 	var edges EdgeList
-
-	if err = json.Unmarshal(res, &edges); err != nil {
-		return nil, gremerror.NewUnmarshalError("QueryBothEdges", res, err)
+	edgeList, err := UnmarshalEdgeList(responses)
+	if err != nil {
+		return nil, err
 	}
+
+	edges.Edges = edgeList
 
 	return edges.Edges, nil
 }
@@ -89,17 +91,18 @@ func (v *Vertex) QueryOutEdges(client queryClient, labels ...string) ([]Edge, er
 		return nil, gremerror.NewGrammesError("QueryOutEdges", gremerror.ErrNilClient)
 	}
 
-	raw, err := client.ExecuteQuery(traversal.NewTraversal().V().HasID(v.ID()).OutE(labels...))
+	responses, err := client.ExecuteQuery(traversal.NewTraversal().V().HasID(v.ID()).OutE(labels...))
 	if err != nil {
 		return nil, err
 	}
 
 	var edges EdgeList
-
-	err = json.Unmarshal(raw, &edges)
+	edgeList, err := UnmarshalEdgeList(responses)
 	if err != nil {
 		return nil, err
 	}
+
+	edges.Edges = edgeList
 
 	return edges.Edges, nil
 }
@@ -113,16 +116,18 @@ func (v *Vertex) QueryInEdges(client queryClient, labels ...string) ([]Edge, err
 
 	var query = newTrav().V().HasID(v.ID()).InE(labels...)
 
-	res, err := client.ExecuteQuery(query)
+	responses, err := client.ExecuteQuery(query)
 	if err != nil {
 		return nil, gremerror.NewQueryError("QueryInEdges", query.String(), err)
 	}
 
 	var edges EdgeList
-
-	if err = json.Unmarshal(res, &edges); err != nil {
-		return nil, gremerror.NewUnmarshalError("QueryInEdges", res, err)
+	edgeList, err := UnmarshalEdgeList(responses)
+	if err != nil {
+		return nil, err
 	}
+
+	edges.Edges = edgeList
 
 	return edges.Edges, nil
 }
@@ -148,23 +153,24 @@ func (v *Vertex) AddEdge(client queryClient, label string, outVID int64, propert
 	}
 
 	// Execute the built command.
-	res, err := client.ExecuteQuery(query)
+	responses, err := client.ExecuteQuery(query)
 	if err != nil {
 		return Edge{}, gremerror.NewQueryError("AddEdge", query.String(), err)
 	}
 
-	var e EdgeList
-
-	err = json.Unmarshal(res, &e)
+	var edges EdgeList
+	edgeList, err := UnmarshalEdgeList(responses)
 	if err != nil {
-		return Edge{}, gremerror.NewUnmarshalError("AddEdge", res, err)
+		return Edge{}, err
 	}
 
-	if len(e.Edges) == 0 {
+	edges.Edges = edgeList
+
+	if len(edges.Edges) == 0 {
 		return Edge{}, gremerror.NewGrammesError("AddEdge", gremerror.ErrEmptyResponse)
 	}
 
-	return e.Edges[0], nil
+	return edges.Edges[0], nil
 }
 
 // Drop will drop the current vertex that's being called from.

@@ -23,11 +23,11 @@ package manager
 import (
 	"fmt"
 
-	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes/gremerror"
-	"github.com/northwesternmutual/grammes/query/graph"
-	"github.com/northwesternmutual/grammes/query/datatype"
+	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes/query/cardinality"
+	"github.com/northwesternmutual/grammes/query/datatype"
+	"github.com/northwesternmutual/grammes/query/graph"
 	"github.com/northwesternmutual/grammes/query/multiplicity"
 )
 
@@ -48,10 +48,10 @@ func newSchemaManager(logger logging.Logger, executor stringExecutor) *schemaMan
 // of the edge label added.
 func (s *schemaManager) AddEdgeLabel(multi multiplicity.Multiplicity, label string) (id int64, err error) {
 	var (
-		data []byte
+		data  [][]byte
 		query = graph.NewGraph().OpenManagement().MakeEdgeLabel(label).Multiplicity(multi).Make()
 	)
-	
+
 	if data, err = s.executeStringQuery(query.String()); err != nil {
 		s.logger.Error("invalid query",
 			gremerror.NewQueryError("AddEdgeLabel", query.String(), err),
@@ -61,7 +61,7 @@ func (s *schemaManager) AddEdgeLabel(multi multiplicity.Multiplicity, label stri
 
 	if id, err = unmarshalID(data); err != nil {
 		s.logger.Error("id unmarshal",
-			gremerror.NewUnmarshalError("AddEdgeLabel", data, err),
+			gremerror.NewUnmarshalError("AddEdgeLabel", data[0], err),
 		)
 	}
 
@@ -114,7 +114,7 @@ func (s *schemaManager) AddEdgeLabels(multiplicityAndLabels ...interface{}) (ids
 // of the edge label added.
 func (s *schemaManager) AddPropertyKey(propertyName string, datatype datatype.DataType, cardinality cardinality.Cardinality) (id int64, err error) {
 	var (
-		data []byte
+		data  [][]byte
 		query = graph.NewGraph().OpenManagement().MakePropertyKey(propertyName, datatype, cardinality).Make()
 	)
 
@@ -126,16 +126,16 @@ func (s *schemaManager) AddPropertyKey(propertyName string, datatype datatype.Da
 	}
 	if id, err = unmarshalID(data); err != nil {
 		s.logger.Error("id unmarshal",
-			gremerror.NewUnmarshalError("AddPropertyKey", data, err),
+			gremerror.NewUnmarshalError("AddPropertyKey", data[0], err),
 		)
 	}
-	
+
 	return
 }
 
 // Commit will take all of your schema changes
 // and apply them to the schema once they are ready.
-func (s *schemaManager) CommitSchema() ([]byte, error) {
+func (s *schemaManager) CommitSchema() ([][]byte, error) {
 	data, err := s.executeStringQuery("graph.openManagement().commit()")
 	if err != nil {
 		s.logger.Error("invalid query",

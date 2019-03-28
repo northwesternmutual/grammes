@@ -31,10 +31,10 @@ import (
 
 type miscQueryManager struct {
 	logger             logging.Logger
-	executeStringQuery func(string) ([]byte, error)
+	executeStringQuery stringExecutor
 }
 
-func newMiscQueryManager(logger logging.Logger, execute func(string) ([]byte, error)) *miscQueryManager {
+func newMiscQueryManager(logger logging.Logger, execute stringExecutor) *miscQueryManager {
 	return &miscQueryManager{
 		executeStringQuery: execute,
 		logger:             logger,
@@ -75,7 +75,7 @@ func (m *miscQueryManager) VertexCount() (int64, error) {
 	// Query the graph for the count using IDs.
 	query := traversal.NewTraversal().V().Count()
 
-	res, err := m.executeStringQuery(query.String())
+	responses, err := m.executeStringQuery(query.String())
 	if err != nil {
 		m.logger.Error("VertexCount",
 			gremerror.NewQueryError("VertexCount", query.String(), err),
@@ -83,15 +83,21 @@ func (m *miscQueryManager) VertexCount() (int64, error) {
 		return 0, err
 	}
 
-	var rawIDs model.IDList
+	var resultingIDs model.IDList
 
-	err = jsonUnmarshal(res, &rawIDs)
-	if err != nil {
-		m.logger.Error("id unmarshal",
-			gremerror.NewUnmarshalError("VertrexCount", res, err),
-		)
-		return 0, err
+	for _, res := range responses {
+		var rawIDs model.IDList
+
+		err = jsonUnmarshal(res, &rawIDs)
+		if err != nil {
+			m.logger.Error("id unmarshal",
+				gremerror.NewUnmarshalError("VertexCount", res, err),
+			)
+			return 0, err
+		}
+
+		resultingIDs.IDs = append(resultingIDs.IDs, rawIDs.IDs...)
 	}
 
-	return rawIDs.IDs[0].Value, nil
+	return resultingIDs.IDs[0].Value, nil
 }

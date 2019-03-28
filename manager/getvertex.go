@@ -44,7 +44,7 @@ func newGetVertexQueryManager(logger logging.Logger, executor stringExecutor) *g
 
 func (c *getVertexQueryManager) VerticesByString(query string) ([]model.Vertex, error) {
 	// Query the gremlin server with the given traversal.
-	res, err := c.executeStringQuery(query)
+	responses, err := c.executeStringQuery(query)
 	if err != nil {
 		c.logger.Error("invalid query",
 			gremerror.NewQueryError("Vertices", query, err),
@@ -54,14 +54,21 @@ func (c *getVertexQueryManager) VerticesByString(query string) ([]model.Vertex, 
 
 	var vertices model.VertexList
 
-	// Unmarshal the response into the structs.
-	err = jsonUnmarshal(res, &vertices)
-	if err != nil {
-		c.logger.Error("vertices unmarshal",
-			gremerror.NewUnmarshalError("Vertices", res, err),
-		)
-		return nil, err
+	for _, res := range responses {
+		var vertPart model.VertexList
+		// Unmarshal the response into the structs.
+		err = jsonUnmarshal(res, &vertPart)
+		if err != nil {
+			c.logger.Error("vertices unmarshal",
+				gremerror.NewUnmarshalError("Vertices", res, err),
+			)
+			return nil, err
+		}
+
+		vertices.Vertices = append(vertices.Vertices, vertPart.Vertices...)
 	}
+
+	c.logger.Debug("RESPONSE INFO", map[string]interface{}{"FULL LENGTH": len(vertices.Vertices)})
 
 	return vertices.Vertices, nil
 }

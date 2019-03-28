@@ -28,7 +28,7 @@ import (
 // to a gremlin server without having a client already
 // created. For example you can use this if you are making
 // quick small changes across multiple packages.
-func ExecuteQuery(host string, query query.Query) ([]byte, error) {
+func ExecuteQuery(host string, query query.Query) ([][]byte, error) {
 	// Store the query into a string.
 	strQuery := query.String()
 
@@ -42,7 +42,7 @@ func ExecuteQuery(host string, query query.Query) ([]byte, error) {
 // via a string to a gremlin server without have a client
 // already created. For example this can be used if you are
 // altering a graph through various packages.
-func ExecuteStringQuery(host, query string) ([]byte, error) {
+func ExecuteStringQuery(host, query string) ([][]byte, error) {
 	res, err := executeQuery(host, query)
 
 	return res, err

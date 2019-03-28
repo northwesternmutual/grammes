@@ -28,48 +28,68 @@ import (
 
 // UnmarshalVertexList is a utility to unmarshal a list
 // or array of vertices properly.
-func UnmarshalVertexList(data []byte) ([]Vertex, error) {
-	var list VertexList
+func UnmarshalVertexList(data [][]byte) ([]Vertex, error) {
+	var list []Vertex
 
-	if err := json.Unmarshal(data, &list); err != nil {
-		return nil, gremerror.NewUnmarshalError("UnmarshalVertexList", data, err)
+	for _, res := range data {
+		var listPart VertexList
+		if err := json.Unmarshal(res, &listPart); err != nil {
+			return nil, gremerror.NewUnmarshalError("UnmarshalVertexList", res, err)
+		}
+
+		list = append(list, listPart.Vertices...)
 	}
 
-	return list.Vertices, nil
+	return list, nil
 }
 
 // UnmarshalEdgeList is a utility to unmarshal a list
 // or array of edges properly.
-func UnmarshalEdgeList(data []byte) ([]Edge, error) {
-	var list EdgeList
+func UnmarshalEdgeList(data [][]byte) ([]Edge, error) {
+	var list []Edge
 
-	if err := json.Unmarshal(data, &list); err != nil {
-		return nil, gremerror.NewUnmarshalError("UnmarshalEdgeList", data, err)
+	for _, res := range data {
+		var listPart EdgeList
+		if err := json.Unmarshal(res, &listPart); err != nil {
+			return nil, gremerror.NewUnmarshalError("UnmarshalEdgeList", res, err)
+		}
+
+		list = append(list, listPart.Edges...)
 	}
 
-	return list.Edges, nil
+	return list, nil
 }
 
 // UnmarshalIDList is a utility to unmarshal a list
 // or array of IDs properly.
-func UnmarshalIDList(data []byte) ([]ID, error) {
-	var list IDList
+func UnmarshalIDList(data [][]byte) ([]ID, error) {
+	var list []ID
 
-	if err := json.Unmarshal(data, &list); err != nil {
-		return nil, gremerror.NewUnmarshalError("UnmarshalIDList", data, err)
+	for _, res := range data {
+		var listPart IDList
+		if err := json.Unmarshal(res, &listPart); err != nil {
+			return nil, gremerror.NewUnmarshalError("UnmarshalIDList", res, err)
+		}
+
+		list = append(list, listPart.IDs...)
 	}
 
-	return list.IDs, nil
+	return list, nil
 }
 
 // UnmarshalPropertyList is a utility to unmarshal a list
 // or array of IDs properly.
-func UnmarshalPropertyList(data []byte) ([]Property, error) {
-	var list PropertyList
+func UnmarshalPropertyList(data [][]byte) ([]Property, error) {
+	var list []Property
 
-	if err := json.Unmarshal(data, &list); err != nil {
-		return nil, gremerror.NewUnmarshalError("UnmarshalIDList", data, err)
+	for _, res := range data {
+		var listPart PropertyList
+		if err := json.Unmarshal(res, &listPart); err != nil {
+			return nil, gremerror.NewUnmarshalError("UnmarshalIDList", res, err)
+		}
+
+		list = append(list, listPart.Properties...)
 	}
 
-	return list.Properties, nil
+	return list, nil
 }

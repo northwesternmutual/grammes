@@ -31,7 +31,7 @@ var (
 	gremPrepareAuthRequest = gremconnect.PrepareAuthRequest
 )
 
-func (c *Client) executeRequest(query string, bindings, rebindings map[string]string) ([]byte, error) {
+func (c *Client) executeRequest(query string, bindings, rebindings map[string]string) ([][]byte, error) {
 	// Construct a map containing the values along
 	// with a randomly generated id to fetch the response.
 	req, id, err := gremPrepareRequest(query, bindings, rebindings)

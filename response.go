@@ -48,6 +48,7 @@ func (c *Client) readWorker(errs chan error, quit chan struct{}) {
 		}
 
 		if msg != nil {
+			// c.logger.Debug("container data", map[string]interface{}{"data": string(msg)})
 			if err := c.handleResponse(msg); err != nil {
 				errs <- err
 			}
@@ -62,20 +63,26 @@ func (c *Client) readWorker(errs chan error, quit chan struct{}) {
 	}
 }
 
-func (c *Client) retrieveResponse(id string) ([]byte, error) {
+func (c *Client) retrieveResponse(id string) ([][]byte, error) {
 	var (
-		resp, _ = c.resultMessenger.Load(id)
-		err     error
-		data    []byte
+		notifier, _ = c.resultMessenger.Load(id)
+		err         error
+		data        [][]byte
+		dataPart    []byte
 	)
 
-	if n := <-resp.(chan int); n == 1 {
+	if n := <-notifier.(chan int); n == 1 {
 		if dataI, ok := c.results.Load(id); ok {
-			if data, err = jsonMarshalData(dataI.([]interface{})[0]); err != nil {
-				return nil, err
+
+			for _, d := range dataI.([]interface{}) {
+				if dataPart, err = jsonMarshalData(d); err != nil {
+					return nil, err
+				}
+
+				data = append(data, dataPart)
 			}
 
-			close(resp.(chan int))
+			close(notifier.(chan int))
 			c.resultMessenger.Delete(id)
 			c.deleteResponse(id)
 		}
@@ -98,6 +105,7 @@ func (c *Client) saveResponse(resp gremconnect.Response) {
 	if existingData, ok := c.results.Load(resp.RequestID); ok {
 		container = existingData.([]interface{})
 	}
+
 	newData := append(container, resp.Data)  // Combine the old data with the new data.
 	c.results.Store(resp.RequestID, newData) // Add data to buffer for future retrieval
 

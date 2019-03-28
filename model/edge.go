@@ -21,7 +21,6 @@
 package model
 
 import (
-	"encoding/json"
 	"errors"
 
 	"github.com/northwesternmutual/grammes/query/traversal"
@@ -84,18 +83,19 @@ func (e *Edge) QueryOutVertex(client queryClient) (Vertex, error) {
 		return Vertex{}, errors.New("QueryOutVertex: nil client given to Edge")
 	}
 
-	raw, err := client.ExecuteQuery(traversal.NewTraversal().
+	responses, err := client.ExecuteQuery(traversal.NewTraversal().
 		V().HasID(e.OutVertexID()))
 	if err != nil {
 		return Vertex{}, err
 	}
 
 	var vertices VertexList
-
-	err = json.Unmarshal(raw, &vertices)
+	vertList, err := UnmarshalVertexList(responses)
 	if err != nil {
 		return Vertex{}, err
 	}
+
+	vertices.Vertices = vertList
 
 	return vertices.Vertices[0], nil
 }
@@ -107,18 +107,18 @@ func (e *Edge) QueryInVertex(client queryClient) (Vertex, error) {
 		return Vertex{}, errors.New("QueryInVertex: nil client given to Edge")
 	}
 
-	raw, err := client.ExecuteQuery(traversal.NewTraversal().
+	responses, err := client.ExecuteQuery(traversal.NewTraversal().
 		V().HasID(e.InVertexID()))
 	if err != nil {
 		return Vertex{}, nil
 	}
 
 	var vertices VertexList
-
-	err = json.Unmarshal(raw, &vertices)
+	vertList, err := UnmarshalVertexList(responses)
 	if err != nil {
-		return Vertex{}, nil
+		return Vertex{}, err
 	}
+	vertices.Vertices = vertList
 
 	return vertices.Vertices[0], nil
 }

@@ -21,9 +21,10 @@
 package manager
 
 import (
-	"github.com/northwesternmutual/grammes/query/traversal"
 	"strconv"
 	"strings"
+
+	"github.com/northwesternmutual/grammes/query/traversal"
 
 	"github.com/northwesternmutual/grammes/gremerror"
 	"github.com/northwesternmutual/grammes/logging"
@@ -51,7 +52,7 @@ func (v *vertexIDQueryManager) VertexIDsByString(q string) ([]int64, error) {
 	}
 
 	// retrieve all the vertices from the graph.
-	res, err := v.executeStringQuery(q)
+	responses, err := v.executeStringQuery(q)
 	if err != nil {
 		v.logger.Error("invalid query",
 			gremerror.NewQueryError("VertexIDs", q, err),
@@ -61,12 +62,17 @@ func (v *vertexIDQueryManager) VertexIDsByString(q string) ([]int64, error) {
 
 	var rawIDs model.IDList
 
-	err = jsonUnmarshal(res, &rawIDs)
-	if err != nil {
-		v.logger.Error("id unmarshal",
-			gremerror.NewUnmarshalError("VertexIDs", res, err),
-		)
-		return nil, err
+	for _, res := range responses {
+		var idPart model.IDList
+		err = jsonUnmarshal(res, &idPart)
+		if err != nil {
+			v.logger.Error("id unmarshal",
+				gremerror.NewUnmarshalError("VertexIDs", res, err),
+			)
+			return nil, err
+		}
+
+		rawIDs.IDs = append(rawIDs.IDs, idPart.IDs...)
 	}
 
 	var ids []int64

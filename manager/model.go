@@ -42,22 +42,29 @@ var (
 
 // unmarshalID will simply take a raw response and
 // unmarshal it into an ID.
-func unmarshalID(data []byte) (id int64, err error) {
+func unmarshalID(data [][]byte) (id int64, err error) {
 	var resp model.VertexList
-	err = jsonUnmarshal(data, &resp)
-	if err == nil {
-		if len(resp.Vertices) > 0 {
-			id = resp.Vertices[0].ID()
+
+	for _, res := range data {
+		var resPart model.VertexList
+		err = jsonUnmarshal(res, &resPart)
+		if err == nil {
+			if len(resp.Vertices) > 0 {
+				id = resp.Vertices[0].ID()
+			}
 		}
+
+		resp.Vertices = append(resp.Vertices, resPart.Vertices...)
 	}
+
 	return id, err
 }
 
 // executor is the function type that is used when passing in executeRequest.
-type executor func(string, map[string]string, map[string]string) ([]byte, error)
+type executor func(string, map[string]string, map[string]string) ([][]byte, error)
 
 // executor is the function type that is used when passing in ExecuteStringQuery.
-type stringExecutor func(string) ([]byte, error)
+type stringExecutor func(string) ([][]byte, error)
 
 // MiscQuerier are miscellaneous queries for the server to perform.
 type MiscQuerier interface {
@@ -78,7 +85,7 @@ type SchemaQuerier interface {
 	// AddPropertyKey adds a new property key to the schema.
 	AddPropertyKey(label string, dt datatype.DataType, card cardinality.Cardinality) (id int64, err error)
 	// CommitSchema will finalize your changes and apply them to the schema.
-	CommitSchema() (res []byte, err error)
+	CommitSchema() (res [][]byte, err error)
 }
 
 // GetVertexQuerier are functions specifically related to getting vertices.
@@ -136,13 +143,13 @@ type DropQuerier interface {
 // ExecuteQuerier handles the raw queries to the server.
 type ExecuteQuerier interface {
 	// ExecuteQuery will execute a query object and return its raw result.
-	ExecuteQuery(queryObj query.Query) (res []byte, err error)
+	ExecuteQuery(queryObj query.Query) (res [][]byte, err error)
 	// ExecuteStringQuery will execute a string query and return its raw result.
-	ExecuteStringQuery(stringQuery string) (res []byte, err error)
+	ExecuteStringQuery(stringQuery string) (res [][]byte, err error)
 	// ExecuteBoundQuery will execute a query object with bindings and return its raw result.
-	ExecuteBoundQuery(queryObj query.Query, bindings map[string]string, rebindings map[string]string) (res []byte, err error)
+	ExecuteBoundQuery(queryObj query.Query, bindings map[string]string, rebindings map[string]string) (res [][]byte, err error)
 	// ExecuteBoundStringQuery will execute a string query with bindings and return its raw result.
-	ExecuteBoundStringQuery(stringQuery string, bindings map[string]string, rebindings map[string]string) (res []byte, err error)
+	ExecuteBoundStringQuery(stringQuery string, bindings map[string]string, rebindings map[string]string) (res [][]byte, err error)
 }
 
 // VertexQuerier handles the vertices on the graph.

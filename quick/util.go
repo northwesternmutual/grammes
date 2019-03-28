@@ -56,7 +56,7 @@ var (
 // executeQuery is used as a backend for all the functions
 // in this package to create a client, run the query, and
 // give the result from the given query.
-var executeQuery = func(host string, query string) (res []byte, err error) {
+var executeQuery = func(host string, query string) (res [][]byte, err error) {
 	if client == nil {
 		if logger == nil {
 			client, err = grammes.DialWithWebSocket(host)

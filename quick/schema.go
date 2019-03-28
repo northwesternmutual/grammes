@@ -83,7 +83,7 @@ func AddPropertyKey(host, propertyName string, datatype datatype.DataType, cardi
 
 // CommitSchema will take all of your schema changes
 // and apply them to the schema once they are ready.
-func CommitSchema(host string) ([]byte, error) {
+func CommitSchema(host string) ([][]byte, error) {
 	err := checkForClient(host)
 	if err != nil {
 		return nil, err
