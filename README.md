@@ -10,17 +10,24 @@ Grammes is an API/Wrapper for Gremlin and Janusgraph. It's written purely in Gol
 
 ## Table of Contents
 
-1. [Local Setup](#local-setup)
-2. [Setup Janusgraph](#setting-up-janusgraph)
-3. [Using Grammes](#using-grammes)
-4. [Additional Resources](#additional-resources)
-5. [Troubleshooting](#troubleshooting)
+- [Grammes](#grammes)
+  - [Table of Contents](#table-of-contents)
+  - [Local Setup](#local-setup)
+    - [Cloning Grammes](#cloning-grammes)
+    - [Setting up JanusGraph](#setting-up-janusgraph)
+    - [Using Grammes](#using-grammes)
+  - [Testing Grammes](#testing-grammes)
+  - [Additional Resources](#additional-resources)
+    - [Documentation on Gremlin](#documentation-on-gremlin)
+    - [Examples](#examples)
+  - [Troubleshooting](#troubleshooting)
+    - [Fixing time outs when starting Janusgraph](#fixing-time-outs-when-starting-janusgraph)
 
 ## Local Setup
 
 You need to setup all of the following tools to run the service locally
 
-- Go 1.11.1
+- Go 1.12
 - Git
 - Elastic Search
 - Cassandra
@@ -184,6 +191,20 @@ go run main.go
 ```
 
 For more examples look in the `examples/` directory of the project. In there you'll find multiple examples on how to use the Grammes package.
+
+## Testing Grammes
+
+Grammes uses [goconvey](https://www.github.com/smartystreets/goconvey/) by [smartystreets](https://www.github.com/smartystreets/) for its tests. Before trying to run the unit tests in Grammes you should update your version of this repository using this command.
+
+```sh
+go get -u github.com/smartystreets/goconvey/convey
+```
+
+Once you have this downloaded you may run the tests in Grammes how you normally would in Golang.
+
+```sh
+go test ./...
+```
 
 ## Additional Resources
 
