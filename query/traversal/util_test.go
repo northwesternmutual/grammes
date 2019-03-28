@@ -64,8 +64,8 @@ func TestAddStep(t *testing.T) {
 		Convey("When AddStep is called with float64", func() {
 			i := float64(1.234)
 			g.AddStep("test", i)
-			Convey("Then g should equal g.test(1.234000)", func() {
-				So(g.String(), ShouldEqual, "g.test(1.234000)")
+			Convey("Then g should equal g.test(1.234)", func() {
+				So(g.String(), ShouldEqual, "g.test(1.234)")
 			})
 		})
 

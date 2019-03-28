@@ -37,7 +37,11 @@ func (g String) Order(scope ...scope.Scope) String {
 		i = scope[0]
 	}
 
-	g.AddStep("order", i)
+	if i != nil {
+		g.AddStep("order", i)
+	} else {
+		g.AddStep("order")
+	}
 
 	return g
 }

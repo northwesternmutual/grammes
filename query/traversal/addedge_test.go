@@ -21,35 +21,30 @@
 package traversal
 
 import (
-	"fmt"
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestAddE(t *testing.T) {
-	fmt.Println("In test")
-	Convey("Given a ) String { that represents the graph's traversal", t, func() {
+	Convey("Given a traversal string object that represents the graph", t, func() {
 		g := NewTraversal()
-		Convey("When 'AddE' is called with a traversal", func() {
-			result := g.AddE(NewTraversal().Label().Raw())
-			Convey("Then result should equal 'g.addE('test')'", func() {
-				So(result.String(), ShouldEqual, "g.addE(label())")
+		Convey("When 'AddE' is called with a traversal string", func() {
+			res := g.AddE(NewTraversal().Label())
+			Convey("Then the graph traversal should be 'g.addE(\"test\")'", func() {
+				So(res.String(), ShouldEqual, "g.addE(label())")
 			})
 		})
-
 		Convey("When 'AddE' is called with a string", func() {
-			result := g.AddE("test")
-			Convey("Then result should equal 'g.addE('test')'", func() {
-				So(result.String(), ShouldEqual, "g.addE(\"test\")")
+			res := g.AddE("somethingelse")
+			Convey("Then the graph traversal should be 'g.addE(\"somethingelse\")'", func() {
+				So(res.String(), ShouldEqual, "g.addE(\"somethingelse\")")
 			})
 		})
-
-		Convey("When 'AddE' is called with a general interface", func() {
-			var i interface{}
-			result := g.AddE(i)
-			Convey("Then result should equal 'g.addE()'", func() {
-				So(result.String(), ShouldEqual, "g.addE()")
+		Convey("When 'AddE' is called with anything else", func() {
+			res := g.AddE(1234)
+			Convey("Then the graph traversal should be 'g.addE()'", func() {
+				So(res.String(), ShouldEqual, "g.addE()")
 			})
 		})
 	})

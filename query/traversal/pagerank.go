@@ -33,13 +33,11 @@ func (g String) PageRank(args ...float32) String {
 		i = args[0]
 	}
 
-	g.AddStep("pageRank", i)
-
-	// if len(args) < 1 {
-	// 	g.AddStep("pageRank")
-	// } else {
-	// 	g.AddStep("pageRank", args[0])
-	// }
+	if i != nil {
+		g.AddStep("pageRank", i)
+	} else {
+		g.AddStep("pageRank")
+	}
 
 	return g
 }

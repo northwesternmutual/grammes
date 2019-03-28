@@ -31,8 +31,8 @@ func TestWithSack(t *testing.T) {
 		g := NewTraversal()
 		Convey("When WithSack is called with float", func() {
 			result := g.WithSack(1.234)
-			Convey("Then result should equal g.withSack(1.234000)", func() {
-				So(result.String(), ShouldEqual, "g.withSack(1.234000)")
+			Convey("Then result should equal g.withSack(1.234)", func() {
+				So(result.String(), ShouldEqual, "g.withSack(1.234)")
 			})
 		})
 	})

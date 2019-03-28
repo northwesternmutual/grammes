@@ -20,8 +20,6 @@
 
 package traversal
 
-import "fmt"
-
 // http://tinkerpop.apache.org/docs/current/reference/#select-step
 
 // Select (map) Can go back in a traversal in the previously seen area of computation.
@@ -42,16 +40,6 @@ func (g String) Select(first interface{}, extras ...interface{}) String {
 
 	for _, e := range extras {
 		params = append(params, e)
-	}
-
-	for _, p := range params {
-		switch t := p.(type) {
-		case string:
-		case Parameter:
-		default:
-			fmt.Printf("invalid parameter: [%v]\n", t)
-			params = nil
-		}
 	}
 
 	g.AddStep("select", params...)

@@ -21,16 +21,16 @@
 package quick
 
 import (
-	"github.com/northwesternmutual/grammes/query/traversal"
-	"github.com/northwesternmutual/grammes/query/graph"
-	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes"
+	"github.com/northwesternmutual/grammes/logging"
+	"github.com/northwesternmutual/grammes/query/graph"
+	"github.com/northwesternmutual/grammes/query/traversal"
 )
 
 // CustomTraversal is have a custom prefix for your
 // traversal.
 func CustomTraversal(q string) traversal.String {
-	return traversal.String(q)
+	return traversal.NewCustomTraversal(q)
 }
 
 // VerboseTraversal is used for when you need to access

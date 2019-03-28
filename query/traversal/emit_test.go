@@ -29,12 +29,6 @@ import (
 func TestEmit(t *testing.T) {
 	Convey("Given a ) String { that represents the graph's traversal", t, func() {
 		g := NewTraversal()
-		Convey("When 'Emit' is called with a string", func() {
-			result := g.Emit("emiTest")
-			Convey("Then result should equal 'g.emit('emiTest')'", func() {
-				So(result.String(), ShouldEqual, "g.emit(\"emiTest\")")
-			})
-		})
 
 		Convey("When 'Emit' is called with a traversal", func() {
 			result := g.Emit(NewTraversal().Label().Raw())

@@ -35,7 +35,11 @@ func (g String) Sack(operator ...operator.Operator) String {
 		i = operator[0]
 	}
 
-	g.AddStep("sack", i)
+	if i != nil {
+		g.AddStep("sack", i)
+	} else {
+		g.AddStep("sack")
+	}
 
 	return g
 }

@@ -53,7 +53,11 @@ func (g String) Until(predOrTrav interface{}) String {
 		i = t
 	}
 
-	g.AddStep("until", i)
+	if i != nil {
+		g.AddStep("until", i)
+	} else {
+		g.AddStep("until")
+	}
 
 	return g
 }

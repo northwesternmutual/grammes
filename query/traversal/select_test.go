@@ -42,7 +42,7 @@ func TestSelect(t *testing.T) {
 		Convey("When 'Select' is called with an int", func() {
 			result := g.Select(1234)
 			Convey("Then result should equal 'g.select()'", func() {
-				So(result.String(), ShouldEqual, "g.select()")
+				So(result.String(), ShouldEqual, "g.select(1234)")
 			})
 		})
 
@@ -77,7 +77,7 @@ func TestSelect(t *testing.T) {
 		Convey("When 'Select' is called with two ints", func() {
 			result := g.Select(1234, 5678)
 			Convey("Then result should equal 'g.select()'", func() {
-				So(result.String(), ShouldEqual, "g.select()")
+				So(result.String(), ShouldEqual, "g.select(1234,5678)")
 			})
 		})
 	})

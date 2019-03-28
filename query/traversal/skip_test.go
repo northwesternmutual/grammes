@@ -39,8 +39,8 @@ func TestSkip(t *testing.T) {
 
 		Convey("When 'Skip' is called with multiple extraFloat arguments", func() {
 			result := g.Skip(scope.Local, 1.234)
-			Convey("Then result should equal 'g.skip(local,1.234000)'", func() {
-				So(result.String(), ShouldEqual, "g.skip(local,1.234000)")
+			Convey("Then result should equal 'g.skip(local,1.234)'", func() {
+				So(result.String(), ShouldEqual, "g.skip(local,1.234)")
 			})
 		})
 	})

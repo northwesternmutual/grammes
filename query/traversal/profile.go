@@ -34,13 +34,11 @@ func (g String) Profile(str ...string) String {
 		i = str[0]
 	}
 
-	g.AddStep("profile", i)
-
-	// if len(str) < 1 {
-	// 	g.AddStep("profile")
-	// } else {
-	// 	g = g.append(".profile(\"" + str[0] + "\")")
-	// }
+	if i != nil {
+		g.AddStep("profile", i)
+	} else {
+		g.AddStep("profile")
+	}
 
 	return g
 }
