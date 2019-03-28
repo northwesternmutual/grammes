@@ -91,18 +91,22 @@ func (c *Client) deleteResponse(id string) {
 
 // saveResponse makes the response available for retrieval by the requester. Mutexes are used for thread safety.
 func (c *Client) saveResponse(resp gremconnect.Response) {
-	c.respMutex.Lock()
-
-	defer c.respMutex.Unlock()
 
 	var container []interface{}
+
+	// Lock the response mutex for thread safety.
+	c.respMutex.Lock()
+
 	// Retrieve the existing data (if there are multiple responses).
 	if existingData, ok := c.results.Load(resp.RequestID); ok {
 		container = existingData.([]interface{})
 	}
+	newData := append(container, resp.Data)  // Combine the old data with the new data.
+	c.results.Store(resp.RequestID, newData) // Add data to buffer for future retrieval
 
-	container = append(container, resp.Data)   // Append the new data to the container
-	c.results.Store(resp.RequestID, container) // Add data to buffer for future retrieval
+	// Unlock the response mutex.
+	c.respMutex.Unlock()
+
 	notifier, _ := c.resultMessenger.LoadOrStore(resp.RequestID, make(chan int, 1))
 
 	if resp.Code != 206 {
