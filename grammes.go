@@ -19,12 +19,14 @@
 // THE SOFTWARE.
 
 /*
-Package grammes is the focus of this repository. This package includes
-the Client object and all the models/functions that are needed to interact
-with the graph of your choice.
+Package grammes is an API/Wrapper for the Gremlin traversal language to interact with graph databases.
+It includes various levels of functionality to add, remove, and change vertices and edges in the database.
+Usage of higher level API is shown in various examples in the `examples/` directory with full documentation.
 
 To get started with this package you may begin by making a Grammes client using
-either the Dial function or the DialWithWebSocket function.
+either the Dial function or the DialWithWebSocket function. With this client you may begin interacting
+with your graph database with the client's multitude of function options.
+To narrow down what you want to do it may be easier to choose one of the `client.Querier` options.
 
 What this example does is create a new Grammes Client using the DialWithWebSocket function.
 With this client it executes a simple string query that just does some simple addition. Then it will return the raw result out.
