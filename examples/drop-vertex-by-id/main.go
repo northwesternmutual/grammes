@@ -81,5 +81,5 @@ func main() {
 
 	// Print out the vertices that are left over after dropping.
 	// This should be 2.
-	logger.Info("vertices left over", zap.Int64("count", count))
+	logger.Info("vertices left over (should be 2)", zap.Int64("count", count))
 }

@@ -61,14 +61,14 @@ func main() {
 		quick.ExecuteStringQuery(addr, "graph.addVertex(T.label, 'graphingVertex')")
 
 		// Storing a result byte array after executing a query.
-		res, err := quick.ExecuteStringQuery(addr, "g.V().label()")
+		responses, err := quick.ExecuteStringQuery(addr, "g.V().label()")
 		if err != nil {
 			logger.Fatal("Error executing query", zap.Error(err))
 		}
 
 		// Log the resulting vertices.
-		logger.Info("Basic Query Vertices",
-			zap.ByteString("Vertices", res),
-		)
+		for _, res := range responses {
+			logger.Info("executed string query", zap.ByteString("result", res))
+		}
 	}
 }

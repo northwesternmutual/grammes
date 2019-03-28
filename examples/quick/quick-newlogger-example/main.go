@@ -23,38 +23,13 @@ package main
 import (
 	"flag"
 
+	"github.com/northwesternmutual/grammes/logging"
+
 	"github.com/northwesternmutual/grammes/examples/exampleutil"
 	"github.com/northwesternmutual/grammes/quick"
 
 	"go.uber.org/zap"
 )
-
-// CustomLogger is our new logger
-// to print using zap.
-type CustomLogger struct{}
-
-// PrintQuery will print the query out
-// using the zap library rather than log.
-func (*CustomLogger) PrintQuery(q string) {
-	logger.Info("QUERY", zap.String("cmd", q))
-}
-
-// Debug logs to debug level
-func (*CustomLogger) Debug(msg string, fields map[string]interface{}) {
-	var arguments []zap.Field
-	for k, v := range fields {
-		arguments = append(arguments, zap.Any(k, v))
-	}
-	if len(arguments) > 0 {
-		logger.Debug(msg, arguments...)
-	}
-}
-
-// Error does nothing
-func (*CustomLogger) Error(string, error) {}
-
-// Fatal does nothing
-func (*CustomLogger) Fatal(string, error) {}
 
 var (
 	// this is the designated logging system
@@ -77,7 +52,7 @@ func main() {
 		return
 	}
 
-	quick.SetLogger(&CustomLogger{})
+	quick.SetLogger(logging.NewDebugLogger())
 
 	quick.DropAll(addr)
 }

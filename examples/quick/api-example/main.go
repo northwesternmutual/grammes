@@ -63,13 +63,13 @@ func main() {
 	quick.AddVertex(addr, "testingVertex3")
 
 	// Gather all of the vertices in the graph by label.
-	res, err := quick.ExecuteQuery(addr, g.V().Label())
+	responses, err := quick.ExecuteQuery(addr, g.V().Label())
 	if err != nil {
 		logger.Fatal("Error executing query", zap.Error(err))
 	}
 
 	// Log the resulting vertices in the graph.
-	logger.Info("Added Vertices",
-		zap.ByteString("Result", res),
-	)
+	for _, res := range responses {
+		logger.Info("executed query", zap.ByteString("result", res))
+	}
 }

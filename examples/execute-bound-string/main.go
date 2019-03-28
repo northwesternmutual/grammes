@@ -56,7 +56,7 @@ func main() {
 	defer client.DropAll()
 
 	// Execute the string query with the bindings to the gremlin server.
-	res, err := client.ExecuteBoundStringQuery("g.addV(x)",
+	responses, err := client.ExecuteBoundStringQuery("g.addV(x)",
 		map[string]string{"x": "testingvertex"},
 		map[string]string{},
 	)
@@ -67,5 +67,7 @@ func main() {
 	// Log the response from the Gremlin server.
 	// This will end up being a raw JSON of a Vertex.
 	// Label should be 'testingvertex'
-	logger.Info("executed string query", zap.ByteString("result", res))
+	for _, res := range responses {
+		logger.Info("executed bound string query", zap.ByteString("result", res))
+	}
 }

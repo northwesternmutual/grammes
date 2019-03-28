@@ -59,12 +59,14 @@ func main() {
 	g := grammes.Traversal()
 
 	// Use the traversal to add a vertex.
-	res, err := client.ExecuteQuery(g.AddV("testingvertex"))
+	responses, err := client.ExecuteQuery(g.AddV("testingvertex"))
 	if err != nil {
 		logger.Fatal("Error querying server", zap.Error(err))
 	}
 
 	// Log the response from the Gremlin server.
 	// This will end up being a raw JSON of a Vertex.
-	logger.Info("executed string query", zap.ByteString("result", res))
+	for _, res := range responses {
+		logger.Info("executed query", zap.ByteString("result", res))
+	}
 }

@@ -56,12 +56,14 @@ func main() {
 	defer client.DropAll()
 
 	// Execute the string query to the gremlin server.
-	res, err := client.ExecuteStringQuery("g.addV('testingvertex')")
+	responses, err := client.ExecuteStringQuery("g.addV('testingvertex')")
 	if err != nil {
 		logger.Fatal("Error querying server", zap.Error(err))
 	}
 
 	// Log the response from the Gremlin server.
 	// This will end up being a raw JSON of a Vertex.
-	logger.Info("executed string query", zap.ByteString("result", res))
+	for _, res := range responses {
+		logger.Info("executed string query", zap.ByteString("result", res))
+	}
 }

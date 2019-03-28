@@ -60,7 +60,7 @@ func main() {
 
 	// Execute the string query with the bindings to the gremlin server.
 	// Using the traversal.Custom type you can create bindings.
-	res, err := client.ExecuteBoundQuery(g.AddV(t.Custom("x")),
+	responses, err := client.ExecuteBoundQuery(g.AddV(t.Custom("x")),
 		map[string]string{"x": "testingvertex"},
 		map[string]string{},
 	)
@@ -71,5 +71,7 @@ func main() {
 	// Log the response from the Gremlin server.
 	// This will end up being a raw JSON of a Vertex.
 	// Label should be 'testingvertex'
-	logger.Info("executed string query", zap.ByteString("result", res))
+	for _, res := range responses {
+		logger.Info("executed bound query", zap.ByteString("result", res))
+	}
 }
