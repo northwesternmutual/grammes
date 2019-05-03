@@ -1,0 +1,14 @@
+# Hidden
+.gopath~
+.DS_Store
+.vscode
+
+# Directories
+vendor
+bin
+n1data
+n2data
+n3data
+portainer-data
+scripts/db
+scripts/log

@@ -1,0 +1,21 @@
+{
+    "requestId": "d2476e5b-b2bc-6a70-2647-3991f68ab415",
+    "status": {
+        "message": "",
+        "code": 200,
+        "attributes": {}
+    },
+    "result": {
+        "data": [{
+            "@type": "g:Vertex",
+            "@value": {
+                "id": {
+                    "@type": "g:Int64",
+                    "@value": 28720
+                },
+                "label": "newvertex"
+            }
+        }],
+        "meta": {}
+    }
+}

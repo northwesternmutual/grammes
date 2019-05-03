@@ -1,0 +1,19 @@
+package traversal
+
+import (
+	"testing"
+
+	. "github.com/smartystreets/goconvey/convey"
+)
+
+func Test(t *testing.T) {
+	Convey("Given a ) String { that represents the graph's traversal", t, func() {
+		g := NewTraversal()
+		Convey("When '' is called with a string", func() {
+			result := g
+			Convey("Then result should equal ''", func() {
+				So(result.String(), ShouldEqual, "")
+			})
+		})
+	})
+}

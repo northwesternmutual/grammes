@@ -1,0 +1,27 @@
+[
+    {
+        "dbName": "testDatabase",
+        "tableName": "TIN900",
+        "columns": [
+            {
+                "firstName": "John",
+                "lastName": "Smith"
+            }, {
+                "firstName": "Damien",
+                "lastName": "Stamates"
+            }
+        ]
+    }, {
+        "dbName": "testDatabase",
+        "tableName": "TIN800",
+        "columns": [
+            {
+                "phoneNumber": "555-555-4321",
+                "address": "123 Fake Street"
+            }, {
+                "phoneNumber": "555-555-1234",
+                "address": "321 MadeUp Avenue"
+            }
+        ]
+    }
+]
