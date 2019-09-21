@@ -29,22 +29,13 @@ package traversal
 // Signatures:
 // By()
 // By(string)
-// By(string, string)
-func (g String) By(params ...string) String {
+// By(...interface{})
+func (g String) By(params ...interface{}) String {
 	if len(params) < 1 {
 		g = g.append(".by()")
 		return g
 	}
-
-	g = g.append(".by(\"" + params[0] + "\"")
-
-	if len(params) > 1 {
-		for _, v := range params[1:] {
-			g = g.append(",\"" + v + "\"")
-		}
-	}
-
-	g = g.append(")")
+	g.AddStep("by", params...)
 
 	return g
 }
