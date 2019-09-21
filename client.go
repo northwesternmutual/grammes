@@ -78,6 +78,10 @@ func setupClient() *Client {
 func Dial(conn gremconnect.Dialer, cfgs ...ClientConfiguration) (*Client, error) {
 	c := setupClient()
 	c.conn = conn
+	// Go through the configurations to customize the client.
+	for _, conf := range cfgs {
+		conf(c)
+	}
 
 	// launch the connection to the TinkerPop server,
 	// and spin up the read, write, and ping workers.
@@ -86,11 +90,6 @@ func Dial(conn gremconnect.Dialer, cfgs ...ClientConfiguration) (*Client, error)
 			gremerror.NewGrammesError("Dial", err),
 		)
 		return c, err
-	}
-
-	// Go through the configurations to customize the client.
-	for _, conf := range cfgs {
-		conf(c)
 	}
 
 	// GraphManager should be set because it's after the connection is created.
