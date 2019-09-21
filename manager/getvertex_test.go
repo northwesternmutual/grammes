@@ -27,6 +27,7 @@ import (
 
 	. "github.com/smartystreets/goconvey/convey"
 
+	"github.com/northwesternmutual/grammes/gremerror"
 	"github.com/northwesternmutual/grammes/logging"
 )
 
@@ -135,6 +136,12 @@ func TestVertexByID(t *testing.T) {
 			_, err := qm.VertexByID(1234)
 			Convey("Then the return error should be nil", func() {
 				So(err, ShouldBeNil)
+			})
+		})
+		Convey("When VertexByID is called", func() {
+			_, err := qm.VertexByID(1234232334)
+			Convey("Then the return error should be not found", func() {
+				So(err, ShouldEqual, gremerror.NewGrammesError("VertexByID", gremerror.ErrEmptyResponse))
 			})
 		})
 	})

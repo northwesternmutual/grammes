@@ -49,5 +49,11 @@ func TestBy(t *testing.T) {
 				So(result.String(), ShouldEqual, "g.by()")
 			})
 		})
+		Convey("When 'By' is called with order().by(\"id\", desc)", func() {
+			result := g.By("id", Custom("desc"))
+			Convey("Then result should equal 'g.by(\"id\",desc)'", func() {
+				So(result.String(), ShouldEqual, "g.by(\"id\",desc)")
+			})
+		})
 	})
 }
