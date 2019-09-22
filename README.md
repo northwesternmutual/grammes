@@ -4,7 +4,13 @@
 
 # Grammes
 
-[![Build Status](https://travis-ci.com/northwesternmutual/grammes.svg?branch=master)](https://travis-ci.com/northwesternmutual/grammes) [![Coverage Status](https://coveralls.io/repos/github/northwesternmutual/grammes/badge.svg?branch=master)](https://coveralls.io/github/northwesternmutual/grammes?branch=master) [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](https://godoc.org/github.com/northwesternmutual/grammes) [![Go Report Card](https://goreportcard.com/badge/github.com/northwesternmutual/grammes)](https://goreportcard.com/report/github.com/northwesternmutual/grammes)
+<p align="center">
+<a href="https://godoc.org/github.com/northwesternmutual/grammes"><img src="https://godoc.org/github.com/northwesternmutual/grammes?status.svg" alt="GoDoc" /></a>
+<a href="https://github.com/northwesternmutual/grammes/releases"><img src="https://badgen.net/github/release/northwesternmutual/grammes"></a>
+<a href="https://goreportcard.com/report/github.com/northwesternmutual/grammes"><img src="https://goreportcard.com/badge/github.com/northwesternmutual/grammes" alt="Go Report Card" /></a>
+<a href="https://github.com/northwesternmutual/grammes/blob/master/LICENSE"><img src="https://img.shields.io/github/license/northwesternmutual/grammes.svg" alt="License" /></a>
+<a href="https://github.com/northwesternmutual/grammes/actions"><img src="https://github.com/northwesternmutual/grammes/workflows/Build/badge.svg" /></a>
+</p>
 
 Grammes is an API/Wrapper for Gremlin and Janusgraph. It's written purely in Golang and allows for easy use of Gremlin without touching the Gremlin terminal.
 
