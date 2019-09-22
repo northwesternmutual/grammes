@@ -20,7 +20,10 @@
 
 package predicate
 
-import "fmt"
+import (
+	"bytes"
+	"fmt"
+)
 
 // Equal checks if this value is
 // exactly equal to the querying value.
@@ -75,5 +78,26 @@ func GreaterThanOrEqual(val interface{}) *Predicate {
 func Inside(min, max interface{}) *Predicate {
 	s := fmt.Sprintf("inside(%#v, %#v)", min, max)
 	a := Predicate(s)
+	return &a
+}
+
+// Within checks if this value is within the array values.
+func Within(params ...interface{}) *Predicate {
+	buffer := bytes.NewBufferString("within(")
+	sep := ""
+	for _, p := range params {
+		buffer.WriteString(sep)
+		switch t := p.(type) {
+		case string:
+			buffer.WriteString("\"" + t + "\"")
+		default:
+			buffer.WriteString(fmt.Sprintf("%v", t))
+		}
+
+		sep = ","
+	}
+
+	buffer.WriteString(")")
+	a := Predicate(buffer.String())
 	return &a
 }

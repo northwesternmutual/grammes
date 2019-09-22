@@ -114,6 +114,9 @@ func (c *getVertexQueryManager) VertexByID(id int64) (model.Vertex, error) {
 		return nilVertex, err
 	}
 
+	if len(vertices) == 0 {
+		return nilVertex, gremerror.NewGrammesError("VertexByID", gremerror.ErrEmptyResponse)
+	}
 	// There should only be one vertex with this unique ID.
 	return vertices[0], nil
 }
