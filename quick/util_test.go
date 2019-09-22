@@ -25,9 +25,9 @@ import (
 
 	. "github.com/smartystreets/goconvey/convey"
 
-	"github.com/northwesternmutual/grammes/manager"
-	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes"
+	"github.com/northwesternmutual/grammes/logging"
+	"github.com/northwesternmutual/grammes/manager"
 )
 
 func TestUnexportedExecuteQuery(t *testing.T) {
@@ -52,7 +52,7 @@ func TestUnexportedExecuteQueryWithLogger(t *testing.T) {
 		client = nil
 		logger = nil
 	}()
-	logger = logging.NewBasicLogger()
+	logger = logging.NewNilLogger()
 	Convey("Given a host and query", t, func() {
 		host := "testhost"
 		query := "testquery"
@@ -72,11 +72,11 @@ func TestUnexportedExecuteQueryWithClientAndLogger(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	logger = logging.NewBasicLogger()
-	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
+	logger = logging.NewNilLogger()
+	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
 		return nil, nil
 	}
-	client.GraphManager = manager.NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
 	Convey("Given a host and query", t, func() {
 		host := "testhost"
 		query := "testquery"
@@ -94,7 +94,7 @@ func TestCheckForClientWithLogger(t *testing.T) {
 		client = nil
 		logger = nil
 	}()
-	logger = logging.NewBasicLogger()
+	logger = logging.NewNilLogger()
 	Convey("Given a host", t, func() {
 		host := "testhost"
 		Convey("When checkForClient is called with no client", func() {
@@ -128,7 +128,7 @@ func TestSetLoggerNoClient(t *testing.T) {
 		logger = nil
 	}()
 	Convey("Given a logger", t, func() {
-		l := logging.NewBasicLogger()
+		l := logging.NewNilLogger()
 		Convey("When SetLogger is called with no client established", func() {
 			SetLogger(l)
 			Convey("Then the logger var should be set", func() {
@@ -146,7 +146,7 @@ func TestSetLoggerWithClient(t *testing.T) {
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
 	Convey("Given a logger", t, func() {
-		l := logging.NewBasicLogger()
+		l := logging.NewNilLogger()
 		Convey("When SetLogger is called with a client established", func() {
 			SetLogger(l)
 			Convey("Then no errors should be encountered", func() {

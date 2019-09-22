@@ -25,7 +25,7 @@ import (
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
-	
+
 	"github.com/northwesternmutual/grammes"
 	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes/manager"
@@ -37,10 +37,10 @@ func TestVertexIDsByQuery(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
-		return []byte(idResponse), nil
+	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+		return [][]byte{[]byte(idResponse)}, nil
 	}
-	client.GraphManager = manager.NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
 	Convey("Given a host string and query", t, func() {
 		host := "testhost"
 		var q mockQuery
@@ -77,10 +77,10 @@ func TestVertexIDsByQueryQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
+	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
-	client.GraphManager = manager.NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
 	Convey("Given a host string and query", t, func() {
 		host := "testhost"
 		var q mockQuery
@@ -99,10 +99,10 @@ func TestVertexIDs(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
-		return []byte(idResponse), nil
+	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+		return [][]byte{[]byte(idResponse)}, nil
 	}
-	client.GraphManager = manager.NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
 	Convey("Given a host string, label and properties", t, func() {
 		host := "testhost"
 		label := "testlabel"
@@ -146,10 +146,10 @@ func TestVertexIDsQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer, grammes.WithLogger(&testLogger{}))
-	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
+	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
-	client.GraphManager = manager.NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
 	Convey("Given a host string, label and properties", t, func() {
 		host := "testhost"
 		label := "testlabel"

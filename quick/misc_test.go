@@ -37,10 +37,10 @@ func TestDropAll(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
-		return []byte(vertexResponse), nil
+	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+		return [][]byte{[]byte(vertexResponse)}, nil
 	}
-	client.GraphManager = manager.NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
 	Convey("Given a host string", t, func() {
 		host := "testhost"
 		Convey("When DropAll is called", func() {
@@ -75,10 +75,10 @@ func TestDropAllQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
+	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
-	client.GraphManager = manager.NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
 	Convey("Given a host string", t, func() {
 		host := "testhost"
 		Convey("When DropAll is called and there is querying error", func() {
@@ -96,10 +96,10 @@ func TestSetVertexProperty(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
-		return []byte(vertexResponse), nil
+	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+		return [][]byte{[]byte(vertexResponse)}, nil
 	}
-	client.GraphManager = manager.NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
 	Convey("Given a host string, ID int and properties", t, func() {
 		host := "testhost"
 		id := int64(123)
@@ -136,10 +136,10 @@ func TestSetVertexPropertyQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
+	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
-	client.GraphManager = manager.NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
 	Convey("Given a host string, ID int and properties", t, func() {
 		host := "testhost"
 		id := int64(123)
@@ -158,10 +158,10 @@ func TestVertexCount(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
-		return []byte(idResponse), nil
+	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+		return [][]byte{[]byte(idResponse)}, nil
 	}
-	client.GraphManager = manager.NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
 	Convey("Given a host string", t, func() {
 		host := "testhost"
 		Convey("When VertexCount is called", func() {
@@ -196,10 +196,10 @@ func TestVertexCountQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
+	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
-	client.GraphManager = manager.NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
 	Convey("Given a host string", t, func() {
 		host := "testhost"
 		Convey("When VertexCount is called and there is querying error", func() {

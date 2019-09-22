@@ -25,9 +25,9 @@ import (
 
 	. "github.com/smartystreets/goconvey/convey"
 
+	"github.com/northwesternmutual/grammes"
 	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes/manager"
-	"github.com/northwesternmutual/grammes"
 )
 
 func TestExecuteQuery(t *testing.T) {
@@ -37,10 +37,10 @@ func TestExecuteQuery(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
+	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
 		return nil, nil
 	}
-	client.GraphManager = manager.NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
 	Convey("Given a host string a query", t, func() {
 		host := "testhost"
 		var q mockQuery

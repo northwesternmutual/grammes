@@ -25,10 +25,10 @@ import (
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
-	
+
+	"github.com/northwesternmutual/grammes"
 	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes/manager"
-	"github.com/northwesternmutual/grammes"
 )
 
 func TestDropVertexLabel(t *testing.T) {
@@ -37,10 +37,10 @@ func TestDropVertexLabel(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
-		return []byte(vertexResponse), nil
+	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+		return [][]byte{[]byte(vertexResponse)}, nil
 	}
-	client.GraphManager = manager.NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
 	Convey("Given a host string and label string", t, func() {
 		host := "testhost"
 		label := "testlabel"
@@ -77,10 +77,10 @@ func TestDropVertexLabelQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
+	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
-	client.GraphManager = manager.NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
 	Convey("Given a host string and label string", t, func() {
 		host := "testhost"
 		label := "testlabel"
@@ -99,10 +99,10 @@ func TestDropVertexByID(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
-		return []byte(vertexResponse), nil
+	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+		return [][]byte{[]byte(vertexResponse)}, nil
 	}
-	client.GraphManager = manager.NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
 	Convey("Given a host string and ID int", t, func() {
 		host := "testhost"
 		id := int64(123)
@@ -139,10 +139,10 @@ func TestDropVertexByIDQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
+	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
-	client.GraphManager = manager.NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
 	Convey("Given a host string and ID int", t, func() {
 		host := "testhost"
 		id := int64(123)
@@ -161,10 +161,10 @@ func TestDropVerticesByQuery(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
-		return []byte(vertexResponse), nil
+	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+		return [][]byte{[]byte(vertexResponse)}, nil
 	}
-	client.GraphManager = manager.NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
 	Convey("Given a host string and query", t, func() {
 		host := "testhost"
 		var q mockQuery
@@ -201,10 +201,10 @@ func TestDropVerticesByQueryQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([]byte, error) {
+	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
-	client.GraphManager = manager.NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
 	Convey("Given a host string and query", t, func() {
 		host := "testhost"
 		var q mockQuery

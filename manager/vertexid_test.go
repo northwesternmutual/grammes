@@ -32,8 +32,8 @@ import (
 
 func TestVertexIDsByString(t *testing.T) {
 	Convey("Given a string executor and query manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(idResponse), nil }
-		qm := newVertexIDQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(idResponse)}, nil }
+		qm := newVertexIDQueryManager(logging.NewNilLogger(), execute)
 		Convey("When VertexIDsByString is called", func() {
 			_, err := qm.VertexIDsByString("testquery")
 			Convey("Then the error returned should be nil", func() {
@@ -45,8 +45,8 @@ func TestVertexIDsByString(t *testing.T) {
 
 func TestVertexIDsByStringQueryError(t *testing.T) {
 	Convey("Given a string executor and query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, errors.New("ERROR") }
-		qm := newVertexIDQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
+		qm := newVertexIDQueryManager(logging.NewNilLogger(), execute)
 		Convey("When VertexIDsByString is called and encounters a querying error", func() {
 			_, err := qm.VertexIDsByString("testquery")
 			Convey("Then the error should be returned", func() {
@@ -62,8 +62,8 @@ func TestVertexIDsByStringUnmarshalError(t *testing.T) {
 	}()
 	jsonUnmarshal = func([]byte, interface{}) error { return errors.New("ERROR") }
 	Convey("Given a string executor and query manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(idResponse), nil }
-		qm := newVertexIDQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(idResponse)}, nil }
+		qm := newVertexIDQueryManager(logging.NewNilLogger(), execute)
 		Convey("When VertexIDsByString is called and encounters an unmarshalling error", func() {
 			_, err := qm.VertexIDsByString("testquery")
 			Convey("Then the error returned should be nil", func() {
@@ -75,8 +75,8 @@ func TestVertexIDsByStringUnmarshalError(t *testing.T) {
 
 func TestVertexIDByQuery(t *testing.T) {
 	Convey("Given a string executor and query manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(idResponse), nil }
-		qm := newVertexIDQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(idResponse)}, nil }
+		qm := newVertexIDQueryManager(logging.NewNilLogger(), execute)
 		Convey("When VertexIDsByQuery is called", func() {
 			var q mockQuery
 			_, err := qm.VertexIDsByQuery(q)
@@ -89,8 +89,8 @@ func TestVertexIDByQuery(t *testing.T) {
 
 func TestVertexIDByQueryError(t *testing.T) {
 	Convey("Given a string executor and query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, errors.New("ERROR") }
-		qm := newVertexIDQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
+		qm := newVertexIDQueryManager(logging.NewNilLogger(), execute)
 		Convey("When VertexIDsByQuery is called and encounters a querying error", func() {
 			var q mockQuery
 			_, err := qm.VertexIDsByQuery(q)
@@ -103,8 +103,8 @@ func TestVertexIDByQueryError(t *testing.T) {
 
 func TestVertexIDs(t *testing.T) {
 	Convey("Given a string executor and query manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(idResponse), nil }
-		qm := newVertexIDQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(idResponse)}, nil }
+		qm := newVertexIDQueryManager(logging.NewNilLogger(), execute)
 		Convey("When VertexIDs is called", func() {
 			_, err := qm.VertexIDs("testlabel", "prop1", "prop2")
 			Convey("Then the error returned should be nil", func() {
@@ -116,8 +116,8 @@ func TestVertexIDs(t *testing.T) {
 
 func TestVertexIDsParamError(t *testing.T) {
 	Convey("Given a string executor and query manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(idResponse), nil }
-		qm := newVertexIDQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(idResponse)}, nil }
+		qm := newVertexIDQueryManager(logging.NewNilLogger(), execute)
 		Convey("When VertexIDs is called with an odd number of parameters", func() {
 			_, err := qm.VertexIDs("testlabel", "prop1")
 			Convey("Then the error should be returned", func() {
@@ -129,8 +129,8 @@ func TestVertexIDsParamError(t *testing.T) {
 
 func TestVertexIDsQueryError(t *testing.T) {
 	Convey("Given a string executor and query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, errors.New("ERROR") }
-		qm := newVertexIDQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
+		qm := newVertexIDQueryManager(logging.NewNilLogger(), execute)
 		Convey("When VertexIDs is called and encounters a querying error", func() {
 			_, err := qm.VertexIDs("testlabel", "prop1", "prop2")
 			Convey("Then the error should be returned", func() {

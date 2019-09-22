@@ -69,8 +69,8 @@ func (mockQuery) String() string { return "TEST" }
 
 func TestAddAPIVertex(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(vertexResponse), nil }
-		qm := newAddVertexQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		qm := newAddVertexQueryManager(logging.NewNilLogger(), execute)
 		Convey("When AddAPIVertex is called", func() {
 			var data model.APIData
 			data.Properties = map[string]string{"testkey": "testval"}
@@ -84,8 +84,8 @@ func TestAddAPIVertex(t *testing.T) {
 
 func TestAddAPIVertexError(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, errors.New("ERROR") }
-		qm := newAddVertexQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
+		qm := newAddVertexQueryManager(logging.NewNilLogger(), execute)
 		Convey("When AddAPIVertex is called and an error occurs", func() {
 			var data model.APIData
 			_, err := qm.AddAPIVertex(data)
@@ -98,8 +98,8 @@ func TestAddAPIVertexError(t *testing.T) {
 
 func TestAddVertexByStruct(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(vertexResponse), nil }
-		qm := newAddVertexQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		qm := newAddVertexQueryManager(logging.NewNilLogger(), execute)
 		Convey("When AddVertexByStruct is called", func() {
 			res, _ := qm.AddVertexByStruct(testVertex)
 			Convey("Then the return vertex ID value should be 28720", func() {
@@ -111,8 +111,8 @@ func TestAddVertexByStruct(t *testing.T) {
 
 func TestAddVertexByStructError(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, errors.New("ERROR") }
-		qm := newAddVertexQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
+		qm := newAddVertexQueryManager(logging.NewNilLogger(), execute)
 		Convey("When AddVertexByStruct is called and an error is thrown", func() {
 			_, err := qm.AddVertexByStruct(testVertex)
 			Convey("Then the error should be returned", func() {
@@ -124,8 +124,8 @@ func TestAddVertexByStructError(t *testing.T) {
 
 func TestAddVertexError(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(vertexResponse), nil }
-		qm := newAddVertexQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		qm := newAddVertexQueryManager(logging.NewNilLogger(), execute)
 		Convey("When AddVertex is called with an odd number of parameters", func() {
 			_, err := qm.AddVertex("testLabel", "prop1")
 			Convey("Then the error should be returned", func() {
@@ -137,8 +137,8 @@ func TestAddVertexError(t *testing.T) {
 
 func TestAddVertexLabels(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(vertexResponse), nil }
-		qm := newAddVertexQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		qm := newAddVertexQueryManager(logging.NewNilLogger(), execute)
 		Convey("When AddVertexLabels is called", func() {
 			_, err := qm.AddVertexLabels("testlabel")
 			Convey("Then the error returned should be nil", func() {
@@ -150,8 +150,8 @@ func TestAddVertexLabels(t *testing.T) {
 
 func TestAddVertexLabelsQueryError(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, errors.New("ERROR") }
-		qm := newAddVertexQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
+		qm := newAddVertexQueryManager(logging.NewNilLogger(), execute)
 		Convey("When AddVertexLabels is called and encounters a querying error", func() {
 			_, err := qm.AddVertexLabels("testlabel")
 			Convey("Then the error should be returned", func() {
@@ -163,8 +163,8 @@ func TestAddVertexLabelsQueryError(t *testing.T) {
 
 func TestAddVertexByQuery(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(vertexResponse), nil }
-		qm := newAddVertexQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		qm := newAddVertexQueryManager(logging.NewNilLogger(), execute)
 		Convey("When AddVertexByQuery is called", func() {
 			var q mockQuery
 			res, _ := qm.AddVertexByQuery(q)
@@ -181,8 +181,8 @@ func TestAddVertexByStringJsonUnmarshalError(t *testing.T) {
 	}()
 	jsonUnmarshal = func([]byte, interface{}) error { return errors.New("ERROR") }
 	Convey("Given a string executor and vertex query manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(vertexResponse), nil }
-		qm := newAddVertexQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		qm := newAddVertexQueryManager(logging.NewNilLogger(), execute)
 		Convey("When AddVertexByString throws an error while unmarshalling", func() {
 			_, err := qm.AddVertexByString("testquery")
 			Convey("Then the error should be returned", func() {
@@ -198,8 +198,8 @@ func TestAddVertexByStringReturnnilVertex(t *testing.T) {
 	}()
 	jsonUnmarshal = func([]byte, interface{}) error { return nil }
 	Convey("Given a string executor and vertex query manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(vertexResponse), nil }
-		qm := newAddVertexQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		qm := newAddVertexQueryManager(logging.NewNilLogger(), execute)
 		Convey("When AddVertexByString is called and no vertices are added", func() {
 			res, _ := qm.AddVertexByString("testquery")
 			Convey("Then the return value should be the nil vertex", func() {

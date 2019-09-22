@@ -54,7 +54,9 @@ func Example_executeQuery() {
 	}
 
 	// Print out the result as a string
-	log.Println(string(res))
+	for _, r := range res {
+		log.Println(string(r))
+	}
 }
 
 func Example_executeStringQuery() {
@@ -71,5 +73,7 @@ func Example_executeStringQuery() {
 	}
 
 	// Print out the result as a string
-	log.Println(string(res))
+	for _, r := range res {
+		log.Println(string(r))
+	}
 }

@@ -31,9 +31,9 @@ import (
 func TestUnmarshalID(t *testing.T) {
 	Convey("Given a byte ID response", t, func() {
 		Convey("When unmarshalID is called", func() {
-			id, _ := unmarshalID([]byte(vertexResponse))
-			Convey("Then the return ID should be 28720", func() {
-				So(id, ShouldEqual, 28720)
+			id, _ := unmarshalID([][]byte{[]byte(vertexResponse)})
+			Convey("Then the return ID should be 0", func() {
+				So(id, ShouldEqual, 0)
 			})
 		})
 	})
@@ -46,7 +46,7 @@ func TestUnmarshalIDError(t *testing.T) {
 	jsonUnmarshal = func([]byte, interface{}) error { return errors.New("ERROR") }
 	Convey("Given a byte ID response", t, func() {
 		Convey("When unmarshalID is called and encounters an error", func() {
-			_, err := unmarshalID([]byte(vertexResponse))
+			_, err := unmarshalID([][]byte{[]byte(vertexResponse)})
 			Convey("Then the error should be returned", func() {
 				So(err, ShouldNotBeNil)
 			})

@@ -35,8 +35,8 @@ import (
 
 func TestAddEdgeLabel(t *testing.T) {
 	Convey("Given a string executor and schema manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(vertexResponse), nil }
-		sm := newSchemaManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		sm := newSchemaManager(logging.NewNilLogger(), execute)
 		Convey("When AddEdgeLabel is called", func() {
 			var m = multiplicity.Simple
 			_, err := sm.AddEdgeLabel(m, "testlabel")
@@ -49,8 +49,8 @@ func TestAddEdgeLabel(t *testing.T) {
 
 func TestAddEdgeLabelQueryError(t *testing.T) {
 	Convey("Given a string executor and schema manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, errors.New("ERROR") }
-		sm := newSchemaManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
+		sm := newSchemaManager(logging.NewNilLogger(), execute)
 		Convey("When AddEdgeLabel is called and encounters a querying error", func() {
 			var m = multiplicity.Simple
 			_, err := sm.AddEdgeLabel(m, "testlabel")
@@ -67,8 +67,8 @@ func TestAddEdgeLabelUnmarshalError(t *testing.T) {
 	}()
 	jsonUnmarshal = func([]byte, interface{}) error { return errors.New("ERROR") }
 	Convey("Given a string executor and schema manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(vertexResponse), nil }
-		sm := newSchemaManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		sm := newSchemaManager(logging.NewNilLogger(), execute)
 		Convey("When AddEdgeLabel is called and encounters an unmarshalling error", func() {
 			var m = multiplicity.Simple
 			_, err := sm.AddEdgeLabel(m, "testlabel")
@@ -81,8 +81,8 @@ func TestAddEdgeLabelUnmarshalError(t *testing.T) {
 
 func TestAddEdgeLabels(t *testing.T) {
 	Convey("Given a string executor and schema manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(vertexResponse), nil }
-		sm := newSchemaManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		sm := newSchemaManager(logging.NewNilLogger(), execute)
 		Convey("When AddEdgeLabels is called", func() {
 			var m = multiplicity.Simple
 			_, err := sm.AddEdgeLabels(m, "testlabel")
@@ -95,8 +95,8 @@ func TestAddEdgeLabels(t *testing.T) {
 
 func TestAddEdgeLabelsLabelError(t *testing.T) {
 	Convey("Given a string executor and schema manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(vertexResponse), nil }
-		sm := newSchemaManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		sm := newSchemaManager(logging.NewNilLogger(), execute)
 		Convey("When AddEdgeLabels is called and encounters a querying error", func() {
 			var m = multiplicity.Simple
 			_, err := sm.AddEdgeLabels(m, "testlabel1", "testlabel2")
@@ -109,8 +109,8 @@ func TestAddEdgeLabelsLabelError(t *testing.T) {
 
 func TestAddEdgeLabelsInvalidMultiplicity(t *testing.T) {
 	Convey("Given a string executor and schema manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(vertexResponse), nil }
-		sm := newSchemaManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		sm := newSchemaManager(logging.NewNilLogger(), execute)
 		Convey("When AddEdgeLabels is called with an invalid multiplicity", func() {
 			var m = "BADMULT"
 			_, err := sm.AddEdgeLabels(m, "testlabel1")
@@ -123,8 +123,8 @@ func TestAddEdgeLabelsInvalidMultiplicity(t *testing.T) {
 
 func TestAddEdgeLabelsInvalidLabel(t *testing.T) {
 	Convey("Given a string executor and schema manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(vertexResponse), nil }
-		sm := newSchemaManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		sm := newSchemaManager(logging.NewNilLogger(), execute)
 		Convey("When AddEdgeLabels is called with an invalid label", func() {
 			var m = multiplicity.Simple
 			_, err := sm.AddEdgeLabels(m, 1234)
@@ -137,8 +137,8 @@ func TestAddEdgeLabelsInvalidLabel(t *testing.T) {
 
 func TestAddEdgeLabelsQueryingError(t *testing.T) {
 	Convey("Given a string executor and schema manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, errors.New("ERROR") }
-		sm := newSchemaManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
+		sm := newSchemaManager(logging.NewNilLogger(), execute)
 		Convey("When AddEdgeLabels is called and encounters a querying error", func() {
 			var m = multiplicity.Simple
 			_, err := sm.AddEdgeLabels(m, "testlabel")
@@ -151,8 +151,8 @@ func TestAddEdgeLabelsQueryingError(t *testing.T) {
 
 func TestAddPropertyKey(t *testing.T) {
 	Convey("Given a string executor and schema manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(vertexResponse), nil }
-		sm := newSchemaManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		sm := newSchemaManager(logging.NewNilLogger(), execute)
 		Convey("When AddPropertyKey is called", func() {
 			var d = datatype.String
 			var c = cardinality.Single
@@ -166,8 +166,8 @@ func TestAddPropertyKey(t *testing.T) {
 
 func TestAddPropertyKeyQueryError(t *testing.T) {
 	Convey("Given a string executor and schema manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, errors.New("ERROR") }
-		sm := newSchemaManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
+		sm := newSchemaManager(logging.NewNilLogger(), execute)
 		Convey("When AddPropertyKey is called and encounters a querying error", func() {
 			var d = datatype.String
 			var c = cardinality.Single
@@ -185,8 +185,8 @@ func TestAddPropertyKeyUnmarshalError(t *testing.T) {
 	}()
 	jsonUnmarshal = func([]byte, interface{}) error { return errors.New("ERROR") }
 	Convey("Given a string executor and schema manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(vertexResponse), nil }
-		sm := newSchemaManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		sm := newSchemaManager(logging.NewNilLogger(), execute)
 		Convey("When AddPropertyKey is called and encounters an unmarshalling error", func() {
 			var d = datatype.String
 			var c = cardinality.Single
@@ -200,8 +200,8 @@ func TestAddPropertyKeyUnmarshalError(t *testing.T) {
 
 func TestCommitSchema(t *testing.T) {
 	Convey("Given a string executor and schema manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(vertexResponse), nil }
-		sm := newSchemaManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		sm := newSchemaManager(logging.NewNilLogger(), execute)
 		Convey("When CommmitSchema is called", func() {
 			_, err := sm.CommitSchema()
 			Convey("Then the error returned should be nil", func() {
@@ -213,8 +213,8 @@ func TestCommitSchema(t *testing.T) {
 
 func TestCommitSchemaQueryError(t *testing.T) {
 	Convey("Given a string executor and schema manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, errors.New("ERROR") }
-		sm := newSchemaManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
+		sm := newSchemaManager(logging.NewNilLogger(), execute)
 		Convey("When CommmitSchema is called and encounters a querying error", func() {
 			_, err := sm.CommitSchema()
 			Convey("Then the error should be returned", func() {

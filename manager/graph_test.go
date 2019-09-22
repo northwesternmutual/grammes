@@ -32,10 +32,10 @@ import (
 func TestSetLogger(t *testing.T) {
 	Convey("Given a dialer, string executor and graph query manager", t, func() {
 		dialer := gremconnect.NewWebSocketDialer("testaddress")
-		execute := func(string, map[string]string, map[string]string) ([]byte, error) { return nil, nil }
-		gm := NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+		execute := func(string, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
+		gm := NewGraphManager(dialer, logging.NewNilLogger(), execute)
 		Convey("When SetLogger is called we should not encounter any errors", func() {
-			gm.SetLogger(logging.NewBasicLogger())
+			gm.SetLogger(logging.NewNilLogger())
 		})
 	})
 }
@@ -43,8 +43,8 @@ func TestSetLogger(t *testing.T) {
 func TestMiscQuerier(t *testing.T) {
 	Convey("Given a dialer, string executor and graph query manager", t, func() {
 		dialer := gremconnect.NewWebSocketDialer("testaddress")
-		execute := func(string, map[string]string, map[string]string) ([]byte, error) { return nil, nil }
-		gm := NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+		execute := func(string, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
+		gm := NewGraphManager(dialer, logging.NewNilLogger(), execute)
 		Convey("When MiscQuerier is called", func() {
 			mq := gm.MiscQuerier()
 			Convey("Then we should return the miscellaneous querier", func() {
@@ -57,8 +57,8 @@ func TestMiscQuerier(t *testing.T) {
 func TestAddVertexQuerier(t *testing.T) {
 	Convey("Given a dialer, string executor and graph query manager", t, func() {
 		dialer := gremconnect.NewWebSocketDialer("testaddress")
-		execute := func(string, map[string]string, map[string]string) ([]byte, error) { return nil, nil }
-		gm := NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+		execute := func(string, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
+		gm := NewGraphManager(dialer, logging.NewNilLogger(), execute)
 		Convey("When AddVertexQuerier is called", func() {
 			avq := gm.AddVertexQuerier()
 			Convey("Then we should return the addVertex querier", func() {
@@ -71,8 +71,8 @@ func TestAddVertexQuerier(t *testing.T) {
 func TestGetVertexQuerier(t *testing.T) {
 	Convey("Given a dialer, string executor and graph query manager", t, func() {
 		dialer := gremconnect.NewWebSocketDialer("testaddress")
-		execute := func(string, map[string]string, map[string]string) ([]byte, error) { return nil, nil }
-		gm := NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+		execute := func(string, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
+		gm := NewGraphManager(dialer, logging.NewNilLogger(), execute)
 		Convey("When GetVertexQuerier is called", func() {
 			gvq := gm.GetVertexQuerier()
 			Convey("Then we should return the getVertex querier", func() {
@@ -85,8 +85,8 @@ func TestGetVertexQuerier(t *testing.T) {
 func TestGetVertexIDQuerier(t *testing.T) {
 	Convey("Given a dialer, string executor and graph query manager", t, func() {
 		dialer := gremconnect.NewWebSocketDialer("testaddress")
-		execute := func(string, map[string]string, map[string]string) ([]byte, error) { return nil, nil }
-		gm := NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+		execute := func(string, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
+		gm := NewGraphManager(dialer, logging.NewNilLogger(), execute)
 		Convey("When GetVertexIDQuerier is called", func() {
 			gvq := gm.GetVertexIDQuerier()
 			Convey("Then we should return the getVertexID querier", func() {
@@ -99,8 +99,8 @@ func TestGetVertexIDQuerier(t *testing.T) {
 func TestDropQuerier(t *testing.T) {
 	Convey("Given a dialer, string executor and graph query manager", t, func() {
 		dialer := gremconnect.NewWebSocketDialer("testaddress")
-		execute := func(string, map[string]string, map[string]string) ([]byte, error) { return nil, nil }
-		gm := NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+		execute := func(string, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
+		gm := NewGraphManager(dialer, logging.NewNilLogger(), execute)
 		Convey("When DropQuerier is called", func() {
 			dq := gm.DropQuerier()
 			Convey("Then we should return the drop querier", func() {
@@ -113,8 +113,8 @@ func TestDropQuerier(t *testing.T) {
 func TestVertexQuerier(t *testing.T) {
 	Convey("Given a dialer, string executor and graph query manager", t, func() {
 		dialer := gremconnect.NewWebSocketDialer("testaddress")
-		execute := func(string, map[string]string, map[string]string) ([]byte, error) { return nil, nil }
-		gm := NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+		execute := func(string, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
+		gm := NewGraphManager(dialer, logging.NewNilLogger(), execute)
 		Convey("When VertexQuerier is called", func() {
 			vq := gm.VertexQuerier()
 			Convey("Then we should return the vertex querier", func() {
@@ -127,8 +127,8 @@ func TestVertexQuerier(t *testing.T) {
 func TestExecuteQuerier(t *testing.T) {
 	Convey("Given a dialer, string executor and graph query manager", t, func() {
 		dialer := gremconnect.NewWebSocketDialer("testaddress")
-		execute := func(string, map[string]string, map[string]string) ([]byte, error) { return nil, nil }
-		gm := NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+		execute := func(string, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
+		gm := NewGraphManager(dialer, logging.NewNilLogger(), execute)
 		Convey("When ExecuteQuerier is called", func() {
 			eq := gm.ExecuteQuerier()
 			Convey("Then we should return the execute querier", func() {
@@ -141,8 +141,8 @@ func TestExecuteQuerier(t *testing.T) {
 func TestSchemaQuerier(t *testing.T) {
 	Convey("Given a dialer, string executor and graph query manager", t, func() {
 		dialer := gremconnect.NewWebSocketDialer("testaddress")
-		execute := func(string, map[string]string, map[string]string) ([]byte, error) { return nil, nil }
-		gm := NewGraphManager(dialer, logging.NewBasicLogger(), execute)
+		execute := func(string, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
+		gm := NewGraphManager(dialer, logging.NewNilLogger(), execute)
 		Convey("When SchemaQuerier is called", func() {
 			sq := gm.SchemaQuerier()
 			Convey("Then we should return the schema querier", func() {

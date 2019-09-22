@@ -1,5 +1,7 @@
 module github.com/northwesternmutual/grammes
 
+go 1.13
+
 require (
 	github.com/google/uuid v1.1.0
 	github.com/gopherjs/gopherjs v0.0.0-20190309154008-847fc94819f9 // indirect

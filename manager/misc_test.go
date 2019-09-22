@@ -32,8 +32,8 @@ import (
 
 func TestDropAll(t *testing.T) {
 	Convey("Given a string executor and misc query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, nil }
-		mm := newMiscQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, nil }
+		mm := newMiscQueryManager(logging.NewNilLogger(), execute)
 		Convey("When DropAll is called", func() {
 			err := mm.DropAll()
 			Convey("Then the error returned should be nil", func() {
@@ -45,8 +45,8 @@ func TestDropAll(t *testing.T) {
 
 func TestSetVertexProperty(t *testing.T) {
 	Convey("Given a string executor and misc query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, nil }
-		mm := newMiscQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, nil }
+		mm := newMiscQueryManager(logging.NewNilLogger(), execute)
 		Convey("When SetVertexProperty is called", func() {
 			err := mm.SetVertexProperty(1234, "prop1", "prop2")
 			Convey("Then the error returned should be nil", func() {
@@ -58,8 +58,8 @@ func TestSetVertexProperty(t *testing.T) {
 
 func TestSetVertexPropertyParameterError(t *testing.T) {
 	Convey("Given a string executor and misc query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, nil }
-		mm := newMiscQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, nil }
+		mm := newMiscQueryManager(logging.NewNilLogger(), execute)
 		Convey("When SetVertexProperty is called with an odd number of properties", func() {
 			err := mm.SetVertexProperty(1234, "prop1")
 			Convey("Then the error should be returned", func() {
@@ -71,8 +71,8 @@ func TestSetVertexPropertyParameterError(t *testing.T) {
 
 func TestSetVertexPropertyQueryError(t *testing.T) {
 	Convey("Given a string executor and misc query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, errors.New("ERROR") }
-		mm := newMiscQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
+		mm := newMiscQueryManager(logging.NewNilLogger(), execute)
 		Convey("When SetVertexProperty is called and encounters a querying error", func() {
 			err := mm.SetVertexProperty(1234)
 			Convey("Then the error should be returned", func() {
@@ -84,8 +84,8 @@ func TestSetVertexPropertyQueryError(t *testing.T) {
 
 func TestVertexCount(t *testing.T) {
 	Convey("Given a string executor and misc query manager", t, func() {
-		execute := func(string) ([]byte, error) { return []byte(idResponse), nil }
-		mm := newMiscQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(idResponse)}, nil }
+		mm := newMiscQueryManager(logging.NewNilLogger(), execute)
 		Convey("When SetVertexProperty is called", func() {
 			c, _ := mm.VertexCount()
 			Convey("Then the count should equal 255", func() {
@@ -97,8 +97,8 @@ func TestVertexCount(t *testing.T) {
 
 func TestVertexCountQueryError(t *testing.T) {
 	Convey("Given a string executor and misc query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, errors.New("ERROR") }
-		mm := newMiscQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
+		mm := newMiscQueryManager(logging.NewNilLogger(), execute)
 		Convey("When SetVertexProperty is called and encounters a querying error", func() {
 			_, err := mm.VertexCount()
 			Convey("Then the error should be returned", func() {
@@ -114,8 +114,8 @@ func TestVertexCountUnmarshalError(t *testing.T) {
 	}()
 	jsonUnmarshal = func([]byte, interface{}) error { return errors.New("ERROR") }
 	Convey("Given a string executor and misc query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, nil }
-		mm := newMiscQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, nil }
+		mm := newMiscQueryManager(logging.NewNilLogger(), execute)
 		Convey("When SetVertexProperty is called and encounters an numarshalling error", func() {
 			_, err := mm.VertexCount()
 			Convey("Then the error should be returned", func() {

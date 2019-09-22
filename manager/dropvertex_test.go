@@ -31,8 +31,8 @@ import (
 
 func TestDropVertexLabel(t *testing.T) {
 	Convey("Given a string executor and drop query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, nil }
-		dm := newDropQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, nil }
+		dm := newDropQueryManager(logging.NewNilLogger(), execute)
 		Convey("When DropVertexLabel is called", func() {
 			err := dm.DropVertexLabel("testlabel")
 			Convey("The return error should be nil", func() {
@@ -44,8 +44,8 @@ func TestDropVertexLabel(t *testing.T) {
 
 func TestDropVertexLabelError(t *testing.T) {
 	Convey("Given a string executor and drop query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, errors.New("ERROR") }
-		dm := newDropQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
+		dm := newDropQueryManager(logging.NewNilLogger(), execute)
 		Convey("When DropVertexLabel is called and encounters an error", func() {
 			err := dm.DropVertexLabel("testlabel")
 			Convey("Then the error should be returned", func() {
@@ -57,8 +57,8 @@ func TestDropVertexLabelError(t *testing.T) {
 
 func TestDropVertexByID(t *testing.T) {
 	Convey("Given a string executor and drop query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, nil }
-		dm := newDropQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, nil }
+		dm := newDropQueryManager(logging.NewNilLogger(), execute)
 		Convey("When DropVertexByID is called", func() {
 			err := dm.DropVertexByID(1234)
 			Convey("Then the return error should be nil", func() {
@@ -70,8 +70,8 @@ func TestDropVertexByID(t *testing.T) {
 
 func TestDropVertexByIDError(t *testing.T) {
 	Convey("Given a string executor and drop query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, errors.New("ERROR") }
-		dm := newDropQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
+		dm := newDropQueryManager(logging.NewNilLogger(), execute)
 		Convey("When DropVertexByID is called and encounters an error", func() {
 			err := dm.DropVertexByID(1234)
 			Convey("Then the error should be returned", func() {
@@ -83,8 +83,8 @@ func TestDropVertexByIDError(t *testing.T) {
 
 func TestDropVerticesByString(t *testing.T) {
 	Convey("Given a string executor and drop query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, nil }
-		dm := newDropQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, nil }
+		dm := newDropQueryManager(logging.NewNilLogger(), execute)
 		Convey("When DropVertexByString is called", func() {
 			err := dm.DropVerticesByString("testquery")
 			Convey("Then the return error should be nil", func() {
@@ -96,8 +96,8 @@ func TestDropVerticesByString(t *testing.T) {
 
 func TestDropVerticesByStringError(t *testing.T) {
 	Convey("Given a string executor and drop query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, errors.New("ERROR") }
-		dm := newDropQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
+		dm := newDropQueryManager(logging.NewNilLogger(), execute)
 		Convey("When DropVertexByString is called and encounters an error", func() {
 			err := dm.DropVerticesByString("testquery")
 			Convey("Then the error should be returned", func() {
@@ -109,8 +109,8 @@ func TestDropVerticesByStringError(t *testing.T) {
 
 func TestDropVerticesByQuery(t *testing.T) {
 	Convey("Given a string executor and drop query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, nil }
-		dm := newDropQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, nil }
+		dm := newDropQueryManager(logging.NewNilLogger(), execute)
 		Convey("When DropVertexByQuery is called", func() {
 			var q mockQuery
 			err := dm.DropVerticesByQuery(q)
@@ -123,8 +123,8 @@ func TestDropVerticesByQuery(t *testing.T) {
 
 func TestDropVerticesByQueryError(t *testing.T) {
 	Convey("Given a string executor and drop query manager", t, func() {
-		execute := func(string) ([]byte, error) { return nil, errors.New("ERROR") }
-		dm := newDropQueryManager(logging.NewBasicLogger(), execute)
+		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
+		dm := newDropQueryManager(logging.NewNilLogger(), execute)
 		Convey("When DropVertexByQuery is called and encounters an error", func() {
 			var q mockQuery
 			err := dm.DropVerticesByQuery(q)

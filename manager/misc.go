@@ -99,5 +99,9 @@ func (m *miscQueryManager) VertexCount() (int64, error) {
 		resultingIDs.IDs = append(resultingIDs.IDs, rawIDs.IDs...)
 	}
 
+	if len(resultingIDs.IDs) == 0 {
+		return 0, gremerror.ErrEmptyResponse
+	}
+
 	return resultingIDs.IDs[0].Value, nil
 }

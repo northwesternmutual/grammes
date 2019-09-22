@@ -21,7 +21,6 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 
@@ -92,14 +91,15 @@ func main() {
 		logger.Fatal("Querying error", zap.Error(err))
 	}
 
-	var props grammes.PropertyList
-
 	// Unmarshal raw data into a PropertyList
-	json.Unmarshal(res, &props)
+	props, err := grammes.UnmarshalPropertyList(res)
+	if err != nil {
+		fmt.Printf("error unmarshalling data: %s", err.Error())
+	}
 
 	// Print out columns of the received data.
 	fmt.Printf("%-20s %-8s\n", "Label", "Value")
-	for _, p := range props.Properties {
+	for _, p := range props {
 		fmt.Printf("%#-20v %#-8v\n", p.Value.Label, p.GetValue())
 	}
 }
