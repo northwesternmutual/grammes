@@ -151,7 +151,9 @@ func main() {
     }
 
     // Print out the result as a string
-    log.Println(string(res))
+    for _, r := range res {
+        log.Println(string(r))
+    }
 }
 ```
 
@@ -186,7 +188,9 @@ func main() {
     }
 
     // Log out the response.
-    log.Println(string(data))
+    for _, r := range res {
+        log.Println(string(r))
+    }
 }
 ```
 
