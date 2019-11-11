@@ -73,7 +73,6 @@ func (c *Client) retrieveResponse(id string) ([][]byte, error) {
 
 	if n := <-notifier.(chan int); n == 1 {
 		if dataI, ok := c.results.Load(id); ok {
-
 			for _, d := range dataI.([]interface{}) {
 				if err, ok = d.(error); ok {
 					break
@@ -83,7 +82,6 @@ func (c *Client) retrieveResponse(id string) ([][]byte, error) {
 				}
 				data = append(data, dataPart)
 			}
-
 			close(notifier.(chan int))
 			c.resultMessenger.Delete(id)
 			c.deleteResponse(id)
