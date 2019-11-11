@@ -30,6 +30,7 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 
 	"github.com/northwesternmutual/grammes/gremconnect"
+	"github.com/northwesternmutual/grammes/gremerror"
 )
 
 func TestExecuteRequest(t *testing.T) {
