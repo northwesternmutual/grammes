@@ -171,8 +171,8 @@ func TestExecuteRequestErrorRetrievingResponse(t *testing.T) {
 			`
 		c, _ := Dial(dialer)
 		Convey("When 'executeRequest' is called and retrieving the response throws an error", func() {
-			bindings := make(map[string]interface{})
-			rebindings := make(map[string]interface{})
+			bindings := make(map[string]string)
+			rebindings := make(map[string]string)
 			_, err := c.executeRequest("testing", bindings, rebindings)
 			Convey("Then the error should be returned", func() {
 				So(err, ShouldNotBeNil)
