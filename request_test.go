@@ -158,14 +158,28 @@ func TestExecuteRequestErrorRetrievingResponse(t *testing.T) {
 	jsonMarshalData = func(interface{}) ([]byte, error) { return nil, errors.New("ERROR") }
 	Convey("Given a client that represents the Gremlin client", t, func() {
 		dialer := &mockDialerStruct{}
-		dialer.response = newVertexResponse
+		dialer.response = `
+			{
+				"requestId": "61616161-6161-6161-2d61-6161612d6161",
+				"status": {
+					"message": "",
+					"code": 597,
+					"attributes": {}
+				},
+				"result":{"data":null,"meta":{"@type":"g:Map","@value":[]}}
+			}
+			`
 		c, _ := Dial(dialer)
 		Convey("When 'executeRequest' is called and retrieving the response throws an error", func() {
-			bindings := make(map[string]string)
-			rebindings := make(map[string]string)
+			bindings := make(map[string]interface{})
+			rebindings := make(map[string]interface{})
 			_, err := c.executeRequest("testing", bindings, rebindings)
 			Convey("Then the error should be returned", func() {
 				So(err, ShouldNotBeNil)
+			})
+			Convey("Then the error should be gremerror.NetworkError", func() {
+				_, ok := err.(*gremerror.NetworkError)
+				So(ok, ShouldBeTrue)
 			})
 		})
 	})
