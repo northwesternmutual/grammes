@@ -75,10 +75,12 @@ func (c *Client) retrieveResponse(id string) ([][]byte, error) {
 		if dataI, ok := c.results.Load(id); ok {
 
 			for _, d := range dataI.([]interface{}) {
-				if dataPart, err = jsonMarshalData(d); err != nil {
-					return nil, err
+				if err, ok = d.(error); ok {
+					break
 				}
-
+				if dataPart, err = jsonMarshalData(d); err != nil {
+					break
+				}
 				data = append(data, dataPart)
 			}
 
