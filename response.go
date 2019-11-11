@@ -88,7 +88,7 @@ func (c *Client) retrieveResponse(id string) ([][]byte, error) {
 		}
 	}
 
-	return data, nil
+	return data, err
 }
 
 // deleteRespones deletes the response from the container. Used for cleanup purposes by requester.
