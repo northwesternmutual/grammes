@@ -73,22 +73,22 @@ func (c *Client) retrieveResponse(id string) ([][]byte, error) {
 
 	if n := <-notifier.(chan int); n == 1 {
 		if dataI, ok := c.results.Load(id); ok {
-
 			for _, d := range dataI.([]interface{}) {
-				if dataPart, err = jsonMarshalData(d); err != nil {
-					return nil, err
+				if err, ok = d.(error); ok {
+					break
 				}
-
+				if dataPart, err = jsonMarshalData(d); err != nil {
+					break
+				}
 				data = append(data, dataPart)
 			}
-
 			close(notifier.(chan int))
 			c.resultMessenger.Delete(id)
 			c.deleteResponse(id)
 		}
 	}
 
-	return data, nil
+	return data, err
 }
 
 // deleteRespones deletes the response from the container. Used for cleanup purposes by requester.
