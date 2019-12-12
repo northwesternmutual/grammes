@@ -20,7 +20,11 @@
 
 package traversal
 
-import "github.com/northwesternmutual/grammes/query/cardinality"
+import (
+	"strings"
+	
+	"github.com/northwesternmutual/grammes/query/cardinality"
+)
 
 // http://tinkerpop.apache.org/docs/current/reference/#addproperty-step
 
@@ -47,7 +51,7 @@ func (g String) Property(objOrCard interface{}, obj interface{}, params ...inter
 
 	switch obj.(type) {
 	case string:
-		g = g.append(",\"" + obj.(string) + "\"")
+		g = g.append(",\"" + strings.ReplaceAll(obj.(string), "\"", "\\\"") + "\"")
 	default:
 		g = g.append(fmtStr(",%v", obj))
 	}
@@ -56,7 +60,7 @@ func (g String) Property(objOrCard interface{}, obj interface{}, params ...inter
 		for _, p := range params {
 			switch obj.(type) {
 			case string:
-				g = g.append(",\"" + p.(string) + "\"")
+				g = g.append(",\"" + strings.ReplaceAll(p.(string), "\"", "\\\"") + "\"")
 			default:
 				g = g.append(fmtStr(",%v", p))
 			}
