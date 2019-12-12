@@ -20,7 +20,11 @@
 
 package traversal
 
-import "github.com/northwesternmutual/grammes/query/cardinality"
+import (
+	"strings"
+	
+	"github.com/northwesternmutual/grammes/query/cardinality"
+)
 
 // http://tinkerpop.apache.org/docs/current/reference/#addproperty-step
 
