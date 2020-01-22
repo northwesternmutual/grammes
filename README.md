@@ -182,7 +182,7 @@ func main() {
     g := grammes.Traversal()
 
     // Executing a query to fetch all of the labels from the vertices.
-    data, err := client.ExecuteQuery(g.V().Label())
+    res, err := client.ExecuteQuery(g.V().Label())
     if err != nil {
         log.Fatalf("Querying error: %s\n", err.Error())
     }
