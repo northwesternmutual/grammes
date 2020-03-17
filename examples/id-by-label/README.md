@@ -4,7 +4,7 @@ The basics of getting vertex IDs using the `VertexIDs` function.
 
 ## Description
 
-**id-by-label** demonstrates how to get vertex IDs using a label. Specifically this examples shows how to by using the `VertexIDs` function which takes a `string` label and returns a `[]int64` and `error`. *(This function has multiple purposes and is also shown in `id-by-property`)*
+**id-by-label** demonstrates how to get vertex IDs using a label. Specifically this examples shows how to by using the `VertexIDs` function which takes a `string` label and returns a `[]interface{}` and `error`. *(This function has multiple purposes and is also shown in `id-by-property`)*
 
 ## Prerequisites
 

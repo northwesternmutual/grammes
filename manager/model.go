@@ -42,15 +42,15 @@ var (
 
 // unmarshalID will simply take a raw response and
 // unmarshal it into an ID.
-func unmarshalID(data [][]byte) (id int64, err error) {
+func unmarshalID(data [][]byte) (id interface{}, err error) {
 	var resp model.VertexList
 
 	for _, res := range data {
 		var resPart model.VertexList
 		err = jsonUnmarshal(res, &resPart)
 		if err == nil {
-			if len(resp.Vertices) > 0 {
-				id = resp.Vertices[0].ID()
+			if len(resPart.Vertices) > 0 {
+				id = resPart.Vertices[0].ID()
 			}
 		}
 
@@ -73,17 +73,17 @@ type MiscQuerier interface {
 	// VertexCount will return the number of vertices on the graph.
 	VertexCount() (count int64, err error)
 	// SetVertexProperty will either add or set the property of a vertex.
-	SetVertexProperty(id int64, keyAndVals ...interface{}) error
+	SetVertexProperty(id interface{}, keyAndVals ...interface{}) error
 }
 
 // SchemaQuerier handles all schema related queries to the graph.
 type SchemaQuerier interface {
 	// AddEdgeLabel adds a new edge label to the schema.
-	AddEdgeLabel(multi multiplicity.Multiplicity, label string) (id int64, err error)
+	AddEdgeLabel(multi multiplicity.Multiplicity, label string) (id interface{}, err error)
 	// AddEdgeLabels adds new edge labels to the schema.
-	AddEdgeLabels(multiplicityAndLabels ...interface{}) (ids []int64, err error)
+	AddEdgeLabels(multiplicityAndLabels ...interface{}) (ids []interface{}, err error)
 	// AddPropertyKey adds a new property key to the schema.
-	AddPropertyKey(label string, dt datatype.DataType, card cardinality.Cardinality) (id int64, err error)
+	AddPropertyKey(label string, dt datatype.DataType, card cardinality.Cardinality) (id interface{}, err error)
 	// CommitSchema will finalize your changes and apply them to the schema.
 	CommitSchema() (res [][]byte, err error)
 }
@@ -93,7 +93,7 @@ type GetVertexQuerier interface {
 	// AllVertices will return a slice of all vertices on the graph.
 	AllVertices() (vertices []model.Vertex, err error)
 	// VertexByID will return a single vertex based on the ID provided.
-	VertexByID(id int64) (vertex model.Vertex, err error)
+	VertexByID(id interface{}) (vertex model.Vertex, err error)
 	// VerticesByString will return already unmarshalled vertex structs from a string query.
 	VerticesByString(stringQuery string) (vertices []model.Vertex, err error)
 	// VerticesByQuery will return already unmarshalled vertex structs from a query object.
@@ -105,11 +105,11 @@ type GetVertexQuerier interface {
 // GetVertexIDQuerier holds functions to gather IDs from the graph.
 type GetVertexIDQuerier interface {
 	// VertexIDsByString returns a slice of IDs from a string query.
-	VertexIDsByString(stringQuery string) (ids []int64, err error)
+	VertexIDsByString(stringQuery string) (ids []interface{}, err error)
 	// VertexIDsByQuery returns a slice of IDs from a query object.
-	VertexIDsByQuery(queryObj query.Query) (ids []int64, err error)
+	VertexIDsByQuery(queryObj query.Query) (ids []interface{}, err error)
 	// VertexIDs returns a slice of IDs based on the label and properties.
-	VertexIDs(label string, properties ...interface{}) (ids []int64, err error)
+	VertexIDs(label string, properties ...interface{}) (ids []interface{}, err error)
 }
 
 // AddVertexQuerier are queries specific to adding vertices.
@@ -133,7 +133,7 @@ type DropQuerier interface {
 	// DropVertexLabel drops all vertices with given label.
 	DropVertexLabel(label string) error
 	// DropVertexByID drops vertices based on their IDs.
-	DropVertexByID(ids ...int64) error
+	DropVertexByID(ids ...interface{}) error
 	// DropVerticesByString drops vertices using a string query.
 	DropVerticesByString(stringQuery string) error
 	// DropVerticesByQuery drops vertices using a query object.

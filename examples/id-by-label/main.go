@@ -73,6 +73,6 @@ func main() {
 	// Print out all the received vertex IDs.
 	// This should only print out one ID.
 	for _, id := range ids {
-		logger.Info("vertex id", zap.Int64("value", id))
+		logger.Info("vertex id", zap.Any("value", id))
 	}
 }

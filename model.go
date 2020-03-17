@@ -38,9 +38,6 @@ var (
 	// UnmarshalEdgeList is a utility to unmarshal a list
 	// or array of edges properly.
 	UnmarshalEdgeList = model.UnmarshalEdgeList
-	// UnmarshalIDList is a utility to unmarshal a list
-	// or array of IDs properly.
-	UnmarshalIDList = model.UnmarshalIDList
 	// UnmarshalVertexList is a utility to unmarshal a list
 	// or array of vertices properly.
 	UnmarshalVertexList = model.UnmarshalVertexList
@@ -113,14 +110,6 @@ type PropertyMap = model.PropertyMap
 // PropertyValue contains the ID,
 // value, and label of this property's value.
 type PropertyValue = model.PropertyValue
-
-// ID is used to get quick access
-// to the model.ID without having to
-// import it everywhere in the grammes package.
-//
-// ID contains the data stores in the
-// 'ID' data including the type and Value
-type ID = model.ID
 
 // APIData is used to get quick access
 // to the model.APIData without having to

@@ -28,11 +28,11 @@ import (
 
 func TestVertexPropertyValue(t *testing.T) {
 	Convey("Given a variable that represents the Vertex struct", t, func() {
-		testID := PropertyID{Value: PropertyIDValue{RelationID: "relID"}}
+		testID := PropertyID{Value: "relID"}
 		testValue := ValueWrapper{PropertyDetailedValue: PropertyDetailedValue{Value: "tstInterface", Type: "pdvType"}}
 		pi := Property{Type: "piType", Value: PropertyValue{ID: testID, Value: testValue, Label: "tstLabel"}}
 
-		pdmap := map[string][]Property{"testKey": []Property{pi}}
+		pdmap := map[string][]Property{"testKey": {pi}}
 
 		v := Vertex{Type: "tesType", Value: VertexValue{Properties: pdmap}}
 
@@ -47,12 +47,12 @@ func TestVertexPropertyValue(t *testing.T) {
 
 func TestVertexID(t *testing.T) {
 	Convey("Given a variable that represents the Vertex struct", t, func() {
-		testID := PropertyID{Value: PropertyIDValue{RelationID: "relID"}}
+		testID := PropertyID{Value: "relID"}
 		testValue := ValueWrapper{PropertyDetailedValue: PropertyDetailedValue{Value: "tstInterface", Type: "pdvType"}}
 		pi := Property{Type: "piType", Value: PropertyValue{ID: testID, Value: testValue, Label: "tstLabel"}}
-		pdmap := map[string][]Property{"testKey": []Property{pi}}
+		pdmap := map[string][]Property{"testKey": {pi}}
 
-		v := Vertex{Type: "tesType", Value: VertexValue{Properties: pdmap, ID: ID{Value: 6789}}}
+		v := Vertex{Type: "tesType", Value: VertexValue{Properties: pdmap, ID: 6789}}
 
 		Convey("When 'ID' is called with a string and int", func() {
 			result := v.ID()
@@ -65,12 +65,12 @@ func TestVertexID(t *testing.T) {
 
 func TestVertexLabel(t *testing.T) {
 	Convey("Given a variable that represents the Vertex struct", t, func() {
-		testID := PropertyID{Value: PropertyIDValue{RelationID: "relID"}}
+		testID := PropertyID{Value: "relID"}
 		testValue := ValueWrapper{PropertyDetailedValue: PropertyDetailedValue{Value: "tstInterface", Type: "pdvType"}}
 		pi := Property{Type: "piType", Value: PropertyValue{ID: testID, Value: testValue, Label: "tstLabel"}}
-		pdmap := map[string][]Property{"testKey": []Property{pi}}
+		pdmap := map[string][]Property{"testKey": {pi}}
 
-		v := Vertex{Type: "tesType", Value: VertexValue{Label: "testLabel", ID: ID{Value: 6789}, Properties: pdmap}}
+		v := Vertex{Type: "tesType", Value: VertexValue{Label: "testLabel", ID: 6789, Properties: pdmap}}
 
 		Convey("When 'Label' is called with a string and int", func() {
 			result := v.Label()

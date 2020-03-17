@@ -25,7 +25,7 @@ import "encoding/json"
 // VertexValue contains the 'value' data
 // from the Vertex object.
 type VertexValue struct {
-	ID         ID          `json:"id"`
+	ID         interface{} `json:"id"`
 	Label      string      `json:"label"`
 	Properties PropertyMap `json:"properties,omitempty"`
 }

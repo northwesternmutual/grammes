@@ -4,7 +4,7 @@ The basics of getting vertex IDs using the `VertexIDsByQuery` function.
 
 ## Description
 
-**id-by-query** demonstrates how to get vertex IDs using a `Query` object. Specifically this examples shows how to by using the `VertexIDsByQuery` function which takes a `Query` object that's meant to identify one or more vertices then returns a `[]int64` and `error`.
+**id-by-query** demonstrates how to get vertex IDs using a `Query` object. Specifically this examples shows how to by using the `VertexIDsByQuery` function which takes a `Query` object that's meant to identify one or more vertices then returns a `[]interface{}` and `error`.
 
 ## Prerequisites
 

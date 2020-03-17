@@ -53,7 +53,7 @@ func (v *dropQueryManager) DropVertexLabel(label string) error {
 	return nil
 }
 
-func (v *dropQueryManager) DropVertexByID(ids ...int64) error {
+func (v *dropQueryManager) DropVertexByID(ids ...interface{}) error {
 	var err error
 	for _, id := range ids {
 		query := traversal.NewTraversal().V().HasID(id).Drop()

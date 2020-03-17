@@ -4,7 +4,7 @@ The basics of dropping vertices using only their IDs using the `DropVertexByID` 
 
 ## Description
 
-**drop-vertex-by-id** demonstrates how to drop specific vertices on the graph using their IDs. Specifically this examples shows how to drop the vertices using the `DropVertexByID` function in the Grammes client which takes in an `int64` for the ID of the vertex.
+**drop-vertex-by-id** demonstrates how to drop specific vertices on the graph using their IDs. Specifically this examples shows how to drop the vertices using the `DropVertexByID` function in the Grammes client which takes in an object for the ID of the vertex.
 
 ## Prerequisites
 

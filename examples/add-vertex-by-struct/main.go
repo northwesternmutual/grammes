@@ -70,7 +70,7 @@ func main() {
 
 	// Print out the resulting vertex and its values.
 	logger.Info("Vertex", zap.String("label", vertex.Label()))
-	logger.Info("Vertex", zap.Int64("ID", vertex.ID()))
+	logger.Info("Vertex", zap.Any("ID", vertex.ID()))
 
 	for k, v := range vertex.PropertyMap() {
 		logger.Info("Property", zap.Any(k, v[0].GetValue()))

@@ -83,7 +83,7 @@ func (g String) ToV(dir direction.Direction) String {
 
 // ToVId can be used to make a string query that will take a vertex id as a parameter,
 // and can be used to point an edge towards this vertex ID.
-func (g String) ToVId(vertexID int64) String {
+func (g String) ToVId(vertexID interface{}) String {
 	g = g.append(fmtStr(".to(V().hasId(%v))", vertexID))
 
 	return g

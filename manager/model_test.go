@@ -32,8 +32,8 @@ func TestUnmarshalID(t *testing.T) {
 	Convey("Given a byte ID response", t, func() {
 		Convey("When unmarshalID is called", func() {
 			id, _ := unmarshalID([][]byte{[]byte(vertexResponse)})
-			Convey("Then the return ID should be 0", func() {
-				So(id, ShouldEqual, 0)
+			Convey("Then the return ID should be 28720", func() {
+				So(id, ShouldEqual, 28720)
 			})
 		})
 	})

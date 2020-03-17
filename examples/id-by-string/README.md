@@ -4,7 +4,7 @@ The basics of getting vertex IDs using the `VertexIDsByString` function.
 
 ## Description
 
-**id-by-query** demonstrates how to get vertex IDs using a `string` query. Specifically this examples shows how to by using the `VertexIDsByString` function which takes a `string` query that's meant to identify one or more vertices then returns a `[]int64` and `error`.
+**id-by-query** demonstrates how to get vertex IDs using a `string` query. Specifically this examples shows how to by using the `VertexIDsByString` function which takes a `string` query that's meant to identify one or more vertices then returns a `[]interface{}` and `error`.
 
 ## Prerequisites
 
