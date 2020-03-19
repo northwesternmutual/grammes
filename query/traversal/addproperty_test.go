@@ -38,8 +38,8 @@ func TestProperty(t *testing.T) {
 		})
 		Convey("When 'Property' is called with object strings and cardinality", func() {
 			result := g.Property(cardinality.Set, "obj1", "obj2")
-			Convey("Then result should equal 'g.property(SET,'obj1','obj2')'", func() {
-				So(result.String(), ShouldEqual, "g.property(SET,\"obj1\",\"obj2\")")
+			Convey("Then result should equal 'g.property(set,'obj1','obj2')'", func() {
+				So(result.String(), ShouldEqual, "g.property(set,\"obj1\",\"obj2\")")
 			})
 		})
 		Convey("When 'Property' is called with object strings and ints", func() {

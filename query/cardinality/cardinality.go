@@ -33,6 +33,8 @@ This object implements the Parameter interfaces used by graph traversals.
 */
 package cardinality
 
+import "strings"
+
 // Tinkerpop:
 // http://tinkerpop.apache.org/javadocs/3.3.3/core/org/apache/tinkerpop/gremlin/structure/VertexProperty.Cardinality.html
 
@@ -57,5 +59,5 @@ const (
 
 // String will convert Cardinality to a string
 func (c Cardinality) String() string {
-	return string(c)
+	return strings.ToLower(string(c))
 }

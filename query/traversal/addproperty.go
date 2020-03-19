@@ -20,12 +20,6 @@
 
 package traversal
 
-import (
-	"strings"
-	
-	"github.com/northwesternmutual/grammes/query/cardinality"
-)
-
 // http://tinkerpop.apache.org/docs/current/reference/#addproperty-step
 
 // Property (sideEffect) unlike AddV() and AddE(), Property() is
@@ -38,36 +32,11 @@ import (
 // Property(interface{} (Object), interface{} (Object), ...interface{} (Object))
 // Property(Cardinality, string (Object), interface{} (Object), ...interface{} (Object))
 func (g String) Property(objOrCard interface{}, obj interface{}, params ...interface{}) String {
-	g = g.append(".property(")
+	fullParams := make([]interface{}, 0, len(params)+2)
+	fullParams = append(fullParams, objOrCard, obj)
+	fullParams = append(fullParams, params...)
 
-	switch objOrCard.(type) {
-	case cardinality.Cardinality:
-		g = g.append(objOrCard.(cardinality.Cardinality).String())
-	case string:
-		g = g.append("\"" + objOrCard.(string) + "\"")
-	default:
-		g = g.append(fmtStr("%v", objOrCard))
-	}
-
-	switch obj.(type) {
-	case string:
-		g = g.append(",\"" + strings.ReplaceAll(obj.(string), "\"", "\\\"") + "\"")
-	default:
-		g = g.append(fmtStr(",%v", obj))
-	}
-
-	if len(params) > 0 {
-		for _, p := range params {
-			switch obj.(type) {
-			case string:
-				g = g.append(",\"" + strings.ReplaceAll(p.(string), "\"", "\\\"") + "\"")
-			default:
-				g = g.append(fmtStr(",%v", p))
-			}
-		}
-	}
-
-	g = g.append(")")
+	g.AddStep("property", fullParams...)
 
 	return g
 }
