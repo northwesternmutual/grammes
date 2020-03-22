@@ -28,16 +28,8 @@ package traversal
 // Signatures:
 // V()
 // V(int...)
-func (g String) V(params ...int) String {
-	// strParam := gatherInts(params...)
-	// g = g.append(fmtStr(".V(%v)", strParam))
-	var p []interface{}
-
-	for _, i := range params {
-		p = append(p, i)
-	}
-
-	g.AddStep("V", p...)
+func (g String) V(params ...interface{}) String {
+	g.AddStep("V", params...)
 
 	return g
 }
