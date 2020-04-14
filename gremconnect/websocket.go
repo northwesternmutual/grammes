@@ -22,6 +22,8 @@ package gremconnect
 
 import (
 	"errors"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strings"
 	"sync"
@@ -67,22 +69,35 @@ func (ws *WebSocket) Connect() error {
 		ws.address = ws.address + "/gremlin"
 	}
 
-	ws.conn, _, err = dialer.Dial(ws.address, http.Header{})
+	var httpResponse *http.Response
+	ws.conn, httpResponse, err = dialer.Dial(ws.address, http.Header{})
+	if err != nil {
+		if httpResponse != nil {
+			//noinspection GoUnhandledErrorResult
+			defer httpResponse.Body.Close()
 
-	if err == nil {
-		ws.connected = true
-
-		handler := func(appData string) error {
-			ws.Lock()
-			ws.connected = true
-			ws.Unlock()
-			return nil
+			// Try to read the http response to add context to the error
+			readErr, errorOutput := ioutil.ReadAll(httpResponse.Body)
+			if readErr != nil {
+				return fmt.Errorf("error connecting to address. response: %s. error %v", errorOutput, err)
+			}
 		}
 
-		ws.conn.SetPongHandler(handler)
+		return err
 	}
 
-	return err
+	ws.connected = true
+
+	handler := func(appData string) error {
+		ws.Lock()
+		ws.connected = true
+		ws.Unlock()
+		return nil
+	}
+
+	ws.conn.SetPongHandler(handler)
+
+	return nil
 }
 
 // IsConnected returns whether the given
