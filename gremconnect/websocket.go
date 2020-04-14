@@ -78,7 +78,7 @@ func (ws *WebSocket) Connect() error {
 
 			// Try to read the http response to add context to the error
 			errorOutput, readErr := ioutil.ReadAll(httpResponse.Body)
-			if readErr != nil {
+			if readErr == nil {
 				return fmt.Errorf("error connecting to address. response: %s. error %v", string(errorOutput), err)
 			}
 		}
