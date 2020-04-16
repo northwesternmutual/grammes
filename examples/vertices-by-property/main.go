@@ -74,7 +74,7 @@ func main() {
 	for _, vertex := range vertices {
 		logger.Info("gathered vertex",
 			zap.String("label", vertex.Label()),
-			zap.Int64("id", vertex.ID()),
+			zap.Any("id", vertex.ID()),
 			zap.Any("name", vertex.PropertyValue("name", 0)),
 		)
 	}

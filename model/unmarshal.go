@@ -60,23 +60,6 @@ func UnmarshalEdgeList(data [][]byte) ([]Edge, error) {
 	return list, nil
 }
 
-// UnmarshalIDList is a utility to unmarshal a list
-// or array of IDs properly.
-func UnmarshalIDList(data [][]byte) ([]ID, error) {
-	var list []ID
-
-	for _, res := range data {
-		var listPart IDList
-		if err := json.Unmarshal(res, &listPart); err != nil {
-			return nil, gremerror.NewUnmarshalError("UnmarshalIDList", res, err)
-		}
-
-		list = append(list, listPart.IDs...)
-	}
-
-	return list, nil
-}
-
 // UnmarshalPropertyList is a utility to unmarshal a list
 // or array of IDs properly.
 func UnmarshalPropertyList(data [][]byte) ([]Property, error) {

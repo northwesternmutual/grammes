@@ -46,7 +46,7 @@ func newVertexIDQueryManager(logger logging.Logger, executor stringExecutor) *ve
 
 // VertexIDsByString executes a string query and unmarshals the
 // IDs for the user.
-func (v *vertexIDQueryManager) VertexIDsByString(q string) ([]int64, error) {
+func (v *vertexIDQueryManager) VertexIDsByString(q string) ([]interface{}, error) {
 	if !strings.HasSuffix(q, ".id()") {
 		q += ".id()"
 	}
@@ -75,10 +75,10 @@ func (v *vertexIDQueryManager) VertexIDsByString(q string) ([]int64, error) {
 		rawIDs.IDs = append(rawIDs.IDs, idPart.IDs...)
 	}
 
-	var ids []int64
+	var ids []interface{}
 
 	for _, id := range rawIDs.IDs {
-		ids = append(ids, id.Value)
+		ids = append(ids, id)
 	}
 
 	return ids, nil
@@ -86,8 +86,8 @@ func (v *vertexIDQueryManager) VertexIDsByString(q string) ([]int64, error) {
 
 // VertexIDsByQuery will take a query and execute it. Then it will
 // run through and extract all the vertex IDs matching the
-// traversal and return them in an array of int64.
-func (v *vertexIDQueryManager) VertexIDsByQuery(query query.Query) ([]int64, error) {
+// traversal and return them in an array.
+func (v *vertexIDQueryManager) VertexIDsByQuery(query query.Query) ([]interface{}, error) {
 	ids, err := v.VertexIDsByString(query.String())
 	if err != nil {
 		v.logger.Error("error gathering IDs",
@@ -100,7 +100,7 @@ func (v *vertexIDQueryManager) VertexIDsByQuery(query query.Query) ([]int64, err
 
 // VertexIDs takes the label and optional properties to retrieve
 // the IDs desired from the graph.
-func (v *vertexIDQueryManager) VertexIDs(label string, properties ...interface{}) ([]int64, error) {
+func (v *vertexIDQueryManager) VertexIDs(label string, properties ...interface{}) ([]interface{}, error) {
 	if len(properties)%2 != 0 {
 		v.logger.Error("number of parameters ["+strconv.Itoa(len(properties))+"]",
 			gremerror.NewGrammesError("VertexIDs", gremerror.ErrOddNumberOfParameters),

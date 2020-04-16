@@ -21,6 +21,8 @@
 package manager
 
 import (
+	"errors"
+	"fmt"
 	"strconv"
 
 	"github.com/northwesternmutual/grammes/gremerror"
@@ -46,7 +48,7 @@ func (m *miscQueryManager) DropAll() error {
 	return err
 }
 
-func (m *miscQueryManager) SetVertexProperty(id int64, keyAndVals ...interface{}) error {
+func (m *miscQueryManager) SetVertexProperty(id interface{}, keyAndVals ...interface{}) error {
 	if len(keyAndVals)%2 != 0 {
 		m.logger.Error("number of parameters ["+strconv.Itoa(len(keyAndVals))+"]",
 			gremerror.NewGrammesError("SetVertexProperty", gremerror.ErrOddNumberOfParameters),
@@ -83,25 +85,31 @@ func (m *miscQueryManager) VertexCount() (int64, error) {
 		return 0, err
 	}
 
-	var resultingIDs model.IDList
-
-	for _, res := range responses {
-		var rawIDs model.IDList
-
-		err = jsonUnmarshal(res, &rawIDs)
-		if err != nil {
-			m.logger.Error("id unmarshal",
-				gremerror.NewUnmarshalError("VertexCount", res, err),
-			)
-			return 0, err
-		}
-
-		resultingIDs.IDs = append(resultingIDs.IDs, rawIDs.IDs...)
-	}
-
-	if len(resultingIDs.IDs) == 0 {
+	if len(responses) == 0 {
 		return 0, gremerror.ErrEmptyResponse
 	}
 
-	return resultingIDs.IDs[0].Value, nil
+	var rawResp model.IDList
+
+	err = jsonUnmarshal(responses[0], &rawResp)
+	if err != nil {
+		m.logger.Error("unmarshal",
+			gremerror.NewUnmarshalError("VertexCount", responses[0], err),
+		)
+		return 0, err
+	}
+
+	if len(rawResp.IDs) == 0 {
+		return 0, errors.New(fmt.Sprintf("invalid response %s", string(responses[0])))
+	}
+	v, ok := rawResp.IDs[0].(map[string]interface{})
+	if !ok {
+		return 0, errors.New(fmt.Sprintf("invalid response %s", string(responses[0])))
+	}
+	count, ok := v["@value"].(float64)
+	if !ok {
+		return 0, errors.New(fmt.Sprintf("invalid response %s", string(responses[0])))
+	}
+
+	return int64(count), nil
 }

@@ -32,10 +32,7 @@ var (
 		{
 			"@type": "g:Vertex",
 			"@value": {
-				"id": {
-					"@type": "g:Int64",
-					"@value": 28720
-				},
+				"id": 28720,
 				"label": "newvertex"
 			}
 		}

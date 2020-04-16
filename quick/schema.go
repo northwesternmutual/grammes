@@ -29,7 +29,7 @@ import (
 // AddEdgeLabel adds the edge label to the
 // graph directly. This method returns the schema id
 // of the edge label added.
-func AddEdgeLabel(multi multiplicity.Multiplicity, host, label string) (int64, error) {
+func AddEdgeLabel(multi multiplicity.Multiplicity, host, label string) (interface{}, error) {
 	err := checkForClient(host)
 	if err != nil {
 		return 0, err
@@ -48,7 +48,7 @@ func AddEdgeLabel(multi multiplicity.Multiplicity, host, label string) (int64, e
 // but with the ability to do multiple labels at a
 // time. This function is called similarly to your
 // favorite logger.
-func AddEdgeLabels(host string, multiplicityAndLabels ...interface{}) ([]int64, error) {
+func AddEdgeLabels(host string, multiplicityAndLabels ...interface{}) ([]interface{}, error) {
 	err := checkForClient(host)
 	if err != nil {
 		return nil, err
@@ -66,7 +66,7 @@ func AddEdgeLabels(host string, multiplicityAndLabels ...interface{}) ([]int64, 
 // AddPropertyKey adds the edge label to the
 // graph directly. This method returns the schema id
 // of the edge label added.
-func AddPropertyKey(host, propertyName string, datatype datatype.DataType, cardinality cardinality.Cardinality) (int64, error) {
+func AddPropertyKey(host, propertyName string, datatype datatype.DataType, cardinality cardinality.Cardinality) (interface{}, error) {
 	err := checkForClient(host)
 	if err != nil {
 		return 0, err

@@ -134,7 +134,7 @@ func (v *Vertex) QueryInEdges(client queryClient, labels ...string) ([]Edge, err
 
 // AddEdge adds an outgoing edge from this Vertex object to
 // another Vertex object via its unique ID.
-func (v *Vertex) AddEdge(client queryClient, label string, outVID int64, properties ...interface{}) (Edge, error) {
+func (v *Vertex) AddEdge(client queryClient, label string, outVID interface{}, properties ...interface{}) (Edge, error) {
 	if client == nil {
 		return Edge{}, gremerror.NewGrammesError("AddEdge", gremerror.ErrNilClient)
 	}

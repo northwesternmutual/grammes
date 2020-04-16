@@ -43,7 +43,7 @@ func DropVertexLabel(host, label string) error {
 
 // DropVertexByID will search for vertices with the
 // provided IDs and drop them if such vertices exist.
-func DropVertexByID(host string, ids ...int64) error {
+func DropVertexByID(host string, ids ...interface{}) error {
 	err := checkForClient(host)
 	if err != nil {
 		return err

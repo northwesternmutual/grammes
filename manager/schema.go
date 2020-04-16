@@ -46,7 +46,7 @@ func newSchemaManager(logger logging.Logger, executor stringExecutor) *schemaMan
 // AddEdgeLabel adds the edge label to the
 // graph directly. This method returns the schema id
 // of the edge label added.
-func (s *schemaManager) AddEdgeLabel(multi multiplicity.Multiplicity, label string) (id int64, err error) {
+func (s *schemaManager) AddEdgeLabel(multi multiplicity.Multiplicity, label string) (id interface{}, err error) {
 	var (
 		data  [][]byte
 		query = graph.NewGraph().OpenManagement().MakeEdgeLabel(label).Multiplicity(multi).Make()
@@ -78,7 +78,7 @@ func (s *schemaManager) AddEdgeLabel(multi multiplicity.Multiplicity, label stri
 // but with the ability to do multiple labels at a
 // time. This function is called similarly to your
 // favorite logger.
-func (s *schemaManager) AddEdgeLabels(multiplicityAndLabels ...interface{}) (ids []int64, err error) {
+func (s *schemaManager) AddEdgeLabels(multiplicityAndLabels ...interface{}) (ids []interface{}, err error) {
 	if len(multiplicityAndLabels)%2 != 0 {
 		s.logger.Error(fmt.Sprintf("number of parameters [%d]", len(multiplicityAndLabels)),
 			gremerror.NewGrammesError("AddEdgeLabels", gremerror.ErrOddNumberOfParameters),
@@ -89,7 +89,7 @@ func (s *schemaManager) AddEdgeLabels(multiplicityAndLabels ...interface{}) (ids
 	var (
 		multi multiplicity.Multiplicity
 		label string
-		id    int64
+		id    interface{}
 		ok    bool
 	)
 
@@ -112,7 +112,7 @@ func (s *schemaManager) AddEdgeLabels(multiplicityAndLabels ...interface{}) (ids
 // AddPropertyKey adds the edge label to the
 // graph directly. This method returns the schema id
 // of the edge label added.
-func (s *schemaManager) AddPropertyKey(propertyName string, datatype datatype.DataType, cardinality cardinality.Cardinality) (id int64, err error) {
+func (s *schemaManager) AddPropertyKey(propertyName string, datatype datatype.DataType, cardinality cardinality.Cardinality) (id interface{}, err error) {
 	var (
 		data  [][]byte
 		query = graph.NewGraph().OpenManagement().MakePropertyKey(propertyName, datatype, cardinality).Make()

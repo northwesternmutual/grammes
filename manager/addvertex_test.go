@@ -34,20 +34,15 @@ import (
 var testVertex = model.Vertex{
 	Type: "testType",
 	Value: model.VertexValue{
-		ID: model.ID{
-			Type:  "testID",
-			Value: 1234,
-		},
+		ID:    1234,
 		Label: "testLabel",
 		Properties: model.PropertyMap{"testDetail": []model.Property{
-			model.Property{
+			{
 				Type: "testType",
 				Value: model.PropertyValue{
 					ID: model.PropertyID{
-						Type: "testIDType",
-						Value: model.PropertyIDValue{
-							RelationID: "testRelID",
-						},
+						Type:  "testIDType",
+						Value: "testRelID",
 					},
 					Value: model.ValueWrapper{
 						PropertyDetailedValue: model.PropertyDetailedValue{
@@ -76,7 +71,7 @@ func TestAddAPIVertex(t *testing.T) {
 			data.Properties = map[string]string{"testkey": "testval"}
 			v, _ := qm.AddAPIVertex(data)
 			Convey("Then the return vertex ID value should be 28720", func() {
-				So(v.Value.ID.Value, ShouldEqual, 28720)
+				So(v.Value.ID, ShouldEqual, 28720)
 			})
 		})
 	})
@@ -103,7 +98,7 @@ func TestAddVertexByStruct(t *testing.T) {
 		Convey("When AddVertexByStruct is called", func() {
 			res, _ := qm.AddVertexByStruct(testVertex)
 			Convey("Then the return vertex ID value should be 28720", func() {
-				So(res.Value.ID.Value, ShouldEqual, 28720)
+				So(res.Value.ID, ShouldEqual, 28720)
 			})
 		})
 	})
@@ -169,7 +164,7 @@ func TestAddVertexByQuery(t *testing.T) {
 			var q mockQuery
 			res, _ := qm.AddVertexByQuery(q)
 			Convey("Then the return vertex ID value should be 28720", func() {
-				So(res.Value.ID.Value, ShouldEqual, 28720)
+				So(res.Value.ID, ShouldEqual, 28720)
 			})
 		})
 	})

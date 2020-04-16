@@ -64,7 +64,7 @@ func AllVertices(host string) ([]grammes.Vertex, error) {
 // ID assigned to it. This ID is unique to every
 // vertex on the graph. This is the best way of finding
 // vertices without any conflicting labels or properties.
-func VertexByID(host string, id int64) (grammes.Vertex, error) {
+func VertexByID(host string, id interface{}) (grammes.Vertex, error) {
 	err := checkForClient(host)
 	if err != nil {
 		return nilVertex, err

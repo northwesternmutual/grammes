@@ -26,7 +26,7 @@ import "encoding/json"
 // We use this instead of []ID for Gremlin v3.0 compatibility.
 type IDList struct {
 	listOfIDs List
-	IDs       []ID
+	IDs       []interface{}
 }
 
 // UnmarshalJSON overrides to assure a proper unmarshal.

@@ -43,7 +43,6 @@ func NewVertex(label string, properties ...interface{}) Vertex {
 	var v = Vertex{
 		Type: "g:Vertex",
 		Value: VertexValue{
-			ID:         ID{},
 			Properties: make(PropertyMap),
 			Label:      label,
 		},
@@ -77,8 +76,8 @@ func (v *Vertex) PropertyMap() PropertyMap {
 
 // ID will retrieve the Vertex ID for you
 // without having to traverse all the way through the structures.
-func (v *Vertex) ID() int64 {
-	return v.Value.ID.Value
+func (v *Vertex) ID() interface{} {
+	return v.Value.ID
 }
 
 // Label retrieves the label of the vertex

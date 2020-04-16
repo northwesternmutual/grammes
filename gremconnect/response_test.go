@@ -77,6 +77,7 @@ var (
 {
     "requestId": "d2476e5b-b2bc-6a70-2647-3991f68ab415",
     "status": {
+        "message": "Some error",
         "code": 401,
         "attributes": {}
     },
@@ -233,7 +234,7 @@ func TestMarshalRespone(t *testing.T) {
 			})
 
 			Convey("And resp401.Data should be 'UNAUTHORIZED'", func() {
-				So(resp401.Data, ShouldResemble, gremerror.NewNetworkError(401, "UNAUTHORIZED"))
+				So(resp401.Data, ShouldResemble, gremerror.NewNetworkError(401, "UNAUTHORIZED", "Some error"))
 			})
 
 			Convey("Then the status code should be 407", func() {
@@ -241,7 +242,7 @@ func TestMarshalRespone(t *testing.T) {
 			})
 
 			Convey("And resp407.Data should be 'AUTHENTICATE'", func() {
-				So(resp407.Data, ShouldResemble, gremerror.NewNetworkError(407, "AUTHENTICATION REQUIRED"))
+				So(resp407.Data, ShouldResemble, gremerror.NewNetworkError(407, "AUTHENTICATION REQUIRED", ""))
 			})
 
 			Convey("Then the status code should be 498", func() {
@@ -249,7 +250,7 @@ func TestMarshalRespone(t *testing.T) {
 			})
 
 			Convey("And resp498.Data should be 'MALFORMED REQUEST", func() {
-				So(resp498.Data, ShouldResemble, gremerror.NewNetworkError(498, "MALFORMED REQUEST"))
+				So(resp498.Data, ShouldResemble, gremerror.NewNetworkError(498, "MALFORMED REQUEST", ""))
 			})
 
 			Convey("Then the status code should be 499", func() {
@@ -257,7 +258,7 @@ func TestMarshalRespone(t *testing.T) {
 			})
 
 			Convey("And resp499.Data should be 'INVALID REQUEST ARGUMENTS'", func() {
-				So(resp499.Data, ShouldResemble, gremerror.NewNetworkError(499, "INVALID REQUEST ARGUMENTS"))
+				So(resp499.Data, ShouldResemble, gremerror.NewNetworkError(499, "INVALID REQUEST ARGUMENTS", ""))
 			})
 
 			Convey("Then the status code should be 500", func() {
@@ -265,7 +266,7 @@ func TestMarshalRespone(t *testing.T) {
 			})
 
 			Convey("And resp500.Data should be 'SERVER ERROR'", func() {
-				So(resp500.Data, ShouldResemble, gremerror.NewNetworkError(500, "INTERNAL SERVER ERROR"))
+				So(resp500.Data, ShouldResemble, gremerror.NewNetworkError(500, "INTERNAL SERVER ERROR", ""))
 			})
 
 			Convey("Then the status code should be 597", func() {
@@ -273,7 +274,7 @@ func TestMarshalRespone(t *testing.T) {
 			})
 
 			Convey("And resp597.Data should be 'SCRIPT EVALUATION ERROR'", func() {
-				So(resp597.Data, ShouldResemble, gremerror.NewNetworkError(597, "SCRIPT EVALUATION ERROR"))
+				So(resp597.Data, ShouldResemble, gremerror.NewNetworkError(597, "SCRIPT EVALUATION ERROR", ""))
 			})
 
 			Convey("Then the status code should be 598", func() {
@@ -281,7 +282,7 @@ func TestMarshalRespone(t *testing.T) {
 			})
 
 			Convey("And resp598.Data should be 'SERVER TIMEOUT'", func() {
-				So(resp598.Data, ShouldResemble, gremerror.NewNetworkError(598, "SERVER TIMEOUT"))
+				So(resp598.Data, ShouldResemble, gremerror.NewNetworkError(598, "SERVER TIMEOUT", ""))
 			})
 
 			Convey("Then the status code should be 599", func() {
@@ -289,11 +290,11 @@ func TestMarshalRespone(t *testing.T) {
 			})
 
 			Convey("And resp599.Data should be 'SERVER SERIALIZATION ERROR'", func() {
-				So(resp599.Data, ShouldResemble, gremerror.NewNetworkError(599, "SERIALIZATION ERROR"))
+				So(resp599.Data, ShouldResemble, gremerror.NewNetworkError(599, "SERIALIZATION ERROR", ""))
 			})
 
 			Convey("Then respDefault.Data should be 'UNKNOWN ERROR'", func() {
-				So(respDefault.Data, ShouldResemble, gremerror.NewNetworkError(403, "UNKNOWN ERROR"))
+				So(respDefault.Data, ShouldResemble, gremerror.NewNetworkError(403, "UNKNOWN ERROR", ""))
 			})
 		})
 	})

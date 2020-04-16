@@ -4,7 +4,7 @@ The basics of getting vertices using the `VertexByID` function from a Grammes cl
 
 ## Description
 
-**vertex-by-id** demonstrates how to receive a vertex on the graph using a Grammes client. Specifically this examples shows how to by using the `VertexByID` function which takes in an `int64` as the ID. Then returns a slice of `Vertex` and `error`.
+**vertex-by-id** demonstrates how to receive a vertex on the graph using a Grammes client. Specifically this examples shows how to by using the `VertexByID` function which takes in an object as the ID. Then returns a slice of `Vertex` and `error`.
 
 ## Prerequisites
 

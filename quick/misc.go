@@ -38,7 +38,7 @@ func DropAll(host string) error {
 
 // SetVertexProperty will search the graph for a vertex
 // with the given ID and set the properties provided.
-func SetVertexProperty(host string, id int64, properties ...interface{}) error {
+func SetVertexProperty(host string, id interface{}, properties ...interface{}) error {
 	err := checkForClient(host)
 	if err != nil {
 		return err

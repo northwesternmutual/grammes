@@ -34,13 +34,11 @@ func TestMakePropertyKey(t *testing.T) {
 		g := NewGraph()
 		Convey("When 'MakePropertyKey' is called with a label string, DataType and Cardinality", func() {
 
-			var dt datatype.DataType
-			dt = "String.class"
-			var cr cardinality.Cardinality
-			cr = "LIST"
+			var dt = datatype.String
+			var cr = cardinality.List
 			result := g.MakePropertyKey("labelTest", dt, cr)
-			Convey("Then result should equal 'graph.makePropertyKey('labelTest').dataType(String.class).cardinality(LIST)'", func() {
-				So(result.String(), ShouldEqual, "graph.makePropertyKey(\"labelTest\").dataType(String.class).cardinality(LIST)")
+			Convey("Then result should equal 'graph.makePropertyKey('labelTest').dataType(String.class).cardinality(list)'", func() {
+				So(result.String(), ShouldEqual, "graph.makePropertyKey(\"labelTest\").dataType(String.class).cardinality(list)")
 			})
 		})
 	})
