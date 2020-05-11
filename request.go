@@ -122,6 +122,7 @@ func (c *Client) authenticate(requestID string) error {
 }
 
 func (c *Client) dispatchRequest(msg []byte) {
+	c.logger.Debug("Dispatching request", map[string]interface{}{"request": string(msg)})
 	// Send the message through a channel
 	// for the writing worker to pickup and
 	// write to the connection.
