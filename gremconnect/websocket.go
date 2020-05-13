@@ -54,8 +54,8 @@ type WebSocket struct {
 func (ws *WebSocket) Connect() error {
 	var err error
 	dialer := websocket.Dialer{
-		WriteBufferSize:  1024 * 8, // Set up for large messages.
-		ReadBufferSize:   1024 * 8, // Set up for large messages.
+		WriteBufferSize:  1024 * 50, // Set up for large messages.
+		ReadBufferSize:   1024 * 50, // Set up for large messages.
 		HandshakeTimeout: 5 * time.Second,
 	}
 
