@@ -33,7 +33,7 @@ func TestGroup(t *testing.T) {
 		Convey("When 'Group' is called with one string", func() {
 			result := g.Group("test")
 			Convey("Then result should equal 'g.group('test')'", func() {
-				So(result.String(), ShouldEqual, "g.group(\"test\")")
+				So(result.String(), ShouldEqual, "g.group('test')")
 			})
 		})
 

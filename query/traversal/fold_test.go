@@ -32,7 +32,7 @@ func TestFold(t *testing.T) {
 		Convey("When 'Fold' is called with a string", func() {
 			result := g.Fold("foldTest")
 			Convey("Then result should equal 'g.fold('foldTest')'", func() {
-				So(result.String(), ShouldEqual, "g.fold(\"foldTest\")")
+				So(result.String(), ShouldEqual, "g.fold('foldTest')")
 			})
 		})
 

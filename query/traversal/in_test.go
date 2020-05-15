@@ -12,7 +12,7 @@ func TestIn(t *testing.T) {
 		Convey("When 'In' is called with an multiple parametrs", func() {
 			result := g.In("lblTest1", "lblTest2")
 			Convey("Then result should equal 'g.in('lblTest1','lblTest2')'", func() {
-				So(result.String(), ShouldEqual, "g.in(\"lblTest1\",\"lblTest2\")")
+				So(result.String(), ShouldEqual, "g.in('lblTest1','lblTest2')")
 			})
 		})
 	})
@@ -24,7 +24,7 @@ func TestInE(t *testing.T) {
 		Convey("When 'InE' is called with an multiple parametrs", func() {
 			result := g.InE("lblTest1", "lblTest2")
 			Convey("Then result should equal 'g.inE('lblTest1','lblTest2')'", func() {
-				So(result.String(), ShouldEqual, "g.inE(\"lblTest1\",\"lblTest2\")")
+				So(result.String(), ShouldEqual, "g.inE('lblTest1','lblTest2')")
 			})
 		})
 	})

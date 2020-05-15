@@ -32,7 +32,7 @@ func TestMakeVertexLabel(t *testing.T) {
 		Convey("When 'MakeVertexLabel' is called with a name string", func() {
 			result := graph.MakeVertexLabel("name")
 			Convey("Then result should equal 'graph.makeVertexLabel('name')'", func() {
-				So(result.String(), ShouldEqual, "graph.makeVertexLabel(\"name\")")
+				So(result.String(), ShouldEqual, "graph.makeVertexLabel('name')")
 			})
 		})
 	})

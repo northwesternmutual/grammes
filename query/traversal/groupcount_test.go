@@ -33,7 +33,7 @@ func TestGroupCount(t *testing.T) {
 		Convey("When 'Group' is called with one string", func() {
 			result := g.GroupCount("test")
 			Convey("Then result should equal 'g.groupCount('test')'", func() {
-				So(result.String(), ShouldEqual, "g.groupCount(\"test\")")
+				So(result.String(), ShouldEqual, "g.groupCount('test')")
 			})
 		})
 

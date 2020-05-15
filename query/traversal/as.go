@@ -38,12 +38,12 @@ func (g String) As(labels ...string) String {
 	}
 
 	if len(labels) > 0 {
-		g = g.append("\"" + labels[0] + "\"")
+		g = g.append("'" + labels[0] + "'")
 	}
 
 	if len(labels) > 1 {
 		for _, v := range labels[1:] {
-			g = g.append(",\"" + v + "\"")
+			g = g.append(",'" + v + "'")
 		}
 	}
 

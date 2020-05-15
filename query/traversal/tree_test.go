@@ -38,8 +38,8 @@ func TestTree(t *testing.T) {
 
 		Convey("When 'Group' is called with multiple parameters", func() {
 			result := g.Tree("test1", "test2")
-			Convey("Then result should equal 'g.tree(\"test1\")'", func() {
-				So(result.String(), ShouldEqual, "g.tree(\"test1\")")
+			Convey("Then result should equal 'g.tree('test1')'", func() {
+				So(result.String(), ShouldEqual, "g.tree('test1')")
 			})
 		})
 	})

@@ -12,7 +12,7 @@ func TestBoth(t *testing.T) {
 		Convey("When 'Both' is called with an multiple parametrs", func() {
 			result := g.Both("lblTest1", "lblTest2")
 			Convey("Then result should equal 'g.both('lblTest1','lblTest2')'", func() {
-				So(result.String(), ShouldEqual, "g.both(\"lblTest1\",\"lblTest2\")")
+				So(result.String(), ShouldEqual, "g.both('lblTest1','lblTest2')")
 			})
 		})
 	})
@@ -24,7 +24,7 @@ func TestBothE(t *testing.T) {
 		Convey("When 'BothE' is called with an multiple parametrs", func() {
 			result := g.BothE("lblTest1", "lblTest2")
 			Convey("Then result should equal 'g.bothE('lblTest1','lblTest2')'", func() {
-				So(result.String(), ShouldEqual, "g.bothE(\"lblTest1\",\"lblTest2\")")
+				So(result.String(), ShouldEqual, "g.bothE('lblTest1','lblTest2')")
 			})
 		})
 	})

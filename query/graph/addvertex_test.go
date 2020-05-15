@@ -34,13 +34,13 @@ func TestAddVertex(t *testing.T) {
 		Convey("When 'AddVertex' is called with a Token and Label string", func() {
 			result := g.AddVertex(T.Label, "testinglabel")
 			Convey("Then result should equal 'graph.addVertex(T.label,'testinglabel')'", func() {
-				So(result.String(), ShouldEqual, "graph.addVertex(T.label,\"testinglabel\")")
+				So(result.String(), ShouldEqual, "graph.addVertex(T.label,'testinglabel')")
 			})
 		})
 		Convey("When 'AddVertex' is called with a string and a Token", func() {
 			result := g.AddVertex("teststring", "testval", T.Key)
 			Convey("Then result should equal 'graph.addVertex('teststring','testval',T.key)'", func() {
-				So(result.String(), ShouldEqual, "graph.addVertex(\"teststring\",\"testval\",T.key)")
+				So(result.String(), ShouldEqual, "graph.addVertex('teststring','testval',T.key)")
 			})
 		})
 		Convey("When 'AddVertex' is called with a Token, Label string, "+
@@ -48,7 +48,7 @@ func TestAddVertex(t *testing.T) {
 			result := g.AddVertex(T.Label, "testinglabel", "testkey", "testval")
 			Convey("Then result should equal "+
 				"'graph.addVertex(T.label,'testinglabel','testkey','testval')'", func() {
-				So(result.String(), ShouldEqual, "graph.addVertex(T.label,\"testinglabel\",\"testkey\",\"testval\")")
+				So(result.String(), ShouldEqual, "graph.addVertex(T.label,'testinglabel','testkey','testval')")
 			})
 		})
 	})
