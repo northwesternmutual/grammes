@@ -22,6 +22,6 @@ package graph
 
 // MakeVertexLabel will create a label for a vertex in the graph.
 func (graph String) MakeVertexLabel(name string) String {
-	graph = graph.append(".makeVertexLabel(\"" + name + "\")")
+	graph = graph.append(".makeVertexLabel('" + name + "')")
 	return graph
 }

@@ -32,7 +32,7 @@ func (g String) AddE(param interface{}) String {
 	case String:
 		g = g.append(".addE(" + param.(String).Raw().String() + ")")
 	case string:
-		g = g.append(".addE(\"" + param.(string) + "\")")
+		g = g.append(".addE('" + param.(string) + "')")
 	default:
 		g.AddStep("addE")
 	}

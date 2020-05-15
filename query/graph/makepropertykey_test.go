@@ -38,7 +38,7 @@ func TestMakePropertyKey(t *testing.T) {
 			var cr = cardinality.List
 			result := g.MakePropertyKey("labelTest", dt, cr)
 			Convey("Then result should equal 'graph.makePropertyKey('labelTest').dataType(String.class).cardinality(list)'", func() {
-				So(result.String(), ShouldEqual, "graph.makePropertyKey(\"labelTest\").dataType(String.class).cardinality(list)")
+				So(result.String(), ShouldEqual, "graph.makePropertyKey('labelTest').dataType(String.class).cardinality(list)")
 			})
 		})
 	})

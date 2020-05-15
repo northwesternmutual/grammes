@@ -140,7 +140,7 @@ func (v *Vertex) AddEdge(client queryClient, label string, outVID interface{}, p
 	}
 
 	var query = newTrav().V().HasID(v.ID()).AddE(label).To(newTrav().V().HasID(outVID).Raw())
-	// query := fmt.Sprintf("g.V().hasId(%v).addE(\"%s\").to(V().hasId(%v))", v.ID(), label, outVID)
+	// query := fmt.Sprintf("g.V().hasId(%v).addE('%s').to(V().hasId(%v))", v.ID(), label, outVID)
 
 	if len(properties)%2 != 0 {
 		return Edge{}, gremerror.NewGrammesError("AddEdge", gremerror.ErrOddNumberOfParameters)

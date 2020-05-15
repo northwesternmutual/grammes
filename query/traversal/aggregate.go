@@ -30,7 +30,7 @@ package traversal
 // Signatures:
 // Aggregate(string)
 func (g String) Aggregate(str string) String {
-	g = g.append(".aggregate(\"" + str + "\")")
+	g = g.append(".aggregate('" + str + "')")
 
 	return g
 }

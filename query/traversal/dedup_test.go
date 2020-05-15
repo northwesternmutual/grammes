@@ -33,14 +33,14 @@ func TestDedup(t *testing.T) {
 		Convey("When 'Dedup' is called with object strings", func() {
 			result := g.Dedup("obj1", "obj2", "obj3")
 			Convey("Then result should equal 'g.dedup(obj1,obj2,obj3,obj4)'", func() {
-				So(result.String(), ShouldEqual, "g.dedup(\"obj1\",\"obj2\",\"obj3\")")
+				So(result.String(), ShouldEqual, "g.dedup('obj1','obj2','obj3')")
 			})
 		})
 
 		Convey("When 'Dedup' is called with interface", func() {
 			result := g.Dedup(scope.Global, "obj")
 			Convey("Then result should equal 'g.dedup(global,'obj')'", func() {
-				So(result.String(), ShouldEqual, "g.dedup(global,\"obj\")")
+				So(result.String(), ShouldEqual, "g.dedup(global,'obj')")
 			})
 		})
 

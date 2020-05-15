@@ -31,8 +31,8 @@ func TestStore(t *testing.T) {
 		g := NewTraversal()
 		Convey("When 'Store' is called", func() {
 			result := g.Store("testStore")
-			Convey("Then result should equal 'g.store(\"testStore\")'", func() {
-				So(result.String(), ShouldEqual, "g.store(\"testStore\")")
+			Convey("Then result should equal 'g.store('testStore')'", func() {
+				So(result.String(), ShouldEqual, "g.store('testStore')")
 			})
 		})
 	})
