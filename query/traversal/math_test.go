@@ -31,8 +31,8 @@ func TestMath(t *testing.T) {
 		g := NewTraversal()
 		Convey("When 'Math' is called", func() {
 			result := g.Math("testStr")
-			Convey("Then result should equal 'g.math(\"testStr\")'", func() {
-				So(result.String(), ShouldEqual, "g.math(\"testStr\")")
+			Convey("Then result should equal 'g.math('testStr')'", func() {
+				So(result.String(), ShouldEqual, "g.math('testStr')")
 			})
 		})
 	})
