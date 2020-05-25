@@ -40,7 +40,7 @@ func TestLimit(t *testing.T) {
 
 		Convey("When 'Limit' is called with no params", func() {
 			result := g.Limit()
-			Convey("Then result should equal 'g.limit(\"", func() {
+			Convey("Then result should equal 'g.limit('", func() {
 				So(result.String(), ShouldEqual, "g.limit()")
 			})
 		})

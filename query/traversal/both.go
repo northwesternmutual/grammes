@@ -25,11 +25,11 @@ func (g String) Both(labels ...string) String {
 	g = g.append(".both(")
 
 	if len(labels) > 0 {
-		g = g.append("\"" + labels[0] + "\"")
+		g = g.append("'" + labels[0] + "'")
 
 		if len(labels) > 1 {
 			for _, v := range labels[1:] {
-				g = g.append(",\"" + v + "\"")
+				g = g.append(",'" + v + "'")
 			}
 		}
 	}
@@ -44,11 +44,11 @@ func (g String) BothE(labels ...string) String {
 	g = g.append(".bothE(")
 
 	if len(labels) > 0 {
-		g = g.append("\"" + labels[0] + "\"")
+		g = g.append("'" + labels[0] + "'")
 
 		if len(labels) > 1 {
 			for _, v := range labels[1:] {
-				g = g.append(",\"" + v + "\"")
+				g = g.append(",'" + v + "'")
 			}
 		}
 	}

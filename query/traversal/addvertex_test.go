@@ -32,7 +32,7 @@ func TestAddV(t *testing.T) {
 		Convey("When 'AddV' is called with a string", func() {
 			result := g.AddV("myVertex")
 			Convey("Then result should equal 'g.addV('myVertex')'", func() {
-				So(result.String(), ShouldEqual, "g.addV(\"myVertex\")")
+				So(result.String(), ShouldEqual, "g.addV('myVertex')")
 			})
 		})
 

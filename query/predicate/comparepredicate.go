@@ -89,7 +89,7 @@ func Within(params ...interface{}) *Predicate {
 		buffer.WriteString(sep)
 		switch t := p.(type) {
 		case string:
-			buffer.WriteString("\"" + t + "\"")
+			buffer.WriteString("'" + t + "'")
 		default:
 			buffer.WriteString(fmt.Sprintf("%v", t))
 		}
