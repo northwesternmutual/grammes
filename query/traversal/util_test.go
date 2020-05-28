@@ -76,6 +76,15 @@ func TestAddStep(t *testing.T) {
 				So(g.String(), ShouldEqual, "g.test(true)")
 			})
 		})
+
+		Convey("When AddStep should escape characters", func() {
+			s := `a 'test' with \ and \\ and nested {"key": "value", "key2": "val\"val"} and {'key': 'value', 'kay2': 'val\'val'}`
+			g.AddStep("test", s)
+			expected := `g.test('a \'test\' with \\ and \\\\ and nested {"key": "value", "key2": "val\\"val"} and {\'key\': \'value\', \'kay2\': \'val\\\'val\'}')`
+			Convey("Then g should equal " + expected, func() {
+				So(g.String(), ShouldEqual, expected)
+			})
+		})
 	})
 
 }
