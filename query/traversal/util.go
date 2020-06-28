@@ -86,6 +86,8 @@ func (g *String) AddStep(step string, params ...interface{}) {
 			g.buffer.WriteByte(t)
 		case []byte:
 			g.buffer.Write(t)
+		case float32, float64:
+			g.buffer.WriteString(fmt.Sprintf("%vf", t))
 		case string:
 			g.buffer.WriteString("'" + strings.ReplaceAll(strings.ReplaceAll(t, `\`, `\\`), `'`, `\'`) + "'")
 		default:
