@@ -22,6 +22,7 @@ package grammes
 
 import (
 	"sync"
+	"time"
 
 	"github.com/northwesternmutual/grammes/gremconnect"
 	"github.com/northwesternmutual/grammes/gremerror"
@@ -31,6 +32,7 @@ import (
 
 // maxConCurrentMessages determines the size of the request channel.
 const maxConCurrentMessages = 3
+const defaultTimeout = time.Minute
 
 // Client is used to handle the graph, schema, connection,
 // and basic debug logging when querying the graph database.
@@ -60,6 +62,8 @@ type Client struct {
 	broken bool
 	// logger is used to log out debug statements and errors from the client.
 	logger logging.Logger
+	// requestTimeout is used for timeouting requests that a response is not received for
+	requestTimeout time.Duration
 }
 
 // setupClient default values some fields in the client.
@@ -71,6 +75,7 @@ func setupClient() *Client {
 		resultMessenger: &sync.Map{},
 		logger:          logging.NewNilLogger(),
 		gremlinVersion:  "3",
+		requestTimeout:  defaultTimeout,
 	}
 }
 
