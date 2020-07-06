@@ -102,3 +102,11 @@ func WithReadingWait(interval time.Duration) ClientConfiguration {
 		c.conn.SetReadingWait(interval)
 	}
 }
+
+// WithRequestTimeout sets the timeout when
+// reading a request from the gremlin server
+func WithRequestTimeout(interval time.Duration) ClientConfiguration {
+	return func(c *Client) {
+		c.requestTimeout = interval
+	}
+}
