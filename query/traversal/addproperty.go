@@ -20,6 +20,10 @@
 
 package traversal
 
+import (
+	"fmt"
+)
+
 // http://tinkerpop.apache.org/docs/current/reference/#addproperty-step
 
 // Property (sideEffect) unlike AddV() and AddE(), Property() is
@@ -35,6 +39,15 @@ func (g String) Property(objOrCard interface{}, obj interface{}, params ...inter
 	fullParams := make([]interface{}, 0, len(params)+2)
 	fullParams = append(fullParams, objOrCard, obj)
 	fullParams = append(fullParams, params...)
+
+	for i, p := range fullParams {
+		switch t := p.(type) {
+		// Write every numeric property as long - to prevent indexing issues
+		case int, int16, int32, int64, uint, uint16, uint32, uint64:
+			// Convert to byte, so that "" won't be added
+			fullParams[i] = []byte(fmt.Sprintf("%vl", t))
+		}
+	}
 
 	g.AddStep("property", fullParams...)
 
