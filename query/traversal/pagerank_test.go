@@ -39,7 +39,7 @@ func TestPageRank(t *testing.T) {
 		Convey("When 'PageRank' is called with one argument", func() {
 			result := g.PageRank(1.234)
 			Convey("Then result should equal 'g.pageRank(1.234)'", func() {
-				So(result.String(), ShouldEqual, "g.pageRank(1.234)")
+				So(result.String(), ShouldEqual, "g.pageRank(1.234f)")
 			})
 		})
 

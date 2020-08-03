@@ -50,6 +50,10 @@ type Dialer interface {
 	SetPingInterval(interval time.Duration)
 	SetWritingWait(interval time.Duration)
 	SetReadingWait(interval time.Duration)
+	SetWriteBufferSize(writeBufferSize int)
+	SetReadBufferSize(readBufferSize int)
+	SetHandshakeTimeout(handshakeTimeout time.Duration)
+	SetCompression(enableCompression bool)
 }
 
 // NewWebSocketDialer returns a new WebSocket dialer to use when
@@ -58,12 +62,16 @@ type Dialer interface {
 // if they're not assigned by DialerConfig functions.
 func NewWebSocketDialer(address string) Dialer {
 	return &WebSocket{
-		timeout:      5 * time.Second,
-		pingInterval: 60 * time.Second,
-		writingWait:  15 * time.Second,
-		readingWait:  15 * time.Second,
-		connected:    false,
-		address:      address,
-		Quit:         make(chan struct{}),
+		timeout:           5 * time.Second,
+		pingInterval:      60 * time.Second,
+		writingWait:       15 * time.Second,
+		readingWait:       15 * time.Second,
+		handshakeTimeout:  5 * time.Second,
+		writeBufferSize:   50 * 1024,
+		readBufferSize:    50 * 1024,
+		enableCompression: false,
+		connected:         false,
+		address:           address,
+		Quit:              make(chan struct{}),
 	}
 }

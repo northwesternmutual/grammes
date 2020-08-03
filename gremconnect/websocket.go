@@ -34,16 +34,20 @@ import (
 // to dial to the gremlin server and sustain
 // a stable connection by pinging it regularly.
 type WebSocket struct {
-	address      string
-	conn         *websocket.Conn
-	auth         *Auth
-	disposed     bool
-	connected    bool
-	pingInterval time.Duration
-	writingWait  time.Duration
-	readingWait  time.Duration
-	timeout      time.Duration
-	Quit         chan struct{}
+	address           string
+	conn              *websocket.Conn
+	auth              *Auth
+	disposed          bool
+	connected         bool
+	enableCompression bool
+	pingInterval      time.Duration
+	writingWait       time.Duration
+	readingWait       time.Duration
+	timeout           time.Duration
+	handshakeTimeout  time.Duration
+	writeBufferSize   int
+	readBufferSize    int
+	Quit              chan struct{}
 
 	sync.RWMutex
 }
@@ -54,9 +58,10 @@ type WebSocket struct {
 func (ws *WebSocket) Connect() error {
 	var err error
 	dialer := websocket.Dialer{
-		WriteBufferSize:  1024 * 50, // Set up for large messages.
-		ReadBufferSize:   1024 * 50, // Set up for large messages.
-		HandshakeTimeout: 5 * time.Second,
+		WriteBufferSize:   ws.writeBufferSize,
+		ReadBufferSize:    ws.readBufferSize,
+		HandshakeTimeout:  ws.handshakeTimeout,
+		EnableCompression: ws.enableCompression,
 	}
 
 	// Check if the host address already has the proper
@@ -174,7 +179,7 @@ func (ws *WebSocket) Ping(errs chan error) {
 	}
 }
 
-// Configration functions
+// Configuration functions
 
 // SetAuth will set the authentication to this user and pass
 func (ws *WebSocket) SetAuth(user, pass string) {
@@ -199,4 +204,20 @@ func (ws *WebSocket) SetWritingWait(interval time.Duration) {
 // SetReadingWait sets how long the reading will wait
 func (ws *WebSocket) SetReadingWait(interval time.Duration) {
 	ws.readingWait = interval
+}
+
+func (ws *WebSocket) SetWriteBufferSize(writeBufferSize int) {
+	ws.writeBufferSize = writeBufferSize
+}
+
+func (ws *WebSocket) SetReadBufferSize(readBufferSize int) {
+	ws.readBufferSize = readBufferSize
+}
+
+func (ws *WebSocket) SetHandshakeTimeout(handshakeTimeout time.Duration) {
+	ws.handshakeTimeout = handshakeTimeout
+}
+
+func (ws *WebSocket) SetCompression(enableCompression bool) {
+	ws.enableCompression = enableCompression
 }

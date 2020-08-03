@@ -23,8 +23,9 @@ package traversal
 import (
 	"testing"
 
-	"github.com/northwesternmutual/grammes/query/cardinality"
 	. "github.com/smartystreets/goconvey/convey"
+
+	"github.com/northwesternmutual/grammes/query/cardinality"
 )
 
 func TestProperty(t *testing.T) {
@@ -45,7 +46,7 @@ func TestProperty(t *testing.T) {
 		Convey("When 'Property' is called with object strings and ints", func() {
 			result := g.Property(3, 4, 4)
 			Convey("Then result should equal 'g.property(3,4,4)'", func() {
-				So(result.String(), ShouldEqual, "g.property(3,4,4)")
+				So(result.String(), ShouldEqual, "g.property(3l,4l,4l)")
 			})
 		})
 

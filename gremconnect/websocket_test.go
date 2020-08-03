@@ -343,3 +343,55 @@ func TestSetReadingWait(t *testing.T) {
 		})
 	})
 }
+
+func TestSetWriteBufferSize(t *testing.T) {
+	Convey("Given a WebSocket and a write buffer size", t, func() {
+		dialer := &WebSocket{}
+		writeBufferSize := 512 * 1024
+		Convey("And SetWriteBufferSize is called", func() {
+			dialer.SetWriteBufferSize(writeBufferSize)
+			Convey("Then the write buffer size should be set in the dialer", func() {
+				So(dialer.writeBufferSize, ShouldEqual, writeBufferSize)
+			})
+		})
+	})
+}
+
+func TestSetReadBufferSize(t *testing.T) {
+	Convey("Given a WebSocket and a read buffer size", t, func() {
+		dialer := &WebSocket{}
+		readBufferSize := 256 * 1024
+		Convey("And SetReadBufferSize is called", func() {
+			dialer.SetReadBufferSize(readBufferSize)
+			Convey("Then the read buffer size should be set in the dialer", func() {
+				So(dialer.readBufferSize, ShouldEqual, readBufferSize)
+			})
+		})
+	})
+}
+
+func TestHandshakeTimeout(t *testing.T) {
+	Convey("Given a WebSocket and a handshake timeout", t, func() {
+		dialer := &WebSocket{}
+		handshakeTimeout := time.Second
+		Convey("And SetHandshakeTimeout is called", func() {
+			dialer.SetHandshakeTimeout(handshakeTimeout)
+			Convey("Then the handshake timeout should be set in the dialer", func() {
+				So(dialer.handshakeTimeout, ShouldEqual, handshakeTimeout)
+			})
+		})
+	})
+}
+
+func TestCompression(t *testing.T) {
+	Convey("Given a WebSocket and a compression flag", t, func() {
+		dialer := &WebSocket{}
+		enableCompression := true
+		Convey("And SetCompression is called", func() {
+			dialer.SetCompression(enableCompression)
+			Convey("Then the compression flag should be set in the dialer", func() {
+				So(dialer.enableCompression, ShouldEqual, enableCompression)
+			})
+		})
+	})
+}

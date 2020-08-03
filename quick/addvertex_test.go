@@ -65,21 +65,25 @@ var (
 
 type mockDialer gremconnect.WebSocket
 
-func (*mockDialer) Connect() error                   { return connect }
-func (*mockDialer) Close() error                     { return nil }
-func (*mockDialer) Write([]byte) error               { return nil }
-func (*mockDialer) Read() ([]byte, error)            { return nil, nil }
-func (*mockDialer) Ping(chan error)                  {}
-func (*mockDialer) IsConnected() bool                { return isConnected }
-func (*mockDialer) IsDisposed() bool                 { return isDisposed }
-func (*mockDialer) Auth() (*gremconnect.Auth, error) { return &gremconnect.Auth{}, nil }
-func (*mockDialer) Address() string                  { return "" }
-func (*mockDialer) GetQuit() chan struct{}           { return make(chan struct{}) }
-func (*mockDialer) SetAuth(string, string)           {}
-func (*mockDialer) SetTimeout(time.Duration)         {}
-func (*mockDialer) SetPingInterval(time.Duration)    {}
-func (*mockDialer) SetWritingWait(time.Duration)     {}
-func (*mockDialer) SetReadingWait(time.Duration)     {}
+func (*mockDialer) Connect() error                    { return connect }
+func (*mockDialer) Close() error                      { return nil }
+func (*mockDialer) Write([]byte) error                { return nil }
+func (*mockDialer) Read() ([]byte, error)             { return nil, nil }
+func (*mockDialer) Ping(chan error)                   {}
+func (*mockDialer) IsConnected() bool                 { return isConnected }
+func (*mockDialer) IsDisposed() bool                  { return isDisposed }
+func (*mockDialer) Auth() (*gremconnect.Auth, error)  { return &gremconnect.Auth{}, nil }
+func (*mockDialer) Address() string                   { return "" }
+func (*mockDialer) GetQuit() chan struct{}            { return make(chan struct{}) }
+func (*mockDialer) SetAuth(string, string)            {}
+func (*mockDialer) SetTimeout(time.Duration)          {}
+func (*mockDialer) SetPingInterval(time.Duration)     {}
+func (*mockDialer) SetWritingWait(time.Duration)      {}
+func (*mockDialer) SetReadingWait(time.Duration)      {}
+func (*mockDialer) SetWriteBufferSize(int)            {}
+func (*mockDialer) SetReadBufferSize(int)             {}
+func (*mockDialer) SetHandshakeTimeout(time.Duration) {}
+func (*mockDialer) SetCompression(bool)               {}
 
 // MOCKQUERY
 
