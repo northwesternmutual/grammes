@@ -45,6 +45,7 @@ type Dialer interface {
 	GetQuit() chan struct{}
 
 	// Configuration Setters
+	SetHTTPAuth(provider AuthProvider)
 	SetAuth(username string, password string)
 	SetTimeout(interval time.Duration)
 	SetPingInterval(interval time.Duration)

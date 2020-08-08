@@ -25,6 +25,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strings"
 	"sync"
 	"time"
@@ -39,6 +40,7 @@ type WebSocket struct {
 	address           string
 	conn              *websocket.Conn
 	auth              *Auth
+	httpAuth          *HTTPAuth
 	disposed          bool
 	connected         bool
 	enableCompression bool
@@ -72,6 +74,14 @@ func (ws *WebSocket) Connect() error {
 	// https://groups.google.com/forum/#!msg/gremlin-users/x4hiHsmTsHM/Xe4GcPtRCAAJ
 	if !strings.HasSuffix(ws.address, "/gremlin") {
 		ws.address = ws.address + "/gremlin"
+	}
+
+	// This is a minor hack, but a nice hook-point. We are using the dialer's proxy callback in order to modify the request before it's
+	// being sent. That way we can add a custom authentication provider (Like using Amazon Neptune's v4 signer)
+	if ws.httpAuth != nil && ws.httpAuth.authProvider != nil {
+		dialer.Proxy = func(request *http.Request) (*url.URL, error) {
+			return nil, ws.httpAuth.authProvider(request)
+		}
 	}
 
 	var httpResponse *http.Response
@@ -199,6 +209,11 @@ func (ws *WebSocket) Ping(errs chan error) {
 // SetAuth will set the authentication to this user and pass
 func (ws *WebSocket) SetAuth(user, pass string) {
 	ws.auth = &Auth{Username: user, Password: pass}
+}
+
+// SetHTTPAuth will set the HTTP authentication provider to this one
+func (ws *WebSocket) SetHTTPAuth(provider AuthProvider) {
+	ws.httpAuth = &HTTPAuth{provider}
 }
 
 // SetTimeout will set the dialing timeout

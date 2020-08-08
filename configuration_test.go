@@ -21,6 +21,7 @@
 package grammes
 
 import (
+	"net/http"
 	"strconv"
 	"testing"
 	"time"
@@ -96,6 +97,22 @@ func TestWithAuthUserPass(t *testing.T) {
 		dialer := &mockDialerStruct{}
 		Convey("And Dial is called with username and password", func() {
 			_, err := mockDial(dialer, WithAuthUserPass(user, pass))
+			Convey("Then no error should be encountered", func() {
+				So(err, ShouldBeNil)
+			})
+		})
+	})
+}
+
+func TestWithHTTPAuth(t *testing.T) {
+	t.Parallel()
+
+	Convey("Given an auth provider and dialer", t, func() {
+		dialer := &mockDialerStruct{}
+		Convey("And Dial is called with username and password", func() {
+			_, err := mockDial(dialer, WithHTTPAuth(func(request *http.Request) error {
+				return nil
+			}))
 			Convey("Then no error should be encountered", func() {
 				So(err, ShouldBeNil)
 			})

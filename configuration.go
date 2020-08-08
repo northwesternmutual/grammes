@@ -21,6 +21,7 @@
 package grammes
 
 import (
+	"github.com/northwesternmutual/grammes/gremconnect"
 	"strconv"
 	"time"
 
@@ -68,6 +69,14 @@ func WithMaxConcurrentMessages(limit int) ClientConfiguration {
 func WithAuthUserPass(user, pass string) ClientConfiguration {
 	return func(c *Client) {
 		c.conn.SetAuth(user, pass)
+	}
+}
+
+// WithHTTPAuth sets the authentication provider
+// within the dialer
+func WithHTTPAuth(provider gremconnect.AuthProvider) ClientConfiguration {
+	return func(c *Client) {
+		c.conn.SetHTTPAuth(provider)
 	}
 }
 
