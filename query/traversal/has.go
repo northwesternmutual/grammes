@@ -141,7 +141,7 @@ func (g String) HasValue(objOrP interface{}, objs ...string) String {
 	case string:
 		g = g.append(".hasValue('" + objOrP.(string) + "'")
 	default:
-		g = g.append(fmtStr(".hasValue(%v)", objOrP))
+		g = g.append(fmtStr(".hasValue(%v", objOrP))
 	}
 
 	if len(objs) > 0 {
