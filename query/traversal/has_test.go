@@ -174,8 +174,8 @@ func TestHasValue(t *testing.T) {
 
 		Convey("When 'HasValue' is called with one int parameter", func() {
 			result := g.HasValue(1234)
-			Convey("Then result should equal 'g.hasValue(1234))'", func() {
-				So(result.String(), ShouldEqual, "g.hasValue(1234))")
+			Convey("Then result should equal 'g.hasValue(1234)'", func() {
+				So(result.String(), ShouldEqual, "g.hasValue(1234)")
 			})
 		})
 
