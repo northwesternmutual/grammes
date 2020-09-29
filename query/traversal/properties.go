@@ -30,11 +30,11 @@ func (g String) Properties(str ...string) String {
 	if len(str) < 1 {
 		g.AddStep("properties")
 	} else {
-		g = g.append(".properties(\"" + str[0] + "\"")
+		g = g.append(".properties('" + Escape(str[0]) + "'")
 
 		if len(str) > 1 {
 			for _, v := range str[1:] {
-				g = g.append(",\"" + v + "\"")
+				g = g.append(",'" + Escape(v) + "'")
 			}
 		}
 

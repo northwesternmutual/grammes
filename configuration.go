@@ -21,6 +21,7 @@
 package grammes
 
 import (
+	"github.com/northwesternmutual/grammes/gremconnect"
 	"strconv"
 	"time"
 
@@ -71,6 +72,14 @@ func WithAuthUserPass(user, pass string) ClientConfiguration {
 	}
 }
 
+// WithHTTPAuth sets the authentication provider
+// within the dialer
+func WithHTTPAuth(provider gremconnect.AuthProvider) ClientConfiguration {
+	return func(c *Client) {
+		c.conn.SetHTTPAuth(provider)
+	}
+}
+
 // WithTimeout sets the timeout to wait when dialing
 // with the dialer in seconds.
 func WithTimeout(interval time.Duration) ClientConfiguration {
@@ -100,5 +109,44 @@ func WithWritingWait(interval time.Duration) ClientConfiguration {
 func WithReadingWait(interval time.Duration) ClientConfiguration {
 	return func(c *Client) {
 		c.conn.SetReadingWait(interval)
+	}
+}
+
+// WithRequestTimeout sets the timeout when
+// reading a request from the gremlin server
+func WithRequestTimeout(interval time.Duration) ClientConfiguration {
+	return func(c *Client) {
+		c.requestTimeout = interval
+	}
+}
+
+// WithWriteBufferSize sets the max write buffer size
+// for the websocket frame
+func WithWriteBufferSize(writeBufferSize int) ClientConfiguration {
+	return func(c *Client) {
+		c.conn.SetWriteBufferSize(writeBufferSize)
+	}
+}
+
+// WithReadBufferSize sets the max read buffer size
+// for the websocket frame
+func WithReadBufferSize(readBufferSize int) ClientConfiguration {
+	return func(c *Client) {
+		c.conn.SetReadBufferSize(readBufferSize)
+	}
+}
+
+// WithHandshakeTimeout sets the websocket handshake timeout
+func WithHandshakeTimeout(handshakeTimeout time.Duration) ClientConfiguration {
+	return func(c *Client) {
+		c.conn.SetHandshakeTimeout(handshakeTimeout)
+	}
+}
+
+// WithCompression sets the compression
+// flag for websocket connections
+func WithCompression(enableCompression bool) ClientConfiguration {
+	return func(c *Client) {
+		c.conn.SetCompression(enableCompression)
 	}
 }

@@ -22,6 +22,8 @@ package grammes
 
 import (
 	"encoding/json"
+	"errors"
+	"time"
 
 	"github.com/northwesternmutual/grammes/gremconnect"
 )
@@ -71,20 +73,32 @@ func (c *Client) retrieveResponse(id string) ([][]byte, error) {
 		dataPart    []byte
 	)
 
-	if n := <-notifier.(chan int); n == 1 {
-		if dataI, ok := c.results.Load(id); ok {
-			for _, d := range dataI.([]interface{}) {
-				if err, ok = d.(error); ok {
-					break
+	timeout := make(chan bool, 1)
+
+	time.AfterFunc(c.requestTimeout, func() {
+		timeout <- true
+	})
+
+	for n := 1;n == 1; {
+		select {
+		case n = <-notifier.(chan int):
+
+			if dataI, ok := c.results.Load(id); ok {
+				for _, d := range dataI.([]interface{}) {
+					if err, ok = d.(error); ok {
+						break
+					}
+					if dataPart, err = jsonMarshalData(d); err != nil {
+						break
+					}
+					data = append(data, dataPart)
 				}
-				if dataPart, err = jsonMarshalData(d); err != nil {
-					break
-				}
-				data = append(data, dataPart)
+				close(notifier.(chan int))
+				c.resultMessenger.Delete(id)
+				c.deleteResponse(id)
 			}
-			close(notifier.(chan int))
-			c.resultMessenger.Delete(id)
-			c.deleteResponse(id)
+		case <-timeout:
+			return nil, errors.New("request failed with timeout")
 		}
 	}
 

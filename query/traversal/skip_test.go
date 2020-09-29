@@ -23,8 +23,9 @@ package traversal
 import (
 	"testing"
 
-	"github.com/northwesternmutual/grammes/query/scope"
 	. "github.com/smartystreets/goconvey/convey"
+
+	"github.com/northwesternmutual/grammes/query/scope"
 )
 
 func TestSkip(t *testing.T) {
@@ -40,7 +41,7 @@ func TestSkip(t *testing.T) {
 		Convey("When 'Skip' is called with multiple extraFloat arguments", func() {
 			result := g.Skip(scope.Local, 1.234)
 			Convey("Then result should equal 'g.skip(local,1.234)'", func() {
-				So(result.String(), ShouldEqual, "g.skip(local,1.234)")
+				So(result.String(), ShouldEqual, "g.skip(local,1.234f)")
 			})
 		})
 	})

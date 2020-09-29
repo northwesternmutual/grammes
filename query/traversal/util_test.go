@@ -65,7 +65,7 @@ func TestAddStep(t *testing.T) {
 			i := float64(1.234)
 			g.AddStep("test", i)
 			Convey("Then g should equal g.test(1.234)", func() {
-				So(g.String(), ShouldEqual, "g.test(1.234)")
+				So(g.String(), ShouldEqual, "g.test(1.234f)")
 			})
 		})
 
@@ -74,6 +74,15 @@ func TestAddStep(t *testing.T) {
 			g.AddStep("test", b)
 			Convey("Then g should equal g.test(true)", func() {
 				So(g.String(), ShouldEqual, "g.test(true)")
+			})
+		})
+
+		Convey("When AddStep should escape characters", func() {
+			s := `a 'test' with \ and \\ and nested {"key": "value", "key2": "val\"val"} and {'key': 'value', 'kay2': 'val\'val'}`
+			g.AddStep("test", s)
+			expected := `g.test('a \'test\' with \\ and \\\\ and nested {"key": "value", "key2": "val\\"val"} and {\'key\': \'value\', \'kay2\': \'val\\\'val\'}')`
+			Convey("Then g should equal "+expected, func() {
+				So(g.String(), ShouldEqual, expected)
 			})
 		})
 	})

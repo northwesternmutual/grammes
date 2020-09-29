@@ -23,8 +23,9 @@ package traversal
 import (
 	"testing"
 
-	"github.com/northwesternmutual/grammes/query/cardinality"
 	. "github.com/smartystreets/goconvey/convey"
+
+	"github.com/northwesternmutual/grammes/query/cardinality"
 )
 
 func TestProperty(t *testing.T) {
@@ -33,19 +34,19 @@ func TestProperty(t *testing.T) {
 		Convey("When 'Property' is called with object strings", func() {
 			result := g.Property("obj1", "obj2", "obj3", "obj4")
 			Convey("Then result should equal 'g.property('obj1','obj2','obj3','obj4')", func() {
-				So(result.String(), ShouldEqual, "g.property(\"obj1\",\"obj2\",\"obj3\",\"obj4\")")
+				So(result.String(), ShouldEqual, "g.property('obj1','obj2','obj3','obj4')")
 			})
 		})
 		Convey("When 'Property' is called with object strings and cardinality", func() {
 			result := g.Property(cardinality.Set, "obj1", "obj2")
 			Convey("Then result should equal 'g.property(set,'obj1','obj2')'", func() {
-				So(result.String(), ShouldEqual, "g.property(set,\"obj1\",\"obj2\")")
+				So(result.String(), ShouldEqual, "g.property(set,'obj1','obj2')")
 			})
 		})
 		Convey("When 'Property' is called with object strings and ints", func() {
 			result := g.Property(3, 4, 4)
 			Convey("Then result should equal 'g.property(3,4,4)'", func() {
-				So(result.String(), ShouldEqual, "g.property(3,4,4)")
+				So(result.String(), ShouldEqual, "g.property(3l,4l,4l)")
 			})
 		})
 

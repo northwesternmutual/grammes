@@ -22,7 +22,10 @@ package gremconnect
 
 import (
 	"errors"
+	"fmt"
+	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strings"
 	"sync"
 	"time"
@@ -34,16 +37,21 @@ import (
 // to dial to the gremlin server and sustain
 // a stable connection by pinging it regularly.
 type WebSocket struct {
-	address      string
-	conn         *websocket.Conn
-	auth         *Auth
-	disposed     bool
-	connected    bool
-	pingInterval time.Duration
-	writingWait  time.Duration
-	readingWait  time.Duration
-	timeout      time.Duration
-	Quit         chan struct{}
+	address           string
+	conn              *websocket.Conn
+	auth              *Auth
+	httpAuth          *HTTPAuth
+	disposed          bool
+	connected         bool
+	enableCompression bool
+	pingInterval      time.Duration
+	writingWait       time.Duration
+	readingWait       time.Duration
+	timeout           time.Duration
+	handshakeTimeout  time.Duration
+	writeBufferSize   int
+	readBufferSize    int
+	Quit              chan struct{}
 
 	sync.RWMutex
 }
@@ -54,9 +62,10 @@ type WebSocket struct {
 func (ws *WebSocket) Connect() error {
 	var err error
 	dialer := websocket.Dialer{
-		WriteBufferSize:  1024 * 8, // Set up for large messages.
-		ReadBufferSize:   1024 * 8, // Set up for large messages.
-		HandshakeTimeout: 5 * time.Second,
+		WriteBufferSize:   ws.writeBufferSize,
+		ReadBufferSize:    ws.readBufferSize,
+		HandshakeTimeout:  ws.handshakeTimeout,
+		EnableCompression: ws.enableCompression,
 	}
 
 	// Check if the host address already has the proper
@@ -67,22 +76,43 @@ func (ws *WebSocket) Connect() error {
 		ws.address = ws.address + "/gremlin"
 	}
 
-	ws.conn, _, err = dialer.Dial(ws.address, http.Header{})
-
-	if err == nil {
-		ws.connected = true
-
-		handler := func(appData string) error {
-			ws.Lock()
-			ws.connected = true
-			ws.Unlock()
-			return nil
+	// This is a minor hack, but a nice hook-point. We are using the dialer's proxy callback in order to modify the request before it's
+	// being sent. That way we can add a custom authentication provider (Like using Amazon Neptune's v4 signer)
+	if ws.httpAuth != nil && ws.httpAuth.authProvider != nil {
+		dialer.Proxy = func(request *http.Request) (*url.URL, error) {
+			return nil, ws.httpAuth.authProvider(request)
 		}
-
-		ws.conn.SetPongHandler(handler)
 	}
 
-	return err
+	var httpResponse *http.Response
+	ws.conn, httpResponse, err = dialer.Dial(ws.address, http.Header{})
+	if err != nil {
+		if httpResponse != nil {
+			//noinspection GoUnhandledErrorResult
+			defer httpResponse.Body.Close()
+
+			// Try to read the http response to add context to the error
+			errorOutput, readErr := ioutil.ReadAll(httpResponse.Body)
+			if readErr == nil {
+				return fmt.Errorf("error connecting to address. response: %s. error %v", string(errorOutput), err)
+			}
+		}
+
+		return err
+	}
+
+	ws.connected = true
+
+	handler := func(appData string) error {
+		ws.Lock()
+		ws.connected = true
+		ws.Unlock()
+		return nil
+	}
+
+	ws.conn.SetPongHandler(handler)
+
+	return nil
 }
 
 // IsConnected returns whether the given
@@ -174,11 +204,16 @@ func (ws *WebSocket) Ping(errs chan error) {
 	}
 }
 
-// Configration functions
+// Configuration functions
 
 // SetAuth will set the authentication to this user and pass
 func (ws *WebSocket) SetAuth(user, pass string) {
 	ws.auth = &Auth{Username: user, Password: pass}
+}
+
+// SetHTTPAuth will set the HTTP authentication provider to this one
+func (ws *WebSocket) SetHTTPAuth(provider AuthProvider) {
+	ws.httpAuth = &HTTPAuth{provider}
 }
 
 // SetTimeout will set the dialing timeout
@@ -199,4 +234,20 @@ func (ws *WebSocket) SetWritingWait(interval time.Duration) {
 // SetReadingWait sets how long the reading will wait
 func (ws *WebSocket) SetReadingWait(interval time.Duration) {
 	ws.readingWait = interval
+}
+
+func (ws *WebSocket) SetWriteBufferSize(writeBufferSize int) {
+	ws.writeBufferSize = writeBufferSize
+}
+
+func (ws *WebSocket) SetReadBufferSize(readBufferSize int) {
+	ws.readBufferSize = readBufferSize
+}
+
+func (ws *WebSocket) SetHandshakeTimeout(handshakeTimeout time.Duration) {
+	ws.handshakeTimeout = handshakeTimeout
+}
+
+func (ws *WebSocket) SetCompression(enableCompression bool) {
+	ws.enableCompression = enableCompression
 }

@@ -22,8 +22,15 @@ package gremconnect
 
 import (
 	"errors"
+	"net/http"
 	"os"
 )
+
+type AuthProvider func(request *http.Request) error
+
+type HTTPAuth struct {
+	authProvider AuthProvider
+}
 
 // Auth contains the authentication data for the dialer.
 type Auth struct {

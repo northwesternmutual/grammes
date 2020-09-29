@@ -29,11 +29,11 @@ func (g String) PropertyMap(str ...string) String {
 	if len(str) < 1 {
 		g.AddStep("propertyMap")
 	} else {
-		g = g.append(".propertyMap(\"" + str[0] + "\"")
+		g = g.append(".propertyMap('" + str[0] + "'")
 
 		if len(str) > 1 {
 			for _, v := range str[1:] {
-				g = g.append(",\"" + v + "\"")
+				g = g.append(",'" + v + "'")
 			}
 		}
 

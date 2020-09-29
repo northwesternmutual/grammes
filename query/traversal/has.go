@@ -81,14 +81,14 @@ func (g String) HasID(objOrP interface{}, objs ...string) String {
 func (g String) HasKey(pOrStr interface{}, handledStrings ...string) String {
 	switch pOrStr.(type) {
 	case string:
-		g = g.append(".hasKey(\"" + pOrStr.(string) + "\"")
+		g = g.append(".hasKey('" + pOrStr.(string) + "'")
 	default:
 		g = g.append(fmtStr(".hasKey(%v", pOrStr))
 	}
 
 	if len(handledStrings) > 0 {
 		for _, v := range handledStrings {
-			g = g.append(",\"" + v + "\"")
+			g = g.append(",'" + v + "'")
 		}
 	}
 
@@ -105,14 +105,14 @@ func (g String) HasKey(pOrStr interface{}, handledStrings ...string) String {
 func (g String) HasLabel(pOrStr interface{}, handledStrings ...string) String {
 	switch pOrStr.(type) {
 	case string:
-		g = g.append(".hasLabel(\"" + pOrStr.(string) + "\"")
+		g = g.append(".hasLabel('" + pOrStr.(string) + "'")
 	default:
 		g = g.append(fmtStr(".hasLabel(%v", pOrStr))
 	}
 
 	if len(handledStrings) > 0 {
 		for _, v := range handledStrings {
-			g = g.append(",\"" + v + "\"")
+			g = g.append(",'" + v + "'")
 		}
 	}
 
@@ -139,14 +139,14 @@ func (g String) HasNot(str string) String {
 func (g String) HasValue(objOrP interface{}, objs ...string) String {
 	switch objOrP.(type) {
 	case string:
-		g = g.append(".hasValue(\"" + objOrP.(string) + "\"")
+		g = g.append(".hasValue('" + objOrP.(string) + "'")
 	default:
-		g = g.append(fmtStr(".hasValue(%v)", objOrP))
+		g = g.append(fmtStr(".hasValue(%v", objOrP))
 	}
 
 	if len(objs) > 0 {
 		for _, v := range objs {
-			g = g.append(",\"" + v + "\"")
+			g = g.append(",'" + v + "'")
 		}
 	}
 

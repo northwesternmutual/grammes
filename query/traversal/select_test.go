@@ -34,8 +34,8 @@ func TestSelect(t *testing.T) {
 		g := NewTraversal()
 		Convey("When 'Select' is called with just first argument string", func() {
 			result := g.Select("testFirst")
-			Convey("Then result should equal 'g.select(\"testFirst\")'", func() {
-				So(result.String(), ShouldEqual, "g.select(\"testFirst\")")
+			Convey("Then result should equal 'g.select('testFirst')'", func() {
+				So(result.String(), ShouldEqual, "g.select('testFirst')")
 			})
 		})
 
@@ -63,14 +63,14 @@ func TestSelect(t *testing.T) {
 		Convey("When 'Select' is called with extras argument ) String {", func() {
 			result := g.Select("testSelect", NewTraversal().Label().Raw())
 			Convey("Then result should equal 'g.select(testSelect,label())'", func() {
-				So(result.String(), ShouldEqual, "g.select(\"testSelect\",label())")
+				So(result.String(), ShouldEqual, "g.select('testSelect',label())")
 			})
 		})
 
 		Convey("When 'Select' is called with extras argument multiple string", func() {
 			result := g.Select("testFirst", "testExtras1", "testExtras2")
 			Convey("Then result should equal 'g.select(testFirst,testExtras1,testExtras2)'", func() {
-				So(result.String(), ShouldEqual, "g.select(\"testFirst\",\"testExtras1\",\"testExtras2\")")
+				So(result.String(), ShouldEqual, "g.select('testFirst','testExtras1','testExtras2')")
 			})
 		})
 

@@ -34,14 +34,14 @@ func TestHas(t *testing.T) {
 		Convey("When 'Has' is called with object strings", func() {
 			result := g.Has("obj1", "obj2", "obj3")
 			Convey("Then result should equal 'g.has('obj1','obj2','obj3')'", func() {
-				So(result.String(), ShouldEqual, "g.has(\"obj1\",\"obj2\",\"obj3\")")
+				So(result.String(), ShouldEqual, "g.has('obj1','obj2','obj3')")
 			})
 		})
 
 		Convey("When 'Has' is called with a traversal", func() {
 			result := g.Has("testHas", NewTraversal().Label().Raw())
 			Convey("Then result should equal 'g.has('testHas',label())'", func() {
-				So(result.String(), ShouldEqual, "g.has(\"testHas\",label())")
+				So(result.String(), ShouldEqual, "g.has('testHas',label())")
 			})
 		})
 
@@ -63,7 +63,7 @@ func TestHas(t *testing.T) {
 		Convey("When 'Has' is called with too many params", func() {
 			result := g.Has("first", "second", "third", "fourth")
 			Convey("Then result should equal 'g.has('first','second','third','fourth')'", func() {
-				So(result.String(), ShouldEqual, "g.has(\"first\",\"second\",\"third\",\"fourth\")")
+				So(result.String(), ShouldEqual, "g.has('first','second','third','fourth')")
 			})
 		})
 
@@ -72,7 +72,7 @@ func TestHas(t *testing.T) {
 			*p = "predicate"
 			result := g.Has("first", p, 1234)
 			Convey("Then result should equal 'g.has('first',predicate,1234')'", func() {
-				So(result.String(), ShouldEqual, "g.has(\"first\",predicate,1234)")
+				So(result.String(), ShouldEqual, "g.has('first',predicate,1234)")
 			})
 		})
 	})
@@ -84,14 +84,14 @@ func TestHasID(t *testing.T) {
 		Convey("When 'HasID' is called with one parameter", func() {
 			result := g.HasID("tstObjOrP")
 			Convey("Then result should equal 'g.hasId('tstObjOrP')'", func() {
-				So(result.String(), ShouldEqual, "g.hasId(\"tstObjOrP\")")
+				So(result.String(), ShouldEqual, "g.hasId('tstObjOrP')")
 			})
 		})
 
 		Convey("When 'HasID' is called with a multiple params", func() {
 			result := g.HasID("tstObjOrP", "tstObj1", "tstObj2")
 			Convey("Then result should equal 'g.hasId('tstObjOrP','tstObj1','tstObj2')'", func() {
-				So(result.String(), ShouldEqual, "g.hasId(\"tstObjOrP\",\"tstObj1\",\"tstObj2\")")
+				So(result.String(), ShouldEqual, "g.hasId('tstObjOrP','tstObj1','tstObj2')")
 			})
 		})
 	})
@@ -103,7 +103,7 @@ func TestHasKey(t *testing.T) {
 		Convey("When 'HasKey' is called with one parameter", func() {
 			result := g.HasKey("tstpOrStr")
 			Convey("Then result should equal 'g.hasKey('tstpOrStr')'", func() {
-				So(result.String(), ShouldEqual, "g.hasKey(\"tstpOrStr\")")
+				So(result.String(), ShouldEqual, "g.hasKey('tstpOrStr')")
 			})
 		})
 
@@ -117,7 +117,7 @@ func TestHasKey(t *testing.T) {
 		Convey("When 'HasKey' is called with a multiple params", func() {
 			result := g.HasKey("tstpOrStr", "tstHandled1", "tstHandled2")
 			Convey("Then result should equal 'g.hasKey('tstpOrStr','tstHandled1','tstHandled2')'", func() {
-				So(result.String(), ShouldEqual, "g.hasKey(\"tstpOrStr\",\"tstHandled1\",\"tstHandled2\")")
+				So(result.String(), ShouldEqual, "g.hasKey('tstpOrStr','tstHandled1','tstHandled2')")
 			})
 		})
 	})
@@ -129,14 +129,14 @@ func TestHasLabel(t *testing.T) {
 		Convey("When 'HasLabel' is called with one parameter", func() {
 			result := g.HasLabel("tstpOrStr")
 			Convey("Then result should equal 'g.hasLabel('tstpOrStr')'", func() {
-				So(result.String(), ShouldEqual, "g.hasLabel(\"tstpOrStr\")")
+				So(result.String(), ShouldEqual, "g.hasLabel('tstpOrStr')")
 			})
 		})
 
 		Convey("When 'HasLabel' is called with a multiple params", func() {
 			result := g.HasLabel("tstpOrStr", "tstHandled1", "tstHandled2")
 			Convey("Then result should equal 'g.hasLabel('tstpOrStr','tstHandled1','tstHandled2')'", func() {
-				So(result.String(), ShouldEqual, "g.hasLabel(\"tstpOrStr\",\"tstHandled1\",\"tstHandled2\")")
+				So(result.String(), ShouldEqual, "g.hasLabel('tstpOrStr','tstHandled1','tstHandled2')")
 			})
 		})
 
@@ -156,7 +156,7 @@ func TestHasNot(t *testing.T) {
 		Convey("When 'HasNot' is called", func() {
 			result := g.HasNot("testStr")
 			Convey("Then result should equal 'g.hasNot('testStr')'", func() {
-				So(result.String(), ShouldEqual, "g.hasNot(\"testStr\")")
+				So(result.String(), ShouldEqual, "g.hasNot('testStr')")
 			})
 		})
 	})
@@ -168,21 +168,21 @@ func TestHasValue(t *testing.T) {
 		Convey("When 'HasValue' is called with one parameter", func() {
 			result := g.HasValue("tstObjOrP")
 			Convey("Then result should equal 'g.hasValue('tstObjOrP')'", func() {
-				So(result.String(), ShouldEqual, "g.hasValue(\"tstObjOrP\")")
+				So(result.String(), ShouldEqual, "g.hasValue('tstObjOrP')")
 			})
 		})
 
 		Convey("When 'HasValue' is called with one int parameter", func() {
 			result := g.HasValue(1234)
-			Convey("Then result should equal 'g.hasValue(1234))'", func() {
-				So(result.String(), ShouldEqual, "g.hasValue(1234))")
+			Convey("Then result should equal 'g.hasValue(1234)'", func() {
+				So(result.String(), ShouldEqual, "g.hasValue(1234)")
 			})
 		})
 
 		Convey("When 'HasValue' is called with a multiple params", func() {
 			result := g.HasValue("tstObjOrP", "tstObj1", "tstObj2")
 			Convey("Then result should equal 'g.hasValue('tstObjOrP','tstObj1','tstObj2')'", func() {
-				So(result.String(), ShouldEqual, "g.hasValue(\"tstObjOrP\",\"tstObj1\",\"tstObj2\")")
+				So(result.String(), ShouldEqual, "g.hasValue('tstObjOrP','tstObj1','tstObj2')")
 			})
 		})
 	})

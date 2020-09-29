@@ -38,10 +38,11 @@ func TestProperties(t *testing.T) {
 		})
 
 		Convey("When 'Properties' is called with multiple arguments", func() {
-			result := g.Properties("test1", "test2", "test3")
-			Convey("Then result should equal 'g.properties('test1','test2','test3')'", func() {
-				So(result.String(), ShouldEqual, "g.properties(\"test1\",\"test2\",\"test3\")")
+			result := g.Properties("test1", "test'2'", "test\"3\"")
+			Convey("Then result should equal 'g.properties('test1','test\\'2\\'','test\"3\"')'", func() {
+				So(result.String(), ShouldEqual, `g.properties('test1','test\'2\'','test"3"')`)
 			})
 		})
+
 	})
 }

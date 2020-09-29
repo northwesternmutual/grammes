@@ -32,7 +32,7 @@ func TestSubGraph(t *testing.T) {
 		Convey("When 'SubGraph' is called", func() {
 			result := g.SubGraph("testSubGraph")
 			Convey("Then result should equal 'g.subgraph(testSubGraph)'", func() {
-				So(result.String(), ShouldEqual, "g.subgraph(\"testSubGraph\")")
+				So(result.String(), ShouldEqual, "g.subgraph('testSubGraph')")
 			})
 		})
 	})
