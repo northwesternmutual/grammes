@@ -21,6 +21,7 @@
 package grammes
 
 import (
+	"crypto/tls"
 	"strconv"
 	"testing"
 	"time"
@@ -156,6 +157,21 @@ func TestWithReadingWait(t *testing.T) {
 		dialer.readingWait = 5 * time.Second
 		Convey("And Dial is called with reading wait", func() {
 			_, err := mockDial(dialer, WithReadingWait(dialer.readingWait))
+			Convey("Then no error should be encountered", func() {
+				So(err, ShouldBeNil)
+			})
+		})
+	})
+}
+
+func TestWithTLS(t *testing.T) {
+	t.Parallel()
+
+	Convey("Given a tls config and dialer", t, func() {
+		dialer := &mockDialerStruct{}
+		dialer.tlsConfig = &tls.Config{}
+		Convey("And Dial is called with tls config", func() {
+			_, err := mockDial(dialer, WithTLS(dialer.tlsConfig))
 			Convey("Then no error should be encountered", func() {
 				So(err, ShouldBeNil)
 			})

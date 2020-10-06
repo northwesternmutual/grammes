@@ -21,6 +21,7 @@
 package gremconnect
 
 import (
+	"crypto/tls"
 	"errors"
 	"net/http"
 	"strings"
@@ -36,6 +37,7 @@ import (
 type WebSocket struct {
 	address      string
 	conn         *websocket.Conn
+	tlsConfig    *tls.Config
 	auth         *Auth
 	disposed     bool
 	connected    bool
@@ -54,6 +56,7 @@ type WebSocket struct {
 func (ws *WebSocket) Connect() error {
 	var err error
 	dialer := websocket.Dialer{
+		TLSClientConfig:  ws.tlsConfig,
 		WriteBufferSize:  1024 * 8, // Set up for large messages.
 		ReadBufferSize:   1024 * 8, // Set up for large messages.
 		HandshakeTimeout: 5 * time.Second,
@@ -199,4 +202,9 @@ func (ws *WebSocket) SetWritingWait(interval time.Duration) {
 // SetReadingWait sets how long the reading will wait
 func (ws *WebSocket) SetReadingWait(interval time.Duration) {
 	ws.readingWait = interval
+}
+
+// SetReadingWait sets how long the reading will wait
+func (ws *WebSocket) SetTLSConfig(conf *tls.Config) {
+	ws.tlsConfig = conf
 }
