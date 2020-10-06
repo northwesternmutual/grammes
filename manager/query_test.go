@@ -21,6 +21,7 @@
 package manager
 
 import (
+	"crypto/tls"
 	"testing"
 	"time"
 
@@ -48,6 +49,7 @@ func (*mockDialer) SetTimeout(time.Duration)         {}
 func (*mockDialer) SetPingInterval(time.Duration)    {}
 func (*mockDialer) SetWritingWait(time.Duration)     {}
 func (*mockDialer) SetReadingWait(time.Duration)     {}
+func (*mockDialer) SetTLSConfig(*tls.Config)         {}
 
 func TestSetLoggerQM(t *testing.T) {
 	Convey("Given a dialer, string executor and query manager", t, func() {

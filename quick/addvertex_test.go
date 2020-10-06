@@ -21,6 +21,7 @@
 package quick
 
 import (
+	"crypto/tls"
 	"errors"
 	"testing"
 	"time"
@@ -80,6 +81,7 @@ func (*mockDialer) SetTimeout(time.Duration)         {}
 func (*mockDialer) SetPingInterval(time.Duration)    {}
 func (*mockDialer) SetWritingWait(time.Duration)     {}
 func (*mockDialer) SetReadingWait(time.Duration)     {}
+func (*mockDialer) SetTLSConfig(*tls.Config)         {}
 
 // MOCKQUERY
 
