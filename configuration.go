@@ -21,6 +21,7 @@
 package grammes
 
 import (
+	"crypto/tls"
 	"strconv"
 	"time"
 
@@ -100,5 +101,12 @@ func WithWritingWait(interval time.Duration) ClientConfiguration {
 func WithReadingWait(interval time.Duration) ClientConfiguration {
 	return func(c *Client) {
 		c.conn.SetReadingWait(interval)
+	}
+}
+
+// WithTLS sets the TLS config
+func WithTLS(conf *tls.Config) ClientConfiguration {
+	return func(c *Client) {
+		c.conn.SetTLSConfig(conf)
 	}
 }

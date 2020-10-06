@@ -20,7 +20,10 @@
 
 package gremconnect
 
-import "time"
+import (
+	"crypto/tls"
+	"time"
+)
 
 // Dialer will be used to dial in a connection
 // between the client and gremlin server without
@@ -50,6 +53,7 @@ type Dialer interface {
 	SetPingInterval(interval time.Duration)
 	SetWritingWait(interval time.Duration)
 	SetReadingWait(interval time.Duration)
+	SetTLSConfig(conf *tls.Config)
 }
 
 // NewWebSocketDialer returns a new WebSocket dialer to use when

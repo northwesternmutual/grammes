@@ -21,6 +21,7 @@
 package grammes
 
 import (
+	"crypto/tls"
 	"errors"
 	"time"
 
@@ -105,6 +106,7 @@ type mockDialerStruct struct {
 	logger       testLogger
 	address      string
 	conn         *websocket.Conn
+	tlsConfig    *tls.Config
 	auth         *gremconnect.Auth
 	disposed     bool
 	connected    bool
@@ -137,6 +139,7 @@ func (*mockDialerStruct) SetTimeout(time.Duration)      {}
 func (*mockDialerStruct) SetPingInterval(time.Duration) {}
 func (*mockDialerStruct) SetWritingWait(time.Duration)  {}
 func (*mockDialerStruct) SetReadingWait(time.Duration)  {}
+func (*mockDialerStruct) SetTLSConfig(*tls.Config)      {}
 
 func mockDial(conn gremconnect.Dialer, cfgs ...ClientConfiguration) (*Client, error) {
 	c := setupClient()
@@ -167,6 +170,7 @@ func (*mockDialerWriteError) SetTimeout(time.Duration)      {}
 func (*mockDialerWriteError) SetPingInterval(time.Duration) {}
 func (*mockDialerWriteError) SetWritingWait(time.Duration)  {}
 func (*mockDialerWriteError) SetReadingWait(time.Duration)  {}
+func (*mockDialerWriteError) SetTLSConfig(*tls.Config)      {}
 
 type mockDialerAuthError gremconnect.WebSocket
 
@@ -192,6 +196,7 @@ func (*mockDialerAuthError) SetTimeout(time.Duration)      {}
 func (*mockDialerAuthError) SetPingInterval(time.Duration) {}
 func (*mockDialerAuthError) SetWritingWait(time.Duration)  {}
 func (*mockDialerAuthError) SetReadingWait(time.Duration)  {}
+func (*mockDialerAuthError) SetTLSConfig(*tls.Config)      {}
 
 type mockDialerReadError gremconnect.WebSocket
 
@@ -217,3 +222,4 @@ func (*mockDialerReadError) SetTimeout(time.Duration)      {}
 func (*mockDialerReadError) SetPingInterval(time.Duration) {}
 func (*mockDialerReadError) SetWritingWait(time.Duration)  {}
 func (*mockDialerReadError) SetReadingWait(time.Duration)  {}
+func (*mockDialerReadError) SetTLSConfig(*tls.Config)      {}
