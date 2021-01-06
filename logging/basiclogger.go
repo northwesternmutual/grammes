@@ -72,3 +72,7 @@ func (logger *BasicLogger) Debug(msg string, params map[string]interface{}) {
 	}
 	logger.zapper.Debug(msg, fields...)
 }
+
+func (logger *BasicLogger) Info(_ string, _ map[string]interface{}) {
+
+}

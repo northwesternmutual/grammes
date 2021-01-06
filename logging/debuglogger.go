@@ -64,3 +64,7 @@ func (logger *DebugLogger) Debug(msg string, params map[string]interface{}) {
 	}
 	logger.zapper.Debug(msg, fields...)
 }
+
+func (logger *DebugLogger) Info(_ string, _ map[string]interface{}) {
+
+}

@@ -54,6 +54,7 @@ func (c *Client) executeRequest(query string, bindings, rebindings map[string]st
 	c.resultMessenger.Store(id, make(chan int, 1))
 	c.dispatchRequest(msg)              // send the request.
 	resp, err := c.retrieveResponse(id) // retrieve the response from the gremlin server
+	c.logRetrieveResponse(query, id, resp, err)
 	if err != nil {
 		c.logger.Error("retrieving response",
 			gremerror.NewGrammesError("executeRequest", err),
@@ -62,6 +63,33 @@ func (c *Client) executeRequest(query string, bindings, rebindings map[string]st
 	}
 
 	return resp, nil
+}
+
+func (c *Client) logRetrieveResponse(query string, id string, resp [][]byte, err error) {
+	responseSize := 0
+	for i := range resp {
+		responseSize += len(resp[i])
+	}
+
+	numElementsInResultsMap := 0
+	numElementsInResultsMessengerMap := 0
+	c.results.Range(func(key, value interface{}) bool {
+		numElementsInResultsMap++
+		return true
+	})
+	c.resultMessenger.Range(func(key, value interface{}) bool {
+		numElementsInResultsMessengerMap++
+		return true
+	})
+
+	c.logger.Info("Grammes retrieve response", map[string]interface{}{
+		"requestID":               id,
+		"errCode":                 err,
+		"query":                   query,
+		"responseSize":            responseSize,
+		"resultsMapSize":          numElementsInResultsMap,
+		"resultsMessengerMapSize": numElementsInResultsMessengerMap,
+	})
 }
 
 // writeWorker works on a loop and dispatches messages as soon as it receives them

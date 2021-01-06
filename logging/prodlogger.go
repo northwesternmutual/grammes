@@ -64,3 +64,7 @@ func (logger *ProdLogger) Debug(msg string, params map[string]interface{}) {
 	}
 	logger.zapper.Debug(msg, fields...)
 }
+
+func (logger *ProdLogger) Info(_ string, _ map[string]interface{}) {
+
+}
