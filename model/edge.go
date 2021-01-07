@@ -44,7 +44,12 @@ func (e *Edge) PropertyValue(key string) interface{} {
 
 // ID will retrieve the Edge ID for you.
 func (e *Edge) ID() interface{} {
-	return e.Value.ID
+	idMap, ok := e.Value.ID.(map[string]interface{})
+	if !ok {
+		return e.Value.ID
+	}
+
+	return idMap["@value"]
 }
 
 // Label will retrieve the Edge Label for you.

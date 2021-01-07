@@ -2,7 +2,7 @@
 .gopath~
 .DS_Store
 .vscode
-
+.idea
 # Directories
 vendor
 bin
