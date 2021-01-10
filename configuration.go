@@ -22,6 +22,7 @@ package grammes
 
 import (
 	"github.com/northwesternmutual/grammes/gremconnect"
+	"golang.org/x/sync/semaphore"
 	"strconv"
 	"time"
 
@@ -61,6 +62,7 @@ func WithGremlinVersion(versionNumber int) ClientConfiguration {
 func WithMaxConcurrentMessages(limit int) ClientConfiguration {
 	return func(c *Client) {
 		c.request = make(chan []byte, limit)
+		c.requestSemaphore = semaphore.NewWeighted(int64(limit))
 	}
 }
 

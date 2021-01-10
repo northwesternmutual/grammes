@@ -21,6 +21,7 @@
 package grammes
 
 import (
+	"context"
 	"github.com/northwesternmutual/grammes/gremconnect"
 	"github.com/northwesternmutual/grammes/gremerror"
 )
@@ -32,6 +33,15 @@ var (
 )
 
 func (c *Client) executeRequest(query string, bindings, rebindings map[string]string) ([][]byte, error) {
+	err := c.requestSemaphore.Acquire(context.Background(), 1)
+	if err != nil {
+		c.logger.Error("acquiring request semaphore",
+			gremerror.NewGrammesError("executeRequest", err),
+		)
+		return nil, err
+	}
+	defer c.requestSemaphore.Release(1)
+
 	// Construct a map containing the values along
 	// with a randomly generated id to fetch the response.
 	req, id, err := gremPrepareRequest(query, bindings, rebindings)
