@@ -46,6 +46,4 @@ type Logger interface {
 	// function. Which would not create a proper query
 	// for the gremlin server and should stop.
 	Fatal(msg string, err error)
-
-	Info(msg string, fieldAndVals map[string]interface{})
 }

@@ -140,14 +140,6 @@ func (c *Client) handleResponse(msg []byte) error {
 		return c.authenticate(resp.RequestID)
 	}
 
-	c.logResponse(msg, resp.RequestID)
 	c.saveResponse(resp)
 	return nil
-}
-
-func (c *Client) logResponse(msg []byte, requestID string) {
-	c.logger.Info("Grammes handling response", map[string]interface{}{
-		"responseLength": len(msg),
-		"requestID":      requestID,
-	})
 }

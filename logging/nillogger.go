@@ -41,5 +41,3 @@ func (*NilLogger) Fatal(msg string, err error) {}
 
 // Debug logs nothing.
 func (*NilLogger) Debug(msg string, params map[string]interface{}) {}
-
-func (*NilLogger) Info(msg string, params map[string]interface{}) {}
