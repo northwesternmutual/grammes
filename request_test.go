@@ -25,6 +25,7 @@ import (
 	"errors"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/google/uuid"
 	. "github.com/smartystreets/goconvey/convey"
@@ -277,6 +278,31 @@ func TestAuthenticateErrorPackagingRequest(t *testing.T) {
 			err := c.authenticate("testauth")
 			Convey("Then the error should be returned", func() {
 				So(err, ShouldNotBeNil)
+			})
+		})
+	})
+}
+
+func TestExecuteRequestErrorTimeout(t *testing.T) {
+	gremconnect.GenUUID = func() (uuid.UUID, error) {
+		var a [16]byte
+		copy(a[:], "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
+		return a, nil
+	}
+	Convey("Given a client that represents the Gremlin client", t, func() {
+		dialer := &mockDialerStruct{}
+		dialer.readDuration = 10 * time.Minute
+		c, _ := Dial(dialer)
+		c.requestTimeout = time.Second
+		Convey("When 'executeRequest' is called and timeout occurs", func() {
+			bindings := make(map[string]string)
+			rebindings := make(map[string]string)
+			_, err := c.executeRequest("testing", bindings, rebindings)
+			Convey("Then the error should be returned", func() {
+				So(err, ShouldNotBeNil)
+			})
+			Convey("Then the error should be timeout", func() {
+				So(err.Error(), ShouldEqual, "request failed with timeout")
 			})
 		})
 	})

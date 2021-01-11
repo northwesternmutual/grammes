@@ -21,6 +21,7 @@
 package grammes
 
 import (
+	"context"
 	"github.com/northwesternmutual/grammes/gremconnect"
 	"github.com/northwesternmutual/grammes/gremerror"
 )
@@ -32,6 +33,15 @@ var (
 )
 
 func (c *Client) executeRequest(query string, bindings, rebindings map[string]string) ([][]byte, error) {
+	err := c.requestSemaphore.Acquire(context.Background(), 1)
+	if err != nil {
+		c.logger.Error("acquiring request semaphore",
+			gremerror.NewGrammesError("executeRequest", err),
+		)
+		return nil, err
+	}
+	defer c.requestSemaphore.Release(1)
+
 	// Construct a map containing the values along
 	// with a randomly generated id to fetch the response.
 	req, id, err := gremPrepareRequest(query, bindings, rebindings)
@@ -54,7 +64,6 @@ func (c *Client) executeRequest(query string, bindings, rebindings map[string]st
 	c.resultMessenger.Store(id, make(chan int, 1))
 	c.dispatchRequest(msg)              // send the request.
 	resp, err := c.retrieveResponse(id) // retrieve the response from the gremlin server
-	c.logRetrieveResponse(query, id, resp, err)
 	if err != nil {
 		c.logger.Error("retrieving response",
 			gremerror.NewGrammesError("executeRequest", err),
@@ -63,33 +72,6 @@ func (c *Client) executeRequest(query string, bindings, rebindings map[string]st
 	}
 
 	return resp, nil
-}
-
-func (c *Client) logRetrieveResponse(query string, id string, resp [][]byte, err error) {
-	responseSize := 0
-	for i := range resp {
-		responseSize += len(resp[i])
-	}
-
-	numElementsInResultsMap := 0
-	numElementsInResultsMessengerMap := 0
-	c.results.Range(func(key, value interface{}) bool {
-		numElementsInResultsMap++
-		return true
-	})
-	c.resultMessenger.Range(func(key, value interface{}) bool {
-		numElementsInResultsMessengerMap++
-		return true
-	})
-
-	c.logger.Info("Grammes retrieve response", map[string]interface{}{
-		"requestID":               id,
-		"errCode":                 err,
-		"query":                   query,
-		"responseSize":            responseSize,
-		"resultsMapSize":          numElementsInResultsMap,
-		"resultsMessengerMapSize": numElementsInResultsMessengerMap,
-	})
 }
 
 // writeWorker works on a loop and dispatches messages as soon as it receives them

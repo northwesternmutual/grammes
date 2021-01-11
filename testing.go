@@ -109,13 +109,14 @@ type mockDialerStruct struct {
 	readingWait  time.Duration
 	timeout      time.Duration
 	quit         chan struct{}
+	readDuration time.Duration
 }
 
 func (m *mockDialerStruct) Connect() error     { return m.connect }
 func (*mockDialerStruct) Close() error         { return nil }
 func (m *mockDialerStruct) Write([]byte) error { return nil }
 func (m *mockDialerStruct) Read() ([]byte, error) {
-	time.Sleep(100 * time.Millisecond)
+	time.Sleep(100*time.Millisecond + m.readDuration)
 	m.quit <- struct{}{}
 	return []byte(m.response), nil
 }

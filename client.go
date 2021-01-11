@@ -24,6 +24,8 @@ import (
 	"sync"
 	"time"
 
+	"golang.org/x/sync/semaphore"
+
 	"github.com/northwesternmutual/grammes/gremconnect"
 	"github.com/northwesternmutual/grammes/gremerror"
 	"github.com/northwesternmutual/grammes/logging"
@@ -58,24 +60,29 @@ type Client struct {
 	results *sync.Map
 	// resultMessenger is used to store the ID and notifier when result is ready.
 	resultMessenger *sync.Map
+	// resultMutex is used to protect from adding to results that were purged by timeout
+	resultMutex *sync.Mutex
 	// broken is used to determine if the client is not working properly.
 	broken bool
 	// logger is used to log out debug statements and errors from the client.
 	logger logging.Logger
-	// requestTimeout is used for timeouting requests that a response is not received for
-	requestTimeout time.Duration
+	// requestTimeout is used for time-outing requests that a response is not received for
+	requestTimeout   time.Duration
+	requestSemaphore *semaphore.Weighted
 }
 
 // setupClient default values some fields in the client.
 func setupClient() *Client {
 	return &Client{
-		err:             make(chan error),
-		request:         make(chan []byte, maxConCurrentMessages),
-		results:         &sync.Map{},
-		resultMessenger: &sync.Map{},
-		logger:          logging.NewNilLogger(),
-		gremlinVersion:  "3",
-		requestTimeout:  defaultTimeout,
+		err:              make(chan error),
+		request:          make(chan []byte, maxConCurrentMessages),
+		results:          &sync.Map{},
+		resultMessenger:  &sync.Map{},
+		resultMutex:      &sync.Mutex{},
+		logger:           logging.NewNilLogger(),
+		gremlinVersion:   "3",
+		requestTimeout:   defaultTimeout,
+		requestSemaphore: semaphore.NewWeighted(maxConCurrentMessages),
 	}
 }
 
