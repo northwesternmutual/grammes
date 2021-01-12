@@ -62,6 +62,13 @@ func WithGremlinVersion(versionNumber int) ClientConfiguration {
 func WithMaxConcurrentMessages(limit int) ClientConfiguration {
 	return func(c *Client) {
 		c.request = make(chan []byte, limit)
+	}
+}
+
+// WithMaxConcurrentRequests sets the limit as to how many
+// requests can done simultaneously.
+func WithMaxConcurrentRequests(limit int) ClientConfiguration {
+	return func(c *Client) {
 		c.requestSemaphore = semaphore.NewWeighted(int64(limit))
 	}
 }

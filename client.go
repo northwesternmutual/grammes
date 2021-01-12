@@ -34,6 +34,9 @@ import (
 
 // maxConCurrentMessages determines the size of the request channel.
 const maxConCurrentMessages = 3
+
+// maxConCurrentRequests determines the weight of the semaphore
+const maxConCurrentRequests = 100000
 const defaultTimeout = time.Minute
 
 // Client is used to handle the graph, schema, connection,
@@ -82,7 +85,7 @@ func setupClient() *Client {
 		logger:           logging.NewNilLogger(),
 		gremlinVersion:   "3",
 		requestTimeout:   defaultTimeout,
-		requestSemaphore: semaphore.NewWeighted(maxConCurrentMessages),
+		requestSemaphore: semaphore.NewWeighted(maxConCurrentRequests),
 	}
 }
 

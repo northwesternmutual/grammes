@@ -88,6 +88,21 @@ func TestWithMaxConcurrentMessages(t *testing.T) {
 	})
 }
 
+func TestWithMaxConcurrentRequests(t *testing.T) {
+	t.Parallel()
+
+	Convey("Given an int and dialer", t, func() {
+		m := 2
+		dialer := &mockDialerStruct{}
+		Convey("When Dial is called with max concurrent requests", func() {
+			c, _ := mockDial(dialer, WithMaxConcurrentRequests(m))
+			Convey("Then the client semaphore should be set", func() {
+				So(c.requestSemaphore, ShouldNotBeNil)
+			})
+		})
+	})
+}
+
 func TestWithAuthUserPass(t *testing.T) {
 	t.Parallel()
 
