@@ -57,8 +57,12 @@ const (
 	Decimal DataType = "Decimal.class"
 	// Precision represents the class for Precision
 	Precision DataType = "Precision.class"
+	// Date represents the class for Date
+	Date DataType = "Date.class"
 	// Geoshape represents the class for Geoshape
 	Geoshape DataType = "Geoshape.class"
+	// UUID represents the class for UUID
+	UUID DataType = "UUID.class"
 )
 
 func (d DataType) String() string {
