@@ -23,6 +23,7 @@ package quick
 import (
 	"errors"
 	"testing"
+	"time"
 
 	. "github.com/smartystreets/goconvey/convey"
 
@@ -37,7 +38,7 @@ func TestDropVertexLabel(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
 		return [][]byte{[]byte(vertexResponse)}, nil
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -77,7 +78,7 @@ func TestDropVertexLabelQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -99,7 +100,7 @@ func TestDropVertexByID(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
 		return [][]byte{[]byte(vertexResponse)}, nil
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -139,7 +140,7 @@ func TestDropVertexByIDQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -161,7 +162,7 @@ func TestDropVerticesByQuery(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
 		return [][]byte{[]byte(vertexResponse)}, nil
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -201,7 +202,7 @@ func TestDropVerticesByQueryQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)

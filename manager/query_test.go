@@ -58,7 +58,7 @@ func (*mockDialer) SetCompression(bool)                           {}
 func TestSetLoggerQM(t *testing.T) {
 	Convey("Given a dialer, string executor and query manager", t, func() {
 		dialer := gremconnect.NewWebSocketDialer("testaddress")
-		execute := func(string, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
+		execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
 		qm := newQueryManager(dialer, logging.NewNilLogger(), execute)
 		Convey("When setLogger is called we should not encounter any errors", func() {
 			qm.setLogger(logging.NewNilLogger())
@@ -69,7 +69,7 @@ func TestSetLoggerQM(t *testing.T) {
 func TestExecuteQuery(t *testing.T) {
 	Convey("Given a dialer, string executor and query manager", t, func() {
 		dialer := gremconnect.NewWebSocketDialer("testaddress")
-		execute := func(string, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
+		execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
 		qm := newQueryManager(dialer, logging.NewNilLogger(), execute)
 		Convey("When ExecuteQuery is called", func() {
 			var q mockQuery
@@ -84,7 +84,7 @@ func TestExecuteQuery(t *testing.T) {
 func TestExecuteStringQuery(t *testing.T) {
 	Convey("Given a dialer, string executor and query manager", t, func() {
 		dialer := gremconnect.NewWebSocketDialer("testaddress")
-		execute := func(string, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
+		execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
 		qm := newQueryManager(dialer, logging.NewNilLogger(), execute)
 		Convey("When ExecuteStringQuery is called", func() {
 			_, err := qm.ExecuteStringQuery("testquery")
@@ -98,7 +98,7 @@ func TestExecuteStringQuery(t *testing.T) {
 func TestExecuteBoundQuery(t *testing.T) {
 	Convey("Given a dialer, string executor and query manager", t, func() {
 		dialer := gremconnect.NewWebSocketDialer("testaddress")
-		execute := func(string, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
+		execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
 		qm := newQueryManager(dialer, logging.NewNilLogger(), execute)
 		Convey("When ExecuteBoundQuery is called", func() {
 			var q mockQuery
@@ -114,7 +114,7 @@ func TestExecuteBoundQuery(t *testing.T) {
 func TestExecuteBoundStringQueryDisposedConnection(t *testing.T) {
 	Convey("Given a dialer, string executor and query manager", t, func() {
 		dialer := &mockDialer{}
-		execute := func(string, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
+		execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) { return nil, nil }
 		qm := newQueryManager(dialer, logging.NewNilLogger(), execute)
 		Convey("When ExecuteBoundStringQuery is called with a disposed connection", func() {
 			var b, r map[string]string

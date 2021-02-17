@@ -22,6 +22,7 @@ package manager
 
 import (
 	"encoding/json"
+	"time"
 
 	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes/model"
@@ -61,7 +62,7 @@ func unmarshalID(data [][]byte) (id interface{}, err error) {
 }
 
 // executor is the function type that is used when passing in executeRequest.
-type executor func(string, map[string]string, map[string]string) ([][]byte, error)
+type executor func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error)
 
 // executor is the function type that is used when passing in ExecuteStringQuery.
 type stringExecutor func(string) ([][]byte, error)
@@ -150,6 +151,15 @@ type ExecuteQuerier interface {
 	ExecuteBoundQuery(queryObj query.Query, bindings map[string]string, rebindings map[string]string) (res [][]byte, err error)
 	// ExecuteBoundStringQuery will execute a string query with bindings and return its raw result.
 	ExecuteBoundStringQuery(stringQuery string, bindings map[string]string, rebindings map[string]string) (res [][]byte, err error)
+
+	// ExecuteQueryWithTimeout will execute a query object and return its raw result within a specified timeout.
+	ExecuteQueryWithTimeout(queryObj query.Query, queryTimeout *time.Duration) (res [][]byte, err error)
+	// ExecuteStringQueryWithTimeout will execute a string query and return its raw result within a specified timeout.
+	ExecuteStringQueryWithTimeout(stringQuery string, queryTimeout *time.Duration) (res [][]byte, err error)
+	// ExecuteBoundQueryWithTimeout will execute a query object with bindings and return its raw result within a specified timeout.
+	ExecuteBoundQueryWithTimeout(queryObj query.Query, queryTimeout *time.Duration, bindings map[string]string, rebindings map[string]string) (res [][]byte, err error)
+	// ExecuteBoundStringQueryWithTimeout will execute a string query with bindings and return its raw result within a specified timeout.
+	ExecuteBoundStringQueryWithTimeout(stringQuery string, queryTimeout *time.Duration, bindings map[string]string, rebindings map[string]string) (res [][]byte, err error)
 }
 
 // VertexQuerier handles the vertices on the graph.
