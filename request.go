@@ -45,7 +45,7 @@ func (c *Client) executeRequest(query string, queryTimeout *time.Duration, bindi
 
 	// Construct a map containing the values along
 	// with a randomly generated id to fetch the response.
-	req, id, err := gremPrepareRequest(query, bindings, rebindings)
+	req, id, err := gremPrepareRequest(query, queryTimeout, bindings, rebindings)
 	if err != nil {
 		c.logger.Error("uuid generation when preparing request",
 			gremerror.NewGrammesError("executeRequest", err),
