@@ -49,10 +49,10 @@ func (c *Client) executeRequest(query string, queryTimeout *time.Duration, bindi
 	defer c.requestSemaphore.Release(1)
 
 	var gremRequestTimeout *time.Duration
-	if resolvedQueryTimeout > 120 *time.Second { // Don't set lower than default value
+	// if resolvedQueryTimeout > 120 *time.Second { // Don't set lower than default value
 		gremRequestTimeout = &resolvedQueryTimeout
-		resolvedQueryTimeout = resolvedQueryTimeout + 10*time.Second // If server timeout is set we give the client a few seconds of grace
-	}
+		// resolvedQueryTimeout = resolvedQueryTimeout + 10*time.Second // If server timeout is set we give the client a few seconds of grace
+	// }
 	// Construct a map containing the values along
 	// with a randomly generated id to fetch the response.
 	req, id, err := gremPrepareRequest(query, gremRequestTimeout, bindings, rebindings)

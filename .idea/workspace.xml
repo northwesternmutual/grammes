@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="2e86d17d-a53d-4a79-96ca-2ab01f145e8b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/request.go" beforeDir="false" afterPath="$PROJECT_DIR$/request.go" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GOROOT" url="file:///usr/local/opt/go/libexec" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="ProjectId" id="1obhGwpDdCw7PqK1XKFNlOUaAsx" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
+    <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RunManager" selected="Go Test.TestExecuteRequestErrorQueryTimeout in github.com/northwesternmutual/grammes">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="grammes" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestExecuteRequestErrorQueryTimeout in github.com/northwesternmutual/grammes" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="grammes" />
+      <working_directory value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/northwesternmutual/grammes" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestExecuteRequestErrorQueryTimeout\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="addvertex_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="grammes" />
+      <working_directory value="$PROJECT_DIR$/quick" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <package value="github.com/northwesternmutual/grammes" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/quick/addvertex_test.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="graph_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="grammes" />
+      <working_directory value="$PROJECT_DIR$/manager" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <package value="github.com/northwesternmutual/grammes" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/manager/graph_test.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="query_test.go (1)" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="grammes" />
+      <working_directory value="$PROJECT_DIR$/quick" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <package value="github.com/northwesternmutual/grammes" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/quick/query_test.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="query_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="grammes" />
+      <working_directory value="$PROJECT_DIR$/manager" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <package value="github.com/northwesternmutual/grammes" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/manager/query_test.go" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Test.TestExecuteRequestErrorQueryTimeout in github.com/northwesternmutual/grammes" />
+        <item itemvalue="Go Test.query_test.go (1)" />
+        <item itemvalue="Go Test.graph_test.go" />
+        <item itemvalue="Go Test.query_test.go" />
+        <item itemvalue="Go Test.addvertex_test.go" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+  </component>
+</project>
