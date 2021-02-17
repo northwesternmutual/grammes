@@ -37,7 +37,7 @@ const maxConCurrentMessages = 3
 
 // maxConCurrentRequests determines the weight of the semaphore
 const maxConCurrentRequests = 100000
-const defaultTimeout = time.Minute
+const defaultTimeout = 2*time.Minute
 
 // Client is used to handle the graph, schema, connection,
 // and basic debug logging when querying the graph database.

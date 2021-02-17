@@ -34,22 +34,14 @@ var (
 )
 
 const (
-	defaultServerTimeout = 120 * time.Second
-	clientTimeoutGrace = 10 * time.Second
+	clientTimeoutGrace = 20 * time.Second
 )
 
 func (c *Client) executeRequest(query string, queryTimeout *time.Duration, bindings, rebindings map[string]string) ([][]byte, error) {
-	clientTimeout := c.requestTimeout
-	var serverTimeout *time.Duration
+	resolvedQueryTimeout := c.requestTimeout
 
 	if queryTimeout != nil {
-		clientTimeout = *queryTimeout
-	}
-
-	if clientTimeout > defaultServerTimeout {
-		clientTimeoutCopy := clientTimeout
-		serverTimeout = &clientTimeoutCopy
-		clientTimeout = clientTimeout + clientTimeoutGrace
+		resolvedQueryTimeout = *queryTimeout
 	}
 
 	err := c.requestSemaphore.Acquire(context.Background(), 1)
@@ -63,7 +55,7 @@ func (c *Client) executeRequest(query string, queryTimeout *time.Duration, bindi
 
 	// Construct a map containing the values along
 	// with a randomly generated id to fetch the response.
-	req, id, err := gremPrepareRequest(query, serverTimeout, bindings, rebindings)
+	req, id, err := gremPrepareRequest(query, &resolvedQueryTimeout, bindings, rebindings)
 	if err != nil {
 		c.logger.Error("uuid generation when preparing request",
 			gremerror.NewGrammesError("executeRequest", err),
@@ -82,7 +74,7 @@ func (c *Client) executeRequest(query string, queryTimeout *time.Duration, bindi
 
 	c.resultMessenger.Store(id, make(chan int, 1))
 	c.dispatchRequest(msg)              // send the request.
-	resp, err := c.retrieveResponse(id, clientTimeout) // retrieve the response from the gremlin server
+	resp, err := c.retrieveResponse(id, resolvedQueryTimeout+clientTimeoutGrace) // retrieve the response from the gremlin server
 	if err != nil {
 		c.logger.Error("retrieving response",
 			gremerror.NewGrammesError("executeRequest", err),
