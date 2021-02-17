@@ -23,6 +23,7 @@ package quick
 import (
 	"errors"
 	"testing"
+	"time"
 
 	. "github.com/smartystreets/goconvey/convey"
 
@@ -40,7 +41,7 @@ func TestAddEdgeLabel(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
 		return [][]byte{[]byte(vertexResponse)}, nil
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -82,7 +83,7 @@ func TestAddEdgeLabelQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -105,7 +106,7 @@ func TestAddEdgeLabels(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
 		return [][]byte{[]byte(vertexResponse)}, nil
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -147,7 +148,7 @@ func TestAddEdgeLabelsQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -170,7 +171,7 @@ func TestAddPropertyKey(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
 		return [][]byte{[]byte(vertexResponse)}, nil
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -214,7 +215,7 @@ func TestAddPropertyKeyQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -238,7 +239,7 @@ func TestCommitSchema(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
 		return [][]byte{[]byte(vertexResponse)}, nil
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -276,7 +277,7 @@ func TestCommitSchemaQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
