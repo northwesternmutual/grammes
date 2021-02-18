@@ -65,7 +65,7 @@ func (c *Client) readWorker(errs chan error, quit chan struct{}) {
 	}
 }
 
-func (c *Client) retrieveResponse(id string) ([][]byte, error) {
+func (c *Client) retrieveResponse(id string, queryClientTimeout time.Duration) ([][]byte, error) {
 	var (
 		notifier, _ = c.resultMessenger.Load(id)
 		err         error
@@ -84,7 +84,7 @@ func (c *Client) retrieveResponse(id string) ([][]byte, error) {
 
 	timeout := make(chan bool, 1)
 
-	time.AfterFunc(c.requestTimeout, func() {
+	time.AfterFunc(queryClientTimeout, func() {
 		timeout <- true
 	})
 
