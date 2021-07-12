@@ -46,7 +46,7 @@ var (
 
 // PrepareRequest packages a query and binding
 // into the format that Gremlin Server accepts
-func PrepareRequest(query string, queryTimeout *time.Duration, bindings, rebindings map[string]string) (req Request, id string, err error) {
+func PrepareRequest(query string, queryTimeout *time.Duration, bindings, rebindings map[string]string, sessionId *uuid.UUID) (req Request, id string, err error) {
 	var guuid uuid.UUID
 
 	if guuid, err = GenUUID(); err != nil {
@@ -63,6 +63,15 @@ func PrepareRequest(query string, queryTimeout *time.Duration, bindings, rebindi
 	req.Args["gremlin"] = query
 	req.Args["bindings"] = bindings
 	req.Args["rebindings"] = rebindings
+
+	if sessionId != nil {
+		req.Args["session"] = sessionId.String()
+		req.Processor = "session"
+
+		if query == "" {
+			req.Op = "close"
+		}
+	}
 
 	if queryTimeout != nil {
 		req.Args["evaluationTimeout"] = queryTimeout.Milliseconds()

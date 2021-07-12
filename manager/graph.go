@@ -31,6 +31,7 @@ type GraphQueryManager struct {
 	*vertexQueryManager
 	*miscQueryManager
 	*schemaManager
+	*sessionManager
 
 	dialer gremconnect.Dialer
 	logger logging.Logger
@@ -46,6 +47,7 @@ func NewGraphManager(dialer gremconnect.Dialer, logger logging.Logger, executeRe
 	g.vertexQueryManager = newVertexQueryManager(logger, g.ExecuteStringQuery)
 	g.miscQueryManager = newMiscQueryManager(logger, g.ExecuteStringQuery)
 	g.schemaManager = newSchemaManager(logger, g.ExecuteStringQuery)
+	g.sessionManager = newSessionManager(logger, g.executeRequest)
 
 	return g
 }
@@ -98,4 +100,8 @@ func (g *GraphQueryManager) ExecuteQuerier() ExecuteQuerier {
 // SchemaQuerier returns the manager for executing the raw queries.
 func (g *GraphQueryManager) SchemaQuerier() SchemaQuerier {
 	return g.schemaManager
+}
+
+func (g *GraphQueryManager) SessionQuerier() SessionQuerier {
+	return g.sessionManager
 }

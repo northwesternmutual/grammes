@@ -22,6 +22,7 @@ package quick
 
 import (
 	"errors"
+	"github.com/google/uuid"
 	"testing"
 	"time"
 
@@ -38,7 +39,7 @@ func TestVertexIDsByQuery(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string, *uuid.UUID) ([][]byte, error) {
 		return [][]byte{[]byte(idResponse)}, nil
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -78,7 +79,7 @@ func TestVertexIDsByQueryQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string, *uuid.UUID) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -100,7 +101,7 @@ func TestVertexIDs(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string, *uuid.UUID) ([][]byte, error) {
 		return [][]byte{[]byte(idResponse)}, nil
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -147,7 +148,7 @@ func TestVertexIDsQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer, grammes.WithLogger(&testLogger{}))
-	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string, *uuid.UUID) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
