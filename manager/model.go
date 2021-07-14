@@ -22,6 +22,7 @@ package manager
 
 import (
 	"encoding/json"
+	"github.com/google/uuid"
 	"time"
 
 	"github.com/northwesternmutual/grammes/logging"
@@ -62,7 +63,7 @@ func unmarshalID(data [][]byte) (id interface{}, err error) {
 }
 
 // executor is the function type that is used when passing in executeRequest.
-type executor func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error)
+type executor func(string, *time.Duration, map[string]string, map[string]string, *uuid.UUID) ([][]byte, error)
 
 // executor is the function type that is used when passing in ExecuteStringQuery.
 type stringExecutor func(string) ([][]byte, error)
@@ -160,6 +161,26 @@ type ExecuteQuerier interface {
 	ExecuteBoundQueryWithTimeout(queryObj query.Query, queryTimeout *time.Duration, bindings map[string]string, rebindings map[string]string) (res [][]byte, err error)
 	// ExecuteBoundStringQueryWithTimeout will execute a string query with bindings and return its raw result within a specified timeout.
 	ExecuteBoundStringQueryWithTimeout(stringQuery string, queryTimeout *time.Duration, bindings map[string]string, rebindings map[string]string) (res [][]byte, err error)
+	// ExecuteBoundSessionQueryWithTimeout will execute a string query with bindings in a specific session and return its raw result within a specified timeout.
+	ExecuteBoundSessionQueryWithTimeout(stringQuery string, queryTimeout *time.Duration, bindings map[string]string, rebindings map[string]string, sessionId *uuid.UUID) (res [][]byte, err error)
+}
+
+type Session interface {
+	// ExecuteQuery will execute a query object and return its raw result.
+	ExecuteQuery(queryObj query.Query) (res [][]byte, err error)
+	// ExecuteStringQuery will execute a string query and return its raw result.
+	ExecuteStringQuery(stringQuery string) (res [][]byte, err error)
+	// Commit commits the transaction
+	Commit() (err error)
+	// Rollback rolls back the transaction
+	Rollback() (err error)
+	// Close closes the session, rolling back any uncommitted transactions
+	Close() (err error)
+}
+
+type SessionQuerier interface {
+	NewSession() Session
+	WithSession(f func(Session) error) error
 }
 
 // VertexQuerier handles the vertices on the graph.
@@ -176,6 +197,7 @@ type GraphManager interface {
 	VertexQuerier
 	ExecuteQuerier
 	SchemaQuerier
+	SessionQuerier
 
 	// Returns the interface and functions associated with the MiscQuerier.
 	MiscQuerier() MiscQuerier

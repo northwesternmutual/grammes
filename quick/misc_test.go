@@ -22,6 +22,7 @@ package quick
 
 import (
 	"errors"
+	"github.com/google/uuid"
 	"testing"
 	"time"
 
@@ -38,7 +39,7 @@ func TestDropAll(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string, *uuid.UUID) ([][]byte, error) {
 		return [][]byte{[]byte(vertexResponse)}, nil
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -76,7 +77,7 @@ func TestDropAllQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string, *uuid.UUID) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -97,7 +98,7 @@ func TestSetVertexProperty(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string, *uuid.UUID) ([][]byte, error) {
 		return [][]byte{[]byte(vertexResponse)}, nil
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -137,7 +138,7 @@ func TestSetVertexPropertyQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string, *uuid.UUID) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -159,7 +160,7 @@ func TestVertexCount(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string, *uuid.UUID) ([][]byte, error) {
 		return [][]byte{[]byte(idResponse)}, nil
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
@@ -197,7 +198,7 @@ func TestVertexCountQueryError(t *testing.T) {
 	}()
 	dialer := &mockDialer{}
 	client, _ = grammes.Dial(dialer)
-	execute := func(string, *time.Duration, map[string]string, map[string]string) ([][]byte, error) {
+	execute := func(string, *time.Duration, map[string]string, map[string]string, *uuid.UUID) ([][]byte, error) {
 		return nil, errors.New("ERROR")
 	}
 	client.GraphManager = manager.NewGraphManager(dialer, logging.NewNilLogger(), execute)
