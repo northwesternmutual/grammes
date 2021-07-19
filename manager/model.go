@@ -180,7 +180,10 @@ type Session interface {
 
 type SessionQuerier interface {
 	NewSession() Session
-	WithSession(f func(Session) error) error
+	NewNoopSession() Session
+	GetSession(uuid.UUID) Session
+	WithSession(Session, func(Session) error) error
+	WithNewSession(f func(Session) error) error
 }
 
 // VertexQuerier handles the vertices on the graph.

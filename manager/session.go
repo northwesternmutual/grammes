@@ -15,7 +15,7 @@ type sessionManager struct {
 }
 
 type session struct {
-	id uuid.UUID
+	id *uuid.UUID
 	e executor
 }
 
@@ -28,16 +28,33 @@ func newSessionManager(logger logging.Logger, executor executor) *sessionManager
 	}
 }
 
-func (s *sessionManager) NewSession() Session {
+func (s *sessionManager) NewNoopSession() Session {
 	return &session{
 		e: s.e,
-		id: uuid.New(),
 	}
 }
 
-func (s *sessionManager) WithSession(f func(Session) error) error {
+func (s *sessionManager) NewSession() Session {
+	id := uuid.New()
+	return &session{
+		e: s.e,
+		id: &id,
+	}
+}
+
+func (s *sessionManager) GetSession(sessionId uuid.UUID) Session {
+	return &session{
+		e: s.e,
+		id: &sessionId,
+	}
+}
+
+func (s *sessionManager) WithNewSession(f func(Session) error) error {
+	return s.WithSession(s.NewSession(), f)
+}
+
+func (s *sessionManager) WithSession(ss Session, f func(Session) error) error {
 	var err error
-	ss := s.NewSession()
 	defer func() {
 		err2 := ss.Close()
 		if err == nil { // Capture close error if everything else was ok
@@ -59,7 +76,7 @@ func (s *sessionManager) WithSession(f func(Session) error) error {
 }
 
 func (s *session) ExecuteStringQuery(stringQuery string) (res [][]byte, err error) {
-	return s.e(stringQuery, nil, map[string]string{}, map[string]string{}, &s.id)
+	return s.e(stringQuery, nil, map[string]string{}, map[string]string{}, s.id)
 }
 
 func (s *session) ExecuteQuery(queryObj query.Query) (res [][]byte, err error) {
@@ -67,11 +84,19 @@ func (s *session) ExecuteQuery(queryObj query.Query) (res [][]byte, err error) {
 }
 
 func (s *session) Close() error {
-	_, err := s.e("", nil, map[string]string{}, map[string]string{}, &s.id)
+	if s.id == nil {
+		return nil
+	}
+
+	_, err := s.e("", nil, map[string]string{}, map[string]string{}, s.id)
 	return err
 }
 
 func (s *session) Commit() error {
+	if s.id == nil {
+		return nil
+	}
+
 	commit := traversal.NewTraversal()
 	commit.AddStep("tx")
 	commit.AddStep("commit")
@@ -81,6 +106,10 @@ func (s *session) Commit() error {
 }
 
 func (s *session) Rollback() error {
+	if s.id == nil {
+		return nil
+	}
+
 	rollback := traversal.NewTraversal()
 	rollback.AddStep("tx")
 	rollback.AddStep("rollback")
