@@ -21,6 +21,7 @@
 package grammes
 
 import (
+	"golang.org/x/sync/errgroup"
 	"sync"
 	"time"
 
@@ -72,6 +73,7 @@ type Client struct {
 	// requestTimeout is used for time-outing requests that a response is not received for
 	requestTimeout   time.Duration
 	requestSemaphore *semaphore.Weighted
+	commRoutines 	 errgroup.Group
 }
 
 // setupClient default values some fields in the client.

@@ -182,8 +182,8 @@ type SessionQuerier interface {
 	NewSession() Session
 	NewNoopSession() Session
 	GetSession(uuid.UUID) Session
-	WithSession(Session, func(Session) error) error
-	WithNewSession(f func(Session) error) error
+	WithSession(Session, func(Session) error, bool) error
+	WithNewSession(func(Session) error, bool) error
 }
 
 // VertexQuerier handles the vertices on the graph.

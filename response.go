@@ -44,7 +44,10 @@ func (c *Client) readWorker(errs chan error, quit chan struct{}) {
 		// attempt to read from the connection
 		// and store the message back into a variable.
 		if msg, err = c.conn.Read(); err != nil {
-			errs <- err
+			if !c.conn.IsDisposed() { // When disposing a connection, gorilla will return an error
+				errs <- err
+			}
+
 			c.broken = true
 			break
 		}

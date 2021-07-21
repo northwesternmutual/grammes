@@ -49,16 +49,18 @@ func (s *sessionManager) GetSession(sessionId uuid.UUID) Session {
 	}
 }
 
-func (s *sessionManager) WithNewSession(f func(Session) error) error {
-	return s.WithSession(s.NewSession(), f)
+func (s *sessionManager) WithNewSession(f func(Session) error, closeOnDone bool) error {
+	return s.WithSession(s.NewSession(), f, closeOnDone)
 }
 
-func (s *sessionManager) WithSession(ss Session, f func(Session) error) error {
+func (s *sessionManager) WithSession(ss Session, f func(Session) error, closeOnDone bool) error {
 	var err error
 	defer func() {
-		err2 := ss.Close()
-		if err == nil { // Capture close error if everything else was ok
-			err = err2
+		if closeOnDone {
+			err2 := ss.Close()
+			if err == nil { // Capture close error if everything else was ok
+				err = err2
+			}
 		}
 	}()
 

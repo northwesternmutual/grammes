@@ -145,8 +145,8 @@ func (ws *WebSocket) Read() (msg []byte, err error) {
 func (ws *WebSocket) Close() error {
 	defer func() {
 		close(ws.Quit) // close the channel to notify our pinger.
-		ws.conn.Close()
 		ws.disposed = true
+		ws.conn.Close()
 	}()
 
 	// Send the server the message that we've closed
