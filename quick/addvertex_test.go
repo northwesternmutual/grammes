@@ -22,9 +22,10 @@ package quick
 
 import (
 	"errors"
-	"github.com/google/uuid"
 	"testing"
 	"time"
+
+	"github.com/google/uuid"
 
 	. "github.com/smartystreets/goconvey/convey"
 
@@ -83,6 +84,7 @@ func (*mockDialer) SetPingInterval(time.Duration)        {}
 func (*mockDialer) SetWritingWait(time.Duration)         {}
 func (*mockDialer) SetReadingWait(time.Duration)         {}
 func (*mockDialer) SetWriteBufferSize(int)               {}
+func (*mockDialer) SetWriteBufferResizing(bool)          {}
 func (*mockDialer) SetReadBufferSize(int)                {}
 func (*mockDialer) SetHandshakeTimeout(time.Duration)    {}
 func (*mockDialer) SetCompression(bool)                  {}

@@ -112,12 +112,32 @@ type mockDialerStruct struct {
 	readDuration time.Duration
 }
 
-func (m *mockDialerStruct) Connect() error     { return m.connect }
-func (*mockDialerStruct) Close() error         { return nil }
+func (m *mockDialerStruct) Connect() error { return m.connect }
+func (m *mockDialerStruct) Close() error {
+	select {
+	case <-m.quit:
+	default:
+		close(m.GetQuit())
+	}
+
+	return nil
+}
 func (m *mockDialerStruct) Write([]byte) error { return nil }
 func (m *mockDialerStruct) Read() ([]byte, error) {
 	time.Sleep(100*time.Millisecond + m.readDuration)
-	m.quit <- struct{}{}
+
+	quit := m.GetQuit()
+
+	select {
+	case <-quit:
+	default:
+		quit <- struct{}{}
+	}
+
+	if m.response == "" {
+		return nil, nil
+	}
+
 	return []byte(m.response), nil
 }
 func (*mockDialerStruct) Ping(chan error)                  {}
@@ -126,7 +146,10 @@ func (m *mockDialerStruct) IsDisposed() bool               { return m.isDisposed
 func (*mockDialerStruct) Auth() (*gremconnect.Auth, error) { return &gremconnect.Auth{}, nil }
 func (*mockDialerStruct) Address() string                  { return "" }
 func (m *mockDialerStruct) GetQuit() chan struct{} {
-	m.quit = make(chan struct{})
+	if m.quit == nil {
+		m.quit = make(chan struct{})
+	}
+
 	return m.quit
 }
 func (*mockDialerStruct) SetHTTPAuth(gremconnect.AuthProvider) {}
@@ -136,6 +159,7 @@ func (*mockDialerStruct) SetPingInterval(time.Duration)        {}
 func (*mockDialerStruct) SetWritingWait(time.Duration)         {}
 func (*mockDialerStruct) SetReadingWait(time.Duration)         {}
 func (*mockDialerStruct) SetWriteBufferSize(int)               {}
+func (*mockDialerStruct) SetWriteBufferResizing(bool)          {}
 func (*mockDialerStruct) SetReadBufferSize(int)                {}
 func (*mockDialerStruct) SetHandshakeTimeout(time.Duration)    {}
 func (*mockDialerStruct) SetCompression(bool)                  {}
@@ -171,6 +195,7 @@ func (*mockDialerWriteError) SetPingInterval(time.Duration)        {}
 func (*mockDialerWriteError) SetWritingWait(time.Duration)         {}
 func (*mockDialerWriteError) SetReadingWait(time.Duration)         {}
 func (*mockDialerWriteError) SetWriteBufferSize(int)               {}
+func (*mockDialerWriteError) SetWriteBufferResizing(bool)          {}
 func (*mockDialerWriteError) SetReadBufferSize(int)                {}
 func (*mockDialerWriteError) SetHandshakeTimeout(time.Duration)    {}
 func (*mockDialerWriteError) SetCompression(bool)                  {}
@@ -201,6 +226,7 @@ func (*mockDialerAuthError) SetPingInterval(time.Duration)        {}
 func (*mockDialerAuthError) SetWritingWait(time.Duration)         {}
 func (*mockDialerAuthError) SetReadingWait(time.Duration)         {}
 func (*mockDialerAuthError) SetWriteBufferSize(int)               {}
+func (*mockDialerAuthError) SetWriteBufferResizing(bool)          {}
 func (*mockDialerAuthError) SetReadBufferSize(int)                {}
 func (*mockDialerAuthError) SetHandshakeTimeout(time.Duration)    {}
 func (*mockDialerAuthError) SetCompression(bool)                  {}
@@ -231,6 +257,7 @@ func (*mockDialerReadError) SetPingInterval(time.Duration)        {}
 func (*mockDialerReadError) SetWritingWait(time.Duration)         {}
 func (*mockDialerReadError) SetReadingWait(time.Duration)         {}
 func (*mockDialerReadError) SetWriteBufferSize(int)               {}
+func (*mockDialerReadError) SetWriteBufferResizing(bool)          {}
 func (*mockDialerReadError) SetReadBufferSize(int)                {}
 func (*mockDialerReadError) SetHandshakeTimeout(time.Duration)    {}
 func (*mockDialerReadError) SetCompression(bool)                  {}
