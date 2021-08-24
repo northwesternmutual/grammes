@@ -357,6 +357,19 @@ func TestSetWriteBufferSize(t *testing.T) {
 	})
 }
 
+func TestSetWriteBufferResizing(t *testing.T) {
+	Convey("Given a WebSocket and a write buffer resizing flag", t, func() {
+		dialer := &WebSocket{}
+		writeBufferResizing := true
+		Convey("And SetWriteBufferResizing is called", func() {
+			dialer.SetWriteBufferResizing(writeBufferResizing)
+			Convey("Then the write buffer resizing flag should be set in the dialer", func() {
+				So(dialer.writeBufferResizing, ShouldEqual, writeBufferResizing)
+			})
+		})
+	})
+}
+
 func TestSetReadBufferSize(t *testing.T) {
 	Convey("Given a WebSocket and a read buffer size", t, func() {
 		dialer := &WebSocket{}

@@ -37,21 +37,22 @@ import (
 // to dial to the gremlin server and sustain
 // a stable connection by pinging it regularly.
 type WebSocket struct {
-	address           string
-	conn              *websocket.Conn
-	auth              *Auth
-	httpAuth          *HTTPAuth
-	disposed          bool
-	connected         bool
-	enableCompression bool
-	pingInterval      time.Duration
-	writingWait       time.Duration
-	readingWait       time.Duration
-	timeout           time.Duration
-	handshakeTimeout  time.Duration
-	writeBufferSize   int
-	readBufferSize    int
-	Quit              chan struct{}
+	address             string
+	conn                *websocket.Conn
+	auth                *Auth
+	httpAuth            *HTTPAuth
+	disposed            bool
+	connected           bool
+	enableCompression   bool
+	pingInterval        time.Duration
+	writingWait         time.Duration
+	readingWait         time.Duration
+	timeout             time.Duration
+	handshakeTimeout    time.Duration
+	writeBufferSize     int
+	writeBufferResizing bool
+	readBufferSize      int
+	Quit                chan struct{}
 
 	sync.RWMutex
 }
@@ -62,10 +63,11 @@ type WebSocket struct {
 func (ws *WebSocket) Connect() error {
 	var err error
 	dialer := websocket.Dialer{
-		WriteBufferSize:   ws.writeBufferSize,
-		ReadBufferSize:    ws.readBufferSize,
-		HandshakeTimeout:  ws.handshakeTimeout,
-		EnableCompression: ws.enableCompression,
+		WriteBufferSize:     ws.writeBufferSize,
+		WriteBufferResizing: ws.writeBufferResizing,
+		ReadBufferSize:      ws.readBufferSize,
+		HandshakeTimeout:    ws.handshakeTimeout,
+		EnableCompression:   ws.enableCompression,
 	}
 
 	// Check if the host address already has the proper
@@ -238,6 +240,10 @@ func (ws *WebSocket) SetReadingWait(interval time.Duration) {
 
 func (ws *WebSocket) SetWriteBufferSize(writeBufferSize int) {
 	ws.writeBufferSize = writeBufferSize
+}
+
+func (ws *WebSocket) SetWriteBufferResizing(writeBufferResizing bool) {
+	ws.writeBufferResizing = writeBufferResizing
 }
 
 func (ws *WebSocket) SetReadBufferSize(readBufferSize int) {

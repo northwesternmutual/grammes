@@ -21,10 +21,11 @@
 package grammes
 
 import (
-	"github.com/northwesternmutual/grammes/gremconnect"
-	"golang.org/x/sync/semaphore"
 	"strconv"
 	"time"
+
+	"github.com/northwesternmutual/grammes/gremconnect"
+	"golang.org/x/sync/semaphore"
 
 	"github.com/northwesternmutual/grammes/logging"
 )
@@ -134,6 +135,14 @@ func WithRequestTimeout(interval time.Duration) ClientConfiguration {
 func WithWriteBufferSize(writeBufferSize int) ClientConfiguration {
 	return func(c *Client) {
 		c.conn.SetWriteBufferSize(writeBufferSize)
+	}
+}
+
+// WithWriteBufferResizing enables dynamic write buffer expansion, effectively disabling
+// websocket frame fragmentation (which TinkerPop doesn't support)
+func WithWriteBufferResizing(writeBufferResizing bool) ClientConfiguration {
+	return func(c *Client) {
+		c.conn.SetWriteBufferResizing(writeBufferResizing)
 	}
 }
 

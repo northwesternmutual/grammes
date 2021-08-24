@@ -52,6 +52,7 @@ type Dialer interface {
 	SetWritingWait(interval time.Duration)
 	SetReadingWait(interval time.Duration)
 	SetWriteBufferSize(writeBufferSize int)
+	SetWriteBufferResizing(writeBufferResizing bool)
 	SetReadBufferSize(readBufferSize int)
 	SetHandshakeTimeout(handshakeTimeout time.Duration)
 	SetCompression(enableCompression bool)
