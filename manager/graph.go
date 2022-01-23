@@ -44,7 +44,7 @@ func NewGraphManager(dialer gremconnect.Dialer, logger logging.Logger, executeRe
 		queryManager: newQueryManager(dialer, logger, executeRequest),
 	}
 
-	g.vertexQueryManager = newVertexQueryManager(logger, g.ExecuteStringQuery)
+	g.vertexQueryManager = newVertexQueryManager(logger, g.ExecuteStringQuery, g.ExecuteStringQueryWithTimeout)
 	g.miscQueryManager = newMiscQueryManager(logger, g.ExecuteStringQuery)
 	g.schemaManager = newSchemaManager(logger, g.ExecuteStringQuery)
 	g.sessionManager = newSessionManager(logger, g.executeRequest)
