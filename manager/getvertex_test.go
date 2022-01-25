@@ -24,6 +24,7 @@ import (
 	"encoding/json"
 	"errors"
 	"testing"
+	"time"
 
 	. "github.com/smartystreets/goconvey/convey"
 
@@ -33,7 +34,8 @@ import (
 func TestVerticesByString(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
 		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
-		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute)
+		executeWithTimeout := func(string, *time.Duration) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute, executeWithTimeout)
 		Convey("When VerticesByString is called", func() {
 			_, err := qm.VerticesByString("testquery")
 			Convey("Then the return error should be nil", func() {
@@ -46,7 +48,8 @@ func TestVerticesByString(t *testing.T) {
 func TestVerticesByStringQueryError(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
 		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
-		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute)
+		executeWithTimeout := func(string, *time.Duration) ([][]byte, error) { return nil, errors.New("ERROR") }
+		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute, executeWithTimeout)
 		Convey("When VerticesByString is called and encounters an error", func() {
 			_, err := qm.VerticesByString("testquery")
 			Convey("Then the error should be returned", func() {
@@ -63,7 +66,8 @@ func TestVerticesByStringUnmarshalError(t *testing.T) {
 	jsonUnmarshal = func([]byte, interface{}) error { return errors.New("ERROR") }
 	Convey("Given a string executor and vertex query manager", t, func() {
 		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
-		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute)
+		executeWithTimeout := func(string, *time.Duration) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute, executeWithTimeout)
 		Convey("When VerticesByString is called and there is an error unmarshalling", func() {
 			_, err := qm.VerticesByString("testquery")
 			Convey("Then the error should be returned", func() {
@@ -76,7 +80,8 @@ func TestVerticesByStringUnmarshalError(t *testing.T) {
 func TestVerticesByQuery(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
 		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
-		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute)
+		executeWithTimeout := func(string, *time.Duration) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute, executeWithTimeout)
 		Convey("When VerticesByString is called", func() {
 			var q mockQuery
 			_, err := qm.VerticesByQuery(q)
@@ -90,7 +95,8 @@ func TestVerticesByQuery(t *testing.T) {
 func TestVerticesByQueryError(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
 		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
-		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute)
+		executeWithTimeout := func(string, *time.Duration) ([][]byte, error) { return nil, errors.New("ERROR") }
+		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute, executeWithTimeout)
 		Convey("When VerticesByString is called and encounters an error", func() {
 			var q mockQuery
 			_, err := qm.VerticesByQuery(q)
@@ -104,7 +110,8 @@ func TestVerticesByQueryError(t *testing.T) {
 func TestAllVertices(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
 		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
-		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute)
+		executeWithTimeout := func(string, *time.Duration) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute, executeWithTimeout)
 		Convey("When AllVertices is called", func() {
 			_, err := qm.AllVertices()
 			Convey("Then the return error should be nil", func() {
@@ -117,7 +124,8 @@ func TestAllVertices(t *testing.T) {
 func TestAllVerticesError(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
 		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
-		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute)
+		executeWithTimeout := func(string, *time.Duration) ([][]byte, error) { return nil, errors.New("ERROR") }
+		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute, executeWithTimeout)
 		Convey("When AllVertices is called and encounters an error", func() {
 			_, err := qm.AllVertices()
 			Convey("Then the error should be returned", func() {
@@ -130,7 +138,8 @@ func TestAllVerticesError(t *testing.T) {
 func TestVertexByID(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
 		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
-		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute)
+		executeWithTimeout := func(string, *time.Duration) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute, executeWithTimeout)
 		Convey("When VertexByID is called with valid ID", func() {
 			_, err := qm.VertexByID(1234)
 			Convey("Then the return error should be nil", func() {
@@ -150,7 +159,8 @@ func TestVertexByID(t *testing.T) {
 func TestVertexByIDError(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
 		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
-		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute)
+		executeWithTimeout := func(string, *time.Duration) ([][]byte, error) { return nil, errors.New("ERROR") }
+		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute, executeWithTimeout)
 		Convey("When VertexByID is called and encounters an error", func() {
 			_, err := qm.VertexByID(1234)
 			Convey("Then the error should be returned", func() {
@@ -163,7 +173,8 @@ func TestVertexByIDError(t *testing.T) {
 func TestVertices(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
 		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
-		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute)
+		executeWithTimeout := func(string, *time.Duration) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute, executeWithTimeout)
 		Convey("When Vertices is called", func() {
 			_, err := qm.Vertices("testlabel", "prop1", "prop2")
 			Convey("Then the return error should be nil", func() {
@@ -176,7 +187,8 @@ func TestVertices(t *testing.T) {
 func TestVerticesPropertyError(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
 		execute := func(string) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
-		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute)
+		executeWithTimeout := func(string, *time.Duration) ([][]byte, error) { return [][]byte{[]byte(vertexResponse)}, nil }
+		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute, executeWithTimeout)
 		Convey("When Vertices is called with an odd number of properties", func() {
 			_, err := qm.Vertices("testlabel", "prop1")
 			Convey("Then the error should be returned", func() {
@@ -189,7 +201,8 @@ func TestVerticesPropertyError(t *testing.T) {
 func TestVerticesQueryError(t *testing.T) {
 	Convey("Given a string executor and vertex query manager", t, func() {
 		execute := func(string) ([][]byte, error) { return nil, errors.New("ERROR") }
-		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute)
+		executeWithTimeout := func(string, *time.Duration) ([][]byte, error) { return nil, errors.New("ERROR") }
+		qm := newGetVertexQueryManager(logging.NewNilLogger(), execute, executeWithTimeout)
 		Convey("When Vertices is called and encounters a querying error", func() {
 			_, err := qm.Vertices("testlabel", "prop1", "prop2")
 			Convey("Then the return error should be nil", func() {

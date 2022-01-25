@@ -22,8 +22,9 @@ package manager
 
 import (
 	"encoding/json"
-	"github.com/google/uuid"
 	"time"
+
+	"github.com/google/uuid"
 
 	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes/model"
@@ -68,6 +69,9 @@ type executor func(string, *time.Duration, map[string]string, map[string]string,
 // executor is the function type that is used when passing in ExecuteStringQuery.
 type stringExecutor func(string) ([][]byte, error)
 
+// executor is the function type that is used when passing in ExecuteStringQuery.
+type stringExecutorWithTimeout func(string, *time.Duration) ([][]byte, error)
+
 // MiscQuerier are miscellaneous queries for the server to perform.
 type MiscQuerier interface {
 	// DropAll will drop all vertices on the graph.
@@ -98,6 +102,8 @@ type GetVertexQuerier interface {
 	VertexByID(id interface{}) (vertex model.Vertex, err error)
 	// VerticesByString will return already unmarshalled vertex structs from a string query.
 	VerticesByString(stringQuery string) (vertices []model.Vertex, err error)
+	// VerticesByString will return already unmarshalled vertex structs from a string query.
+	VerticesByStringWithTimeout(stringQuery string, queryTimeout *time.Duration) (vertices []model.Vertex, err error)
 	// VerticesByQuery will return already unmarshalled vertex structs from a query object.
 	VerticesByQuery(queryObj query.Query) (vertices []model.Vertex, err error)
 	// Vertices will return vertices based on the label and properties.
