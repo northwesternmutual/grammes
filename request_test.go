@@ -102,7 +102,7 @@ func TestExecuteRequestErrorPreparingRequest(t *testing.T) {
 		copy(a[:], "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
 		return uuid.UUID(a), nil
 	}
-	gremPrepareRequest = func(string, *time.Duration, map[string]string, map[string]string, *uuid.UUID) (gremconnect.Request, string, error) {
+	gremPrepareRequest = func(string, *time.Duration, map[string]string, map[string]string, *uuid.UUID, map[string]string) (gremconnect.Request, string, error) {
 		var req gremconnect.Request
 		return req, "test", errors.New("ERROR")
 	}

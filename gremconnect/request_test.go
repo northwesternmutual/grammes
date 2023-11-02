@@ -29,13 +29,16 @@ import (
 )
 
 func TestPrepareRequest(t *testing.T) {
-	Convey("Given a query string, binding, and rebindings", t, func() {
+	Convey("Given a query string, binding, rebindings and custom requests", t, func() {
 		query := ""
 		bindings := make(map[string]string)
 		rebindings := make(map[string]string)
+		customRequest := make(map[string]string)
+		customRequests["someRequestHeader1"] = "someRequestValue1"
+		customRequests["someRequestHeader2"] = "someRequestValue2"
 
 		Convey("And a request is prepared", func() {
-			req, id, err := PrepareRequest(query, nil, bindings, rebindings, nil)
+			req, id, err := PrepareRequest(query, nil, bindings, rebindings, nil, customRequests)
 
 			Convey("Then the request and id should not be nil", func() {
 				So(req, ShouldNotBeNil)
@@ -44,6 +47,35 @@ func TestPrepareRequest(t *testing.T) {
 
 			Convey("And the error should be nil", func() {
 				So(err, ShouldBeNil)
+			})
+
+			Convey("And request should contain data", func() {
+				So(req.Args["someRequestHeader1"], ShouldEqual, "someRequestValue1")
+				So(req.Args["someRequestHeader2"], ShouldEqual, "someRequestValue2")
+			})
+		})
+	})
+
+	Convey("Given a query string, make sure no custom requests", t, func() {
+		query := ""
+		bindings := make(map[string]string)
+		rebindings := make(map[string]string)
+		customRequests := make(map[string]string)
+
+		Convey("And a request is prepared", func() {
+			req, id, err := PrepareRequest(query, nil, bindings, rebindings, nil, customRequests)
+
+			Convey("Then the request and id should not be nil", func() {
+				So(req, ShouldNotBeNil)
+				So(id, ShouldNotBeNil)
+			})
+
+			Convey("And the error should be nil", func() {
+				So(err, ShouldBeNil)
+			})
+
+			Convey("And request should contain data", func() {
+				So(len(req.Args), ShouldEqual, 4)
 			})
 		})
 	})
