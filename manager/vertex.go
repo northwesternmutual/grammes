@@ -34,10 +34,10 @@ type vertexQueryManager struct {
 }
 
 // NewVertexQueryManager will return a manager for the vertices.
-func newVertexQueryManager(logger logging.Logger, executeRequest stringExecutor) *vertexQueryManager {
+func newVertexQueryManager(logger logging.Logger, executeRequest stringExecutor, executeRequestWithTimeout stringExecutorWithTimeout) *vertexQueryManager {
 	return &vertexQueryManager{
 		addVertexQueryManager: newAddVertexQueryManager(logger, executeRequest),
-		getVertexQueryManager: newGetVertexQueryManager(logger, executeRequest),
+		getVertexQueryManager: newGetVertexQueryManager(logger, executeRequest, executeRequestWithTimeout),
 		vertexIDQueryManager:  newVertexIDQueryManager(logger, executeRequest),
 		dropQueryManager:      newDropQueryManager(logger, executeRequest),
 	}

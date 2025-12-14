@@ -32,7 +32,7 @@ func TestTimeLimit(t *testing.T) {
 		Convey("When 'Store' is called", func() {
 			result := g.TimeLimit(1.234)
 			Convey("Then result should equal 'g.timeLimit(1.234)'", func() {
-				So(result.String(), ShouldEqual, "g.timeLimit(1.234)")
+				So(result.String(), ShouldEqual, "g.timeLimit(1.234f)")
 			})
 		})
 	})

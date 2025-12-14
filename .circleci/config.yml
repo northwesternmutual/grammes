@@ -1,0 +1,24 @@
+version: 2.1
+executors:
+  golang:
+    docker:
+      - image: beyondsecurity/golang
+jobs:
+  test:
+    working_directory: ~/project
+    executor: golang
+    steps:
+      - checkout
+      - run: go test ./...
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - test
+      # https://wiz-io.atlassian.net/browse/WZ-90164 
+      # I dont see any pipeline that run on this repo - its not configured in CircleCI
+      # last deploy was 3 years ago, In case future need arise - we can use BuildCtxNoDefaultAWS
+      # - test:
+      #     context:
+      #       - BuildContext

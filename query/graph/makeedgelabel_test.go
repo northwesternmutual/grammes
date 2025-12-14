@@ -32,7 +32,7 @@ func TestMakeEdgeLabel(t *testing.T) {
 		Convey("When 'MakeEdgeLabel' is called with a label string", func() {
 			result := graph.MakeEdgeLabel("label")
 			Convey("Then result should equal 'graph.makeEdgeLabel('label')'", func() {
-				So(result.String(), ShouldEqual, "graph.makeEdgeLabel(\"label\")")
+				So(result.String(), ShouldEqual, "graph.makeEdgeLabel('label')")
 			})
 		})
 	})

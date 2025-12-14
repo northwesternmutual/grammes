@@ -32,7 +32,7 @@ func (g String) Dedup(params ...interface{}) String {
 	// if len(params) > 0 {
 	// 	switch params[0].(type) {
 	// 	case string:
-	// 		g = g.append("\"" + params[0].(string) + "\"")
+	// 		g = g.append("'" + params[0].(string) + "'")
 	// 	case scope.Scope:
 	// 		g = g.append(params[0].(scope.Scope).String())
 	// 	default:
@@ -42,7 +42,7 @@ func (g String) Dedup(params ...interface{}) String {
 
 	// if len(params) > 1 {
 	// 	for _, v := range params[1:] {
-	// 		g = g.append(",\"" + v.(string) + "\"")
+	// 		g = g.append(",'" + v.(string) + "'")
 	// 	}
 	// }
 

@@ -31,14 +31,14 @@ func TestAddE(t *testing.T) {
 		g := NewTraversal()
 		Convey("When 'AddE' is called with a traversal string", func() {
 			res := g.AddE(NewTraversal().Label())
-			Convey("Then the graph traversal should be 'g.addE(\"test\")'", func() {
+			Convey("Then the graph traversal should be 'g.addE('test')'", func() {
 				So(res.String(), ShouldEqual, "g.addE(label())")
 			})
 		})
 		Convey("When 'AddE' is called with a string", func() {
 			res := g.AddE("somethingelse")
-			Convey("Then the graph traversal should be 'g.addE(\"somethingelse\")'", func() {
-				So(res.String(), ShouldEqual, "g.addE(\"somethingelse\")")
+			Convey("Then the graph traversal should be 'g.addE('somethingelse')'", func() {
+				So(res.String(), ShouldEqual, "g.addE('somethingelse')")
 			})
 		})
 		Convey("When 'AddE' is called with anything else", func() {

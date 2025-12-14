@@ -83,13 +83,22 @@ func Inside(min, max interface{}) *Predicate {
 
 // Within checks if this value is within the array values.
 func Within(params ...interface{}) *Predicate {
-	buffer := bytes.NewBufferString("within(")
+	return withX("within", params...)
+}
+
+// Without checks if this value is without one of the array values.
+func Without(params ...interface{}) *Predicate {
+	return withX("without", params...)
+}
+
+func withX(withOrWithout string, params ...interface{}) *Predicate {
+	buffer := bytes.NewBufferString(fmt.Sprintf("%s(", withOrWithout))
 	sep := ""
 	for _, p := range params {
 		buffer.WriteString(sep)
 		switch t := p.(type) {
 		case string:
-			buffer.WriteString("\"" + t + "\"")
+			buffer.WriteString("'" + t + "'")
 		default:
 			buffer.WriteString(fmt.Sprintf("%v", t))
 		}

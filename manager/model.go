@@ -22,6 +22,9 @@ package manager
 
 import (
 	"encoding/json"
+	"time"
+
+	"github.com/google/uuid"
 
 	"github.com/northwesternmutual/grammes/logging"
 	"github.com/northwesternmutual/grammes/model"
@@ -61,10 +64,13 @@ func unmarshalID(data [][]byte) (id interface{}, err error) {
 }
 
 // executor is the function type that is used when passing in executeRequest.
-type executor func(string, map[string]string, map[string]string) ([][]byte, error)
+type executor func(string, *time.Duration, map[string]string, map[string]string, *uuid.UUID) ([][]byte, error)
 
 // executor is the function type that is used when passing in ExecuteStringQuery.
 type stringExecutor func(string) ([][]byte, error)
+
+// executor is the function type that is used when passing in ExecuteStringQuery.
+type stringExecutorWithTimeout func(string, *time.Duration) ([][]byte, error)
 
 // MiscQuerier are miscellaneous queries for the server to perform.
 type MiscQuerier interface {
@@ -96,6 +102,8 @@ type GetVertexQuerier interface {
 	VertexByID(id interface{}) (vertex model.Vertex, err error)
 	// VerticesByString will return already unmarshalled vertex structs from a string query.
 	VerticesByString(stringQuery string) (vertices []model.Vertex, err error)
+	// VerticesByString will return already unmarshalled vertex structs from a string query.
+	VerticesByStringWithTimeout(stringQuery string, queryTimeout *time.Duration) (vertices []model.Vertex, err error)
 	// VerticesByQuery will return already unmarshalled vertex structs from a query object.
 	VerticesByQuery(queryObj query.Query) (vertices []model.Vertex, err error)
 	// Vertices will return vertices based on the label and properties.
@@ -150,6 +158,38 @@ type ExecuteQuerier interface {
 	ExecuteBoundQuery(queryObj query.Query, bindings map[string]string, rebindings map[string]string) (res [][]byte, err error)
 	// ExecuteBoundStringQuery will execute a string query with bindings and return its raw result.
 	ExecuteBoundStringQuery(stringQuery string, bindings map[string]string, rebindings map[string]string) (res [][]byte, err error)
+
+	// ExecuteQueryWithTimeout will execute a query object and return its raw result within a specified timeout.
+	ExecuteQueryWithTimeout(queryObj query.Query, queryTimeout *time.Duration) (res [][]byte, err error)
+	// ExecuteStringQueryWithTimeout will execute a string query and return its raw result within a specified timeout.
+	ExecuteStringQueryWithTimeout(stringQuery string, queryTimeout *time.Duration) (res [][]byte, err error)
+	// ExecuteBoundQueryWithTimeout will execute a query object with bindings and return its raw result within a specified timeout.
+	ExecuteBoundQueryWithTimeout(queryObj query.Query, queryTimeout *time.Duration, bindings map[string]string, rebindings map[string]string) (res [][]byte, err error)
+	// ExecuteBoundStringQueryWithTimeout will execute a string query with bindings and return its raw result within a specified timeout.
+	ExecuteBoundStringQueryWithTimeout(stringQuery string, queryTimeout *time.Duration, bindings map[string]string, rebindings map[string]string) (res [][]byte, err error)
+	// ExecuteBoundSessionQueryWithTimeout will execute a string query with bindings in a specific session and return its raw result within a specified timeout.
+	ExecuteBoundSessionQueryWithTimeout(stringQuery string, queryTimeout *time.Duration, bindings map[string]string, rebindings map[string]string, sessionId *uuid.UUID) (res [][]byte, err error)
+}
+
+type Session interface {
+	// ExecuteQuery will execute a query object and return its raw result.
+	ExecuteQuery(queryObj query.Query) (res [][]byte, err error)
+	// ExecuteStringQuery will execute a string query and return its raw result.
+	ExecuteStringQuery(stringQuery string) (res [][]byte, err error)
+	// Commit commits the transaction
+	Commit() (err error)
+	// Rollback rolls back the transaction
+	Rollback() (err error)
+	// Close closes the session, rolling back any uncommitted transactions
+	Close() (err error)
+}
+
+type SessionQuerier interface {
+	NewSession() Session
+	NewNoopSession() Session
+	GetSession(uuid.UUID) Session
+	WithSession(Session, func(Session) error, bool) error
+	WithNewSession(func(Session) error, bool) error
 }
 
 // VertexQuerier handles the vertices on the graph.
@@ -166,6 +206,7 @@ type GraphManager interface {
 	VertexQuerier
 	ExecuteQuerier
 	SchemaQuerier
+	SessionQuerier
 
 	// Returns the interface and functions associated with the MiscQuerier.
 	MiscQuerier() MiscQuerier

@@ -32,7 +32,7 @@ func TestAs(t *testing.T) {
 		Convey("When 'As' is called with multiple strings", func() {
 			result := g.As("test1", "test2")
 			Convey("Then result should equal 'g.as('test1','test2')'", func() {
-				So(result.String(), ShouldEqual, "g.as(\"test1\",\"test2\")")
+				So(result.String(), ShouldEqual, "g.as('test1','test2')")
 			})
 		})
 

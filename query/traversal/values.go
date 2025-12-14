@@ -35,11 +35,11 @@ func (g String) Values(strs ...string) String {
 
 	// g = g.append(".values(")
 
-	// g = g.append("\"" + params[0] + "\"")
+	// g = g.append("'" + params[0] + "'")
 
 	// if len(params) > 1 {
 	// 	for _, p := range params[1:] {
-	// 		g = g.append(",\"" + p + "\"")
+	// 		g = g.append(",'" + p + "'")
 	// 	}
 	// }
 

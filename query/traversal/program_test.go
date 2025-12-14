@@ -32,7 +32,7 @@ func TestProgram(t *testing.T) {
 		Convey("When 'Program' is called", func() {
 			result := g.Program("vertexProgram")
 			Convey("Then result should equal 'g.program(vertexProgram)'", func() {
-				So(result.String(), ShouldEqual, "g.program(\"vertexProgram\")")
+				So(result.String(), ShouldEqual, "g.program('vertexProgram')")
 			})
 		})
 	})

@@ -32,7 +32,7 @@ func TestInject(t *testing.T) {
 		Convey("When 'Inject' is called", func() {
 			result := g.Inject("testStr")
 			Convey("Then result should equal 'g.inject()'", func() {
-				So(result.String(), ShouldEqual, "g.inject(\"testStr\")")
+				So(result.String(), ShouldEqual, "g.inject('testStr')")
 			})
 		})
 	})

@@ -32,7 +32,7 @@ func TestFrom(t *testing.T) {
 		Convey("When 'From' is called with a string", func() {
 			result := g.From("fromTest")
 			Convey("Then result should equal 'g.from(fromTest)'", func() {
-				So(result.String(), ShouldEqual, "g.from(\"fromTest\")")
+				So(result.String(), ShouldEqual, "g.from('fromTest')")
 			})
 		})
 

@@ -32,7 +32,7 @@ func TestIs(t *testing.T) {
 		Convey("When 'Is' is called", func() {
 			result := g.Is("testStr")
 			Convey("Then result should equal 'g.is()'", func() {
-				So(result.String(), ShouldEqual, "g.is(\"testStr\")")
+				So(result.String(), ShouldEqual, "g.is('testStr')")
 			})
 		})
 	})

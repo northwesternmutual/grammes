@@ -67,7 +67,7 @@ func (g String) To(first interface{}, extraStrings ...string) String {
 // Signatures:
 // ToE(Direction, string)
 func (g String) ToE(dir direction.Direction, str string) String {
-	g = g.append(fmtStr(".toE(%v, \"%v\")", dir, str))
+	g = g.append(fmtStr(".toE(%v, '%v')", dir, str))
 
 	return g
 }

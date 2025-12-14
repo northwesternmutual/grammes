@@ -23,6 +23,7 @@ package manager
 import (
 	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/northwesternmutual/grammes/gremerror"
 	"github.com/northwesternmutual/grammes/logging"
@@ -34,18 +35,52 @@ import (
 type getVertexQueryManager struct {
 	logger             logging.Logger
 	executeStringQuery stringExecutor
+
+	executeStringQueryWithTimeout stringExecutorWithTimeout
 }
 
-func newGetVertexQueryManager(logger logging.Logger, executor stringExecutor) *getVertexQueryManager {
+func newGetVertexQueryManager(logger logging.Logger, executor stringExecutor, executorWithTimeout stringExecutorWithTimeout) *getVertexQueryManager {
 	return &getVertexQueryManager{
-		logger:             logger,
-		executeStringQuery: executor,
+		logger:                        logger,
+		executeStringQuery:            executor,
+		executeStringQueryWithTimeout: executorWithTimeout,
 	}
 }
 
 func (c *getVertexQueryManager) VerticesByString(query string) ([]model.Vertex, error) {
 	// Query the gremlin server with the given traversal.
 	responses, err := c.executeStringQuery(query)
+	if err != nil {
+		c.logger.Error("invalid query",
+			gremerror.NewQueryError("Vertices", query, err),
+		)
+		return nil, err
+	}
+
+	var vertices model.VertexList
+
+	for _, res := range responses {
+		var vertPart model.VertexList
+		// Unmarshal the response into the structs.
+		err = jsonUnmarshal(res, &vertPart)
+		if err != nil {
+			c.logger.Error("vertices unmarshal",
+				gremerror.NewUnmarshalError("Vertices", res, err),
+			)
+			return nil, err
+		}
+
+		vertices.Vertices = append(vertices.Vertices, vertPart.Vertices...)
+	}
+
+	c.logger.Debug("RESPONSE INFO", map[string]interface{}{"FULL LENGTH": len(vertices.Vertices)})
+
+	return vertices.Vertices, nil
+}
+
+func (c *getVertexQueryManager) VerticesByStringWithTimeout(query string, queryTimeout *time.Duration) ([]model.Vertex, error) {
+	// Query the gremlin server with the given traversal.
+	responses, err := c.executeStringQueryWithTimeout(query, queryTimeout)
 	if err != nil {
 		c.logger.Error("invalid query",
 			gremerror.NewQueryError("Vertices", query, err),

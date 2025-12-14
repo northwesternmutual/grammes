@@ -22,7 +22,7 @@ package graph
 
 // MakeEdgeLabel create a label for a new edge.
 func (graph String) MakeEdgeLabel(label string) String {
-	graph = graph.append(".makeEdgeLabel(\"" + label + "\")")
+	graph = graph.append(".makeEdgeLabel('" + label + "')")
 
 	return graph
 }

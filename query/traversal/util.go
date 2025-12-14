@@ -86,8 +86,12 @@ func (g *String) AddStep(step string, params ...interface{}) {
 			g.buffer.WriteByte(t)
 		case []byte:
 			g.buffer.Write(t)
+		case float32:
+			g.buffer.WriteString(fmt.Sprintf("%vf", t))
+		case float64:
+			g.buffer.WriteString(fmt.Sprintf("%vd", t))
 		case string:
-			g.buffer.WriteString("\"" + strings.ReplaceAll(t, "\"", "\\\"") + "\"")
+			g.buffer.WriteString("'" + Escape(t) + "'")
 		default:
 			g.buffer.WriteString(fmt.Sprintf("%v", t))
 		}
@@ -117,4 +121,8 @@ func gatherInts(params ...int) string {
 	default:
 		return ""
 	}
+}
+
+func Escape(t string) string {
+	return strings.ReplaceAll(strings.ReplaceAll(t, `\`, `\\`), `'`, `\'`)
 }

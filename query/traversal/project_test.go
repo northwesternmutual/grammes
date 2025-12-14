@@ -32,14 +32,14 @@ func TestProject(t *testing.T) {
 		Convey("When 'Project' is called with optStrings = nil", func() {
 			result := g.Project("test1")
 			Convey("Then result should equal 'g.project('test1')'", func() {
-				So(result.String(), ShouldEqual, "g.project(\"test1\")")
+				So(result.String(), ShouldEqual, "g.project('test1')")
 			})
 		})
 
 		Convey("When 'Cap' is called with multiple strings", func() {
 			result := g.Project("test1", "test2", "test3")
 			Convey("Then result should equal 'g.project('test1','test2','test3')'", func() {
-				So(result.String(), ShouldEqual, "g.project(\"test1\",\"test2\",\"test3\")")
+				So(result.String(), ShouldEqual, "g.project('test1','test2','test3')")
 			})
 		})
 	})

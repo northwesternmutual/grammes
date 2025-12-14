@@ -29,7 +29,7 @@ import (
 
 // MakePropertyKey create a label for a new edge.
 func (graph String) MakePropertyKey(label string, datatype datatype.DataType, cardinality cardinality.Cardinality) String {
-	graph = graph.append(".makePropertyKey(\"" + label + "\")")
+	graph = graph.append(".makePropertyKey('" + label + "')")
 	graph = graph.append(fmt.Sprintf(".dataType(%v).cardinality(%v)", datatype, cardinality))
 
 	return graph

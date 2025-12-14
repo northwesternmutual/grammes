@@ -32,7 +32,7 @@ func TestAggregate(t *testing.T) {
 		Convey("When 'Aggregate' is called with a string", func() {
 			result := g.Aggregate("test")
 			Convey("Then result should equal 'g.aggregate('test')'", func() {
-				So(result.String(), ShouldEqual, "g.aggregate(\"test\")")
+				So(result.String(), ShouldEqual, "g.aggregate('test')")
 			})
 		})
 	})

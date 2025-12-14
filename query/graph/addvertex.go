@@ -37,7 +37,7 @@ func (graph String) AddVertex(params ...interface{}) String {
 	switch params[0].(type) {
 	case string:
 		// custom property or other strings.
-		graph = graph.append("\"" + params[0].(string) + "\"")
+		graph = graph.append("'" + params[0].(string) + "'")
 	default:
 		// token or other types.
 		graph = graph.append(fmt.Sprintf("%v", params[0]))
@@ -48,7 +48,7 @@ func (graph String) AddVertex(params ...interface{}) String {
 			switch p.(type) {
 			case string:
 				// custom property or other strings.
-				graph = graph.append(",\"" + p.(string) + "\"")
+				graph = graph.append(",'" + p.(string) + "'")
 			default:
 				// Token or other types.
 				graph = graph.append(fmt.Sprintf(",%v", p))

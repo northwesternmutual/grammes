@@ -22,7 +22,6 @@ package grammes
 
 import (
 	"errors"
-
 	"github.com/northwesternmutual/grammes/gremconnect"
 	"github.com/northwesternmutual/grammes/gremerror"
 )
@@ -43,9 +42,18 @@ func (c *Client) launchConnection() error {
 	quit := c.conn.GetQuit()
 
 	// Launch processes to keep track of connection & data
-	go c.writeWorker(c.err, quit) // Initiates message writing to the Gremlin-server
-	go c.readWorker(c.err, quit)  // Initiates message reading from the Gremlin-server
-	go c.conn.Ping(c.err)         // Manages pinging and connection to the Gremlin-server
+	c.commRoutines.Go(func() error {
+		c.writeWorker(c.err, quit) // Initiates message writing to the Gremlin-server
+		return nil
+	})
+	c.commRoutines.Go(func() error {
+		c.readWorker(c.err, quit) // Initiates message reading from the Gremlin-server
+		return nil
+	})
+	c.commRoutines.Go(func() error {
+		c.conn.Ping(c.err) // Manages pinging and connection to the Gremlin-server
+		return nil
+	})
 
 	return nil
 }
@@ -55,6 +63,8 @@ func (c *Client) Close() {
 	if c.conn != nil {
 		c.conn.Close()
 	}
+
+	c.commRoutines.Wait()
 }
 
 // IsConnected returns if the client currently

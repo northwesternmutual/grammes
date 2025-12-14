@@ -78,7 +78,7 @@ func TestToE(t *testing.T) {
 			dir = "left"
 			result := g.ToE(dir, "testStr")
 			Convey("Then result should equal 'g.toE(left, 'testStr')'", func() {
-				So(result.String(), ShouldEqual, "g.toE(left, \"testStr\")")
+				So(result.String(), ShouldEqual, "g.toE(left, 'testStr')")
 			})
 		})
 	})

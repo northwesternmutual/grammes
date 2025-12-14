@@ -32,14 +32,14 @@ func TestBy(t *testing.T) {
 		Convey("When 'By' is called with multiple strings", func() {
 			result := g.By("test1", "test2", "test3")
 			Convey("Then result should equal 'g.by('test1','test2','test3')'", func() {
-				So(result.String(), ShouldEqual, "g.by(\"test1\",\"test2\",\"test3\")")
+				So(result.String(), ShouldEqual, "g.by('test1','test2','test3')")
 			})
 		})
 
 		Convey("When 'By' is called with one string", func() {
 			result := g.By("test")
 			Convey("Then result should equal 'g.by('test')'", func() {
-				So(result.String(), ShouldEqual, "g.by(\"test\")")
+				So(result.String(), ShouldEqual, "g.by('test')")
 			})
 		})
 
@@ -49,10 +49,10 @@ func TestBy(t *testing.T) {
 				So(result.String(), ShouldEqual, "g.by()")
 			})
 		})
-		Convey("When 'By' is called with order().by(\"id\", desc)", func() {
+		Convey("When 'By' is called with order().by('id', desc)", func() {
 			result := g.By("id", Custom("desc"))
-			Convey("Then result should equal 'g.by(\"id\",desc)'", func() {
-				So(result.String(), ShouldEqual, "g.by(\"id\",desc)")
+			Convey("Then result should equal 'g.by('id',desc)'", func() {
+				So(result.String(), ShouldEqual, "g.by('id',desc)")
 			})
 		})
 	})

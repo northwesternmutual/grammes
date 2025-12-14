@@ -36,7 +36,7 @@ func (g String) ValueMap(boolOrStrings ...interface{}) String {
 	// append the command beginning along with the first parameter value.
 	switch boolOrStrings[0].(type) {
 	case string:
-		g = g.append(".valueMap(\"" + boolOrStrings[0].(string) + "\"")
+		g = g.append(".valueMap('" + boolOrStrings[0].(string) + "'")
 	default:
 		g = g.append(fmtStr(".valueMap(%v", boolOrStrings[0]))
 	}
@@ -44,7 +44,7 @@ func (g String) ValueMap(boolOrStrings ...interface{}) String {
 	// append the rest of the parameters
 	if len(boolOrStrings) > 1 {
 		for _, v := range boolOrStrings[1:] {
-			g = g.append(fmtStr(",\"%v\"", v))
+			g = g.append(fmtStr(",'%v'", v))
 		}
 	}
 

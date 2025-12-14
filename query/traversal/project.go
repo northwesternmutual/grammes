@@ -28,11 +28,11 @@ package traversal
 // Signatures:
 // Project(string, ...string)
 func (g String) Project(str string, extraStrings ...string) String {
-	g = g.append(".project(\"" + str + "\"")
+	g = g.append(".project('" + str + "'")
 
 	if len(extraStrings) > 0 {
 		for _, v := range extraStrings {
-			g = g.append(",\"" + v + "\"")
+			g = g.append(",'" + v + "'")
 		}
 	}
 

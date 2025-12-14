@@ -24,6 +24,9 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/northwesternmutual/grammes/gremconnect"
+	"golang.org/x/sync/semaphore"
+
 	"github.com/northwesternmutual/grammes/logging"
 )
 
@@ -63,11 +66,27 @@ func WithMaxConcurrentMessages(limit int) ClientConfiguration {
 	}
 }
 
+// WithMaxConcurrentRequests sets the limit as to how many
+// requests can done simultaneously.
+func WithMaxConcurrentRequests(limit int) ClientConfiguration {
+	return func(c *Client) {
+		c.requestSemaphore = semaphore.NewWeighted(int64(limit))
+	}
+}
+
 // WithAuthUserPass sets the authentication credentials
 // within the dialer. (This includes the username and password)
 func WithAuthUserPass(user, pass string) ClientConfiguration {
 	return func(c *Client) {
 		c.conn.SetAuth(user, pass)
+	}
+}
+
+// WithHTTPAuth sets the authentication provider
+// within the dialer
+func WithHTTPAuth(provider gremconnect.AuthProvider) ClientConfiguration {
+	return func(c *Client) {
+		c.conn.SetHTTPAuth(provider)
 	}
 }
 
@@ -100,5 +119,52 @@ func WithWritingWait(interval time.Duration) ClientConfiguration {
 func WithReadingWait(interval time.Duration) ClientConfiguration {
 	return func(c *Client) {
 		c.conn.SetReadingWait(interval)
+	}
+}
+
+// WithRequestTimeout sets the timeout when
+// reading a request from the gremlin server
+func WithRequestTimeout(interval time.Duration) ClientConfiguration {
+	return func(c *Client) {
+		c.requestTimeout = interval
+	}
+}
+
+// WithWriteBufferSize sets the max write buffer size
+// for the websocket frame
+func WithWriteBufferSize(writeBufferSize int) ClientConfiguration {
+	return func(c *Client) {
+		c.conn.SetWriteBufferSize(writeBufferSize)
+	}
+}
+
+// WithWriteBufferResizing enables dynamic write buffer expansion, effectively disabling
+// websocket frame fragmentation (which TinkerPop doesn't support)
+func WithWriteBufferResizing(writeBufferResizing bool) ClientConfiguration {
+	return func(c *Client) {
+		c.conn.SetWriteBufferResizing(writeBufferResizing)
+	}
+}
+
+// WithReadBufferSize sets the max read buffer size
+// for the websocket frame
+func WithReadBufferSize(readBufferSize int) ClientConfiguration {
+	return func(c *Client) {
+		c.conn.SetReadBufferSize(readBufferSize)
+	}
+}
+
+// WithHandshakeTimeout sets the websocket handshake timeout
+func WithHandshakeTimeout(handshakeTimeout time.Duration) ClientConfiguration {
+	return func(c *Client) {
+		c.conn.SetHandshakeTimeout(handshakeTimeout)
+	}
+}
+
+// WithCompression sets the compression
+// flag for websocket connections
+func WithCompression(enableCompression bool) ClientConfiguration {
+	return func(c *Client) {
+		c.conn.SetCompression(enableCompression)
 	}
 }

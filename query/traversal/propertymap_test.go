@@ -40,7 +40,7 @@ func TestPropertyMap(t *testing.T) {
 		Convey("When 'Properties' is called with multiple arguments", func() {
 			result := g.PropertyMap("test1", "test2", "test3")
 			Convey("Then result should equal 'g.propertyMap('test1','test2','test3')'", func() {
-				So(result.String(), ShouldEqual, "g.propertyMap(\"test1\",\"test2\",\"test3\")")
+				So(result.String(), ShouldEqual, "g.propertyMap('test1','test2','test3')")
 			})
 		})
 	})

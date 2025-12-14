@@ -35,7 +35,7 @@ func TestPrepareRequest(t *testing.T) {
 		rebindings := make(map[string]string)
 
 		Convey("And a request is prepared", func() {
-			req, id, err := PrepareRequest(query, bindings, rebindings)
+			req, id, err := PrepareRequest(query, nil, bindings, rebindings, nil)
 
 			Convey("Then the request and id should not be nil", func() {
 				So(req, ShouldNotBeNil)

@@ -40,14 +40,14 @@ func TestValues(t *testing.T) {
 		Convey("When 'Values' is called with a single argument", func() {
 			result := g.Values("test")
 			Convey("Then result should equal 'g.values('test')'", func() {
-				So(result.String(), ShouldEqual, "g.values(\"test\")")
+				So(result.String(), ShouldEqual, "g.values('test')")
 			})
 		})
 
 		Convey("When 'Values' is called with a multiple arguments", func() {
 			result := g.Values("test1", "test2", "test3")
 			Convey("Then result should equal 'g.values('myVertex')'", func() {
-				So(result.String(), ShouldEqual, "g.values(\"test1\",\"test2\",\"test3\")")
+				So(result.String(), ShouldEqual, "g.values('test1','test2','test3')")
 			})
 		})
 	})

@@ -40,7 +40,7 @@ func TestValueMap(t *testing.T) {
 		Convey("When 'ValueMap' is called with a multiple strings", func() {
 			result := g.ValueMap("test1", "test2", "test3")
 			Convey("Then result should equal 'g.valueMap('myVertex')'", func() {
-				So(result.String(), ShouldEqual, "g.valueMap(\"test1\",\"test2\",\"test3\")")
+				So(result.String(), ShouldEqual, "g.valueMap('test1','test2','test3')")
 			})
 		})
 
